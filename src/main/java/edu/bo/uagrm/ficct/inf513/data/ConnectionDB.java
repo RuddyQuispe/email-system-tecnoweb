@@ -20,7 +20,7 @@ public class ConnectionDB {
     private ConnectionDB() {
         // get info to .env file
         Dotenv dotenv = Dotenv.configure()
-                .directory("/home/ruddy/IdeaProjects/email-system-tecnoweb/src/main/resources/.env")
+                .directory("/home/ruddy/IdeaProjects/email-system-tecnoweb/src/main/java/.env")
                 .load();
         // url JDBC drive connection
         this.connectionURL = "jdbc:postgresql://" + dotenv.get("DB_HOST") + ":" + dotenv.get("DB_PORT") +
