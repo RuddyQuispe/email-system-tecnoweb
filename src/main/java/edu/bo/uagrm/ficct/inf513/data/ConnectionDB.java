@@ -20,7 +20,7 @@ public class ConnectionDB {
     private ConnectionDB() {
         // get info to .env file
         Dotenv dotenv = Dotenv.configure()
-                .directory("/home/ruddy/IdeaProjects/email-system-tecnoweb/src/main/java/.env")
+                .directory("/home/ruddy/IdeaProjects/email-system-tecnoweb/src/main/resources/.env")
                 .load();
         // url JDBC drive connection
         this.connectionURL = "jdbc:postgresql://" + dotenv.get("DB_HOST") + ":" + dotenv.get("DB_PORT") +
@@ -57,6 +57,10 @@ public class ConnectionDB {
         this.connectionURL = connectionURL;
     }
 
+    /**
+     * verify is connected to server database
+     * @return true if connected, else return false
+     */
     public boolean isConnected(){
         try {
             return ! this.connectionDB.isClosed();
@@ -81,6 +85,17 @@ public class ConnectionDB {
             System.out.println("ERROR IN EXECUTE QUERY: " + sqlQuery);
             throwables.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * Disconnect to database server
+     */
+    public void disconnect(){
+        try {
+            this.connectionDB.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
