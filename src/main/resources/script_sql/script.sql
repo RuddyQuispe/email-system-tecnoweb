@@ -19,7 +19,8 @@ create table usuario(
 	email varchar(255) not null,
 	estado char(1) not null,		-- 1:enabled , 2:disabled
 	contraseña text not null,
-	direccion varchar(255) not null
+	direccion varchar(255) not null,
+	tipo_usuario char(1) not null	-- P:socio , D:directivo , S:secretari@
 );
 
 create table secretaria(

@@ -20,6 +20,7 @@ public class ConnectionDB {
     private ConnectionDB() {
         // get info to .env file
         Dotenv dotenv = Dotenv.configure()
+                // address file .env
                 .directory("/home/ruddy/IdeaProjects/email-system-tecnoweb/src/main/resources/.env")
                 .load();
         // url JDBC drive connection
@@ -49,6 +50,10 @@ public class ConnectionDB {
         return session;
     }
 
+    public Connection getConnection() {
+        return this.connectionDB;
+    }
+
     public String getConnectionURL() {
         return connectionURL;
     }
@@ -59,11 +64,12 @@ public class ConnectionDB {
 
     /**
      * verify is connected to server database
+     *
      * @return true if connected, else return false
      */
-    public boolean isConnected(){
+    public boolean isConnected() {
         try {
-            return ! this.connectionDB.isClosed();
+            return !this.connectionDB.isClosed();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -71,27 +77,9 @@ public class ConnectionDB {
     }
 
     /**
-     * execute query SQL to the database connected
-     * throw a problem set time out or error in query sql
-     *
-     * @param sqlQuery: any sql query
-     * @return object that contains the data produced by the given query; never null
-     */
-    public ResultSet executeQuerySQL(String sqlQuery) {
-        try {
-            Statement statement = this.connectionDB.createStatement();
-            return statement.executeQuery(sqlQuery);
-        } catch (SQLException throwables) {
-            System.out.println("ERROR IN EXECUTE QUERY: " + sqlQuery);
-            throwables.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
      * Disconnect to database server
      */
-    public void disconnect(){
+    public void closeConnection() {
         try {
             this.connectionDB.close();
         } catch (SQLException e) {
