@@ -1,4 +1,4 @@
-package edu.bo.uagrm.ficct.inf513.data;
+package edu.bo.uagrm.ficct.inf513.data.conection_database;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

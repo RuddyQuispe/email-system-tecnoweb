@@ -1,4 +1,4 @@
-import edu.bo.uagrm.ficct.inf513.data.ConnectionDB;
+import edu.bo.uagrm.ficct.inf513.data.conection_database.ConnectionDB;
 
 /**
  * @project email-system-tecnoweb

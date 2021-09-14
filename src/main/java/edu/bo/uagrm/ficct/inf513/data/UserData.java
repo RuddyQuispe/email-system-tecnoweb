@@ -1,6 +1,6 @@
 package edu.bo.uagrm.ficct.inf513.data;
 
-import edu.bo.uagrm.ficct.inf513.business_data.Encrypt;
+import edu.bo.uagrm.ficct.inf513.data.conection_database.ConnectionDB;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
