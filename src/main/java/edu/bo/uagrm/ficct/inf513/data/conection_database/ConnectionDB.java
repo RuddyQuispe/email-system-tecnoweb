@@ -1,5 +1,6 @@
 package edu.bo.uagrm.ficct.inf513.data.conection_database;
 
+import edu.bo.uagrm.ficct.inf513.utils.Address;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.*;
@@ -21,7 +22,7 @@ public class ConnectionDB {
         // get info to .env file
         Dotenv dotenv = Dotenv.configure()
                 // address file .env
-                .directory("/home/ruddy/IdeaProjects/email-system-tecnoweb/src/main/resources/.env")
+                .directory(Address.addressFileENV)
                 .load();
         // url JDBC drive connection
         this.connectionURL = "jdbc:postgresql://" + dotenv.get("DB_HOST") + ":" + dotenv.get("DB_PORT") +

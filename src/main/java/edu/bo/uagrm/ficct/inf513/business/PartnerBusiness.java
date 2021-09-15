@@ -1,6 +1,6 @@
 package edu.bo.uagrm.ficct.inf513.business;
 
-import edu.bo.uagrm.ficct.inf513.business_data.Encrypt;
+import edu.bo.uagrm.ficct.inf513.utils.Encrypt;
 import edu.bo.uagrm.ficct.inf513.data.PartnerData;
 import edu.bo.uagrm.ficct.inf513.data.UserData;
 

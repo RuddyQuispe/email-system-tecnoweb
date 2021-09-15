@@ -1,4 +1,4 @@
-package edu.bo.uagrm.ficct.inf513.business_data;
+package edu.bo.uagrm.ficct.inf513.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
