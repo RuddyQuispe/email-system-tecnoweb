@@ -35,6 +35,8 @@ public class ConnectionDB {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.print("Error in establishing session PSQL");
+        } finally {
+            System.out.println("Connection to database success");
         }
     }
 
@@ -83,6 +85,17 @@ public class ConnectionDB {
     public void closeConnection() {
         try {
             this.connectionDB.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        ConnectionDB postgreConnection = ConnectionDB.getInstance();
+        try {
+            PreparedStatement ps = postgreConnection.connectionDB.prepareStatement("select * from usuario");
+            ResultSet rs = ps.executeQuery();
+            System.out.println(rs.next());
         } catch (SQLException e) {
             e.printStackTrace();
         }

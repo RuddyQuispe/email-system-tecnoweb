@@ -81,6 +81,7 @@ public class POPService implements Runnable {
     private int getEmailCount() throws IOException {
         output.writeBytes(Command.stat());
         String line = input.readLine();
+        System.out.println(line);
         String[] data = line.split(" ");
         return Integer.parseInt(data[1]);
     }
@@ -112,6 +113,47 @@ public class POPService implements Runnable {
 
     @Override
     public void run() {
+        while (true){
+            try {
+                List<Email> emailList = null;
+                int countEmails = getEmailCount();
+                if (countEmails>0) {
+                    System.out.println("HAY CORREO");
+                    emailList = getEmails(countEmails);
+                    System.out.println(emailList);
+                    deleteEmails(countEmails);
+                }else {
+                    System.out.println("no hay correos");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+    }
+
+    public boolean closeSession(){
+        try {
+            this.output.writeBytes(Command.quit());
+            this.input.readLine();
+            this.input.close();
+            this.output.close();
+            this.socket.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static void main(String[] args){
+        POPService popService = POPService.getInstance();
+        try {
+            popService.signIn();
+            popService.run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

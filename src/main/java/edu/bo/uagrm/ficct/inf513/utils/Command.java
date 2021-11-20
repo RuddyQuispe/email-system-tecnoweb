@@ -35,4 +35,8 @@ public class Command {
     public static String dele(int email) {
         return "DELE " + email + END;
     }
+
+    public static boolean err(String responseMessageEmail) {
+        return responseMessageEmail.contains("-ERR");
+    }
 }
