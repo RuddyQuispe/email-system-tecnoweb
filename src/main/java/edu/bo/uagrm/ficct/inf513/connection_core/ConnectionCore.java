@@ -14,7 +14,7 @@ import java.util.List;
 public class ConnectionCore {
 
     public static void main(String[] args) {
-        MailVerificationThread mailVerificationThread = new MailVerificationThread();
+        MailVerificationThread mailVerificationThread = new MailVerificationThread("mail.server", 110, "user10", "userpass");
         mailVerificationThread.setEmailEventListener(new InterfaceEmailEventListener() {
             @Override
             public void onReceiveEmailEvent(List<Email> emailList) {

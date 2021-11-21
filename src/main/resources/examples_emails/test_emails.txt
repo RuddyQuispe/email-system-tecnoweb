@@ -1,0 +1,54 @@
+
++OK 2811 octets
+Return-Path: <justinianovacaruben@gmail.com>
+Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+	by dns.tecnoweb.org.bo (8.16.1/8.15.2) with ESMTPS id 185KFAFn2009441
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <grupo03sa@tecnoweb.org.bo>; Sun, 5 Sep 2021 16:15:12 -0400
+Received: by mail-il1-f178.google.com with SMTP id i13so4832681ilm.4
+        for <grupo03sa@tecnoweb.org.bo>; Sun, 05 Sep 2021 13:15:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=a3Svi6gf7OVhHPIrtX2upoycJkdmxj/7LCECK4NfBUw=;
+        b=NWzIDLs+U3PGqbwnwqusxxMetF7Mq08RFA9KjSEA4CjgDd9nyEj4efmUbxBLXOAH6M
+         HaAaMx1M+uaP8/4PQvUYNZowHhcvVRC6PU5diUyw+hfZYxRDqniaQ03nyUwRqCh4XyKK
+         MdBHYTTLH1q886RpwHO/QO4SdkIoVy4IXxAiDGtnngcys0O+MCNCp/pMyAmlK7K9Vh2Q
+         uIAz0yOklf1jtT8Qdmqp5+YBUXa2p/lfZexn6VMxYPdZErY2MSvnmTgz+5f7DEDatDEu
+         wAoJLzCJERv9bYujeSpjB1qzxRG7sCOaF5ZImRdlheVVq6WRMTzyjiv+ITxuUR9xmCyh
+         iZhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=a3Svi6gf7OVhHPIrtX2upoycJkdmxj/7LCECK4NfBUw=;
+        b=ojNyegnhbGXW8kJ5qDoXYtTR1ttOg8eQ74cEj8ahncuNVxmg+Rk7ZMXJ2ko+AMbs9x
+         qSohlsv0v10gNzNmJ1wPHArlk+73jCmlunMPonkeRqXptaueOhD8syd8oTI83K8Cyno3
+         EHNseJWdpGAF54m2DSg8y/HpMUw1liX+otw6bLlPgR0SV5kTP0Y/rJDu9SOEZDL7wGwq
+         XCDuHxTE8V+mrxlO/1yhoEO5IBjggAVynrRywoFf7tlBuaeP/bZ63Zsil8wpxZPubk1I
+         Yb5oh2/IgoXaj2YIfXWnTmNzPF9sbO4/4lKsJMHDNeFgYa+ki0pRuh8GAohP4TfSj/zR
+         p/JA==
+X-Gm-Message-State: AOAM530h/K79JJbVD+VOx5VtLBpwTW0m6Qy85dmFiZ32GKyDXM8h37du
+	HfekOh05yJqQMS+GaKDIWGH0TyVKhw2UlYp1mR9a+V/Vr70=
+X-Google-Smtp-Source: ABdhPJwNOO6X5A+/BBdwGi1f+AC1V7Acti71oBjEcC/f+onyHMjSi+eB0XS35K5LquXrRAwxuDcV2z/ZLxdp+sfaQQk=
+X-Received: by 2002:a92:d4d1:: with SMTP id o17mr5588988ilm.43.1630872909630;
+ Sun, 05 Sep 2021 13:15:09 -0700 (PDT)
+MIME-Version: 1.0
+From: Ruben Dario Justiniano Vaca <justinianovacaruben@gmail.com>
+Date: Sun, 5 Sep 2021 16:14:57 -0400
+Message-ID: <CAP0oCk96ZRjm4DHXs4vzY4KXxXh2L4yrBQXJH2u_4=rcO8cU6Q@mail.gmail.com>
+Subject: SOCIO_NUEVO["Juan Carlos Alberto","Contreras Villegas","1234567","Radio
+ #13 5to anillo","70012345","juancarloscontreras@uagrm.edu.bo",1]
+To: grupo03sa@tecnoweb.org.bo
+Content-Type: multipart/alternative; boundary="00000000000073d1b905cb45307b"
+
+--00000000000073d1b905cb45307b
+Content-Type: text/plain; charset="UTF-8"
+
+nuevo C
+
+--00000000000073d1b905cb45307b
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr">nuevo C<br></div>
+
+--00000000000073d1b905cb45307b--

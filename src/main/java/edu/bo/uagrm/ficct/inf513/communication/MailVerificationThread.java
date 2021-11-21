@@ -10,8 +10,8 @@ import edu.bo.uagrm.ficct.inf513.interfaces.InterfaceEmailEventListener;
 import edu.bo.uagrm.ficct.inf513.utils.Command;
 import edu.bo.uagrm.ficct.inf513.utils.Email;
 import edu.bo.uagrm.ficct.inf513.utils.Extractor;
+import org.jetbrains.annotations.NotNull;
 
-import javax.security.sasl.AuthenticationException;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -28,11 +28,17 @@ public class MailVerificationThread implements Runnable {
     private BufferedReader input;
     private DataOutputStream output;
     private InterfaceEmailEventListener emailEventListener;
+    private String host, userEmail, password;
+    private int port;
 
-    public MailVerificationThread() {
+    public MailVerificationThread(String host, int port, String userEmail, String password) {
         this.socket = null;
         this.input = null;
         this.output = null;
+        this.host = host;
+        this.port = port;
+        this.userEmail = userEmail;
+        this.password = password;
     }
 
     public InterfaceEmailEventListener getEmailEventListener() {
@@ -43,64 +49,130 @@ public class MailVerificationThread implements Runnable {
         this.emailEventListener = emailEventListener;
     }
 
-    @Override
-    public void run() {
-        while (true){
-            try {
-                List<Email> emails = null;
-                socket = new Socket("SERVER", 110);
-                input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                output = new DataOutputStream(socket.getOutputStream());
-                System.out.println("**************** Conexion establecida *************");
-
-                authUser("EMAIL_NAME_ONLY", "PASSW");
-                this.output.writeBytes(Command.stat());
-                String responseInput = input.readLine();
-                int count = getEmailCount(responseInput);
-                if(count > 0 ) {
-                    emails = getEmails(count);
-                    System.out.println(emails);
-                    removeEmail(count);
-                }
-                output.writeBytes(Command.quit());
-                input.readLine();
-                input.close();
-                output.close();
-                socket.close();
-                System.out.println("************** Conexion cerrada ************");
-
-                if(count > 0) {
-                    emailEventListener.onReceiveEmailEvent(emails);
-                }
-
-                Thread.sleep(10000);
-
-            } catch (IOException ex) {
-                Logger.getLogger(MailVerificationThread.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MailVerificationThread.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    public boolean connectService() {
+        try {
+            this.socket = new Socket(this.host, this.port);
+            this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.output = new DataOutputStream(socket.getOutputStream());
+            System.out.println("CONNECTION ESTABLISHED SUCCESSFULLY");
+            return this.socket != null && this.input != null && this.output != null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
-    private void authUser(String email, String password) {
+    private boolean authUser(String email, String password) {
         if (this.socket != null && this.input != null && this.output != null) {
             try {
                 String messageResponseMessage = this.input.readLine();
                 System.out.println("SERVER: " + messageResponseMessage);
                 String command = Command.user(email);
                 this.output.writeBytes(command);
+                System.out.println("CLIENT: " + command);
                 messageResponseMessage = this.input.readLine();
                 System.out.println("SERVER: " + messageResponseMessage);
                 command = Command.pass(password);
                 this.output.writeBytes(command);
+                System.out.println("CLIENT: " + command);
                 messageResponseMessage = this.input.readLine();
                 System.out.println("SERVER: " + messageResponseMessage);
                 if (Command.err(messageResponseMessage)) {
-                    throw new AuthenticationException();
+                    System.out.println("ERROR Authentication!!");
+                    return false;
                 }
+                return true;
             } catch (IOException e) {
                 e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @NotNull
+    private List<Email> getEmails(int count) {
+        List<Email> emailList = new ArrayList<Email>();
+        for (int index = 1; index <= count; index++) {
+            try {
+                String command = Command.retr(index);
+                this.output.writeBytes(command);
+                System.out.println("CLIENT: " + command);
+                String response = this.readMultiline();
+                // System.out.println("MESSAGE: \n" + response);
+                emailList.add(Extractor.getEmail(response));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return emailList;
+            }
+        }
+        return emailList;
+    }
+
+    private void removeEmail(int emails) {
+        for (int index = 1; index <= emails; index++) {
+            try {
+                String command = Command.dele(index);
+                this.output.writeBytes(command);
+                System.out.println("CLIENT: " + command);
+                String responseInput = this.input.readLine();
+                System.out.println("SERVER: " + responseInput);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean closeService() {
+        try {
+            String command = Command.quit();
+            this.output.writeBytes(command);
+            System.out.println("CLIENT: " + command);
+            String responseMessage = input.readLine();
+            System.out.println("SERVER: " + responseMessage);
+            this.input.close();
+            this.output.close();
+            this.socket.close();
+            System.out.println("CONNECTION CLOSED SUCCESS");
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                if (this.connectService()) {
+                    List<Email> emails = null;
+                    this.authUser(this.userEmail, this.password);
+                    String command = Command.stat();
+                    this.output.writeBytes(command);
+                    System.out.println("CLIENT: " + command);
+                    String responseInput = this.input.readLine();
+                    System.out.println("SERVER: " + responseInput);
+                    int count = this.getEmailCount(responseInput);
+                    // get count emails saved
+                    if (count > 0) {
+                        emails = this.getEmails(count);
+                        // System.out.println(emails.toString());
+                        //removeEmail(count);
+                        this.emailEventListener.onReceiveEmailEvent(emails);
+                    }
+                    // close connection socket
+                    this.closeService();
+                    Thread.sleep(10000);
+                } else {
+                    System.out.println("we could not connect to the server");
+                    Thread.sleep(2000);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(MailVerificationThread.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MailVerificationThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -110,25 +182,10 @@ public class MailVerificationThread implements Runnable {
         return Integer.parseInt(data[1]);
     }
 
-    private List<Email> getEmails(int count) {
-        List<Email> emailList = new ArrayList<Email>();
-        for (int index = 1; index <= count; index++) {
-            try {
-                System.out.println("CLIENT: " + Command.retr(index));
-                output.writeBytes(Command.retr(index));
-                String response = readMultiline();
-                emailList.add(Extractor.getEmail(response));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return emailList;
-    }
-
     private String readMultiline() throws IOException {
         String lines = "";
         while (true) {
-            String line = input.readLine();
+            String line = this.input.readLine();
             if (line == null) {
                 throw new IOException("Server don't response (throw an error to read email)");
             }
@@ -138,16 +195,5 @@ public class MailVerificationThread implements Runnable {
             lines = lines + "\n" + line;
         }
         return lines;
-    }
-
-    private void removeEmail(int emails){
-        for (int index = 1; index <= emails; index++) {
-            try {
-                String command = Command.dele(index);
-                this.output.writeBytes(command);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
