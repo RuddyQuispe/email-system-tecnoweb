@@ -64,11 +64,11 @@ public class Email {
 
     @Override
     public String toString() {
-        return "[\n" +
+        return "{\n" +
                 "\tFrom: " + from + ",\n" +
                 "\tTo: " + to + ",\n" +
                 "\tSubject: " + subject + ",\n" +
                 "\tMessage: " + message + "\n" +
-                "]";
+                "}\n";
     }
 }
