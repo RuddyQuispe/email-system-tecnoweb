@@ -10,7 +10,7 @@ public class Extractor {
     private static String HOTMAIL = "d=hotmail";
     private static String YAHOO = "d=yahoo";
     private static String OUTLOOK = "d=microsoft.com";
-
+    private static String FICCT_UAGRM = "d=ficct.uagrm.edu.bo";
 
     public static Email getEmail(String plain_text) {
         // String from, String to, String subject, String message
@@ -35,9 +35,11 @@ public class Extractor {
                 end_string = "Thread-Topic";
             } else if (plain_text.contains(YAHOO)) {
                 end_string = "MIME-Version:";
+            } else if (plain_text.contains(FICCT_UAGRM)) {
+                end_string = "Message-ID: ";
             }
             int e = plain_text.indexOf(end_string, i);
-            return plain_text.substring(i, e);
+            return plain_text.substring(i, e).replace("\n", "");
         } catch (Exception exception) {
             System.out.println(plain_text);
             System.out.println("Error in getSubject: " + exception);
@@ -47,7 +49,7 @@ public class Extractor {
 
     private static String getTo(String plain_text) {
         String to = "";
-        if (plain_text.contains(GMAIL)) {
+        if (plain_text.contains(GMAIL) || plain_text.contains(FICCT_UAGRM)) {
             to = getToFromGmail(plain_text);
         } else if (plain_text.contains(HOTMAIL)) {
             to = getToFromHotmail(plain_text);
@@ -64,6 +66,10 @@ public class Extractor {
     private static String getToFromHotmail(String plain_text) {
         String aux = getToCommon(plain_text);
         return aux.substring(1, aux.length() - 1);
+    }
+
+    private static String getToFromFICCTUAGRM(String plain_text) {
+        return getToCommon(plain_text);
     }
 
     private static String getToFromYahooOrOutlook(String plain_text) {

@@ -93,7 +93,6 @@ public class POPService implements Runnable {
                 this.output.writeBytes(command);
                 System.out.println("CLIENT: " + command);
                 String response = this.readMultiline();
-                // System.out.println("MESSAGE: \n" + response);
                 emailList.add(Extractor.getEmail(response));
             } catch (IOException e) {
                 e.printStackTrace();

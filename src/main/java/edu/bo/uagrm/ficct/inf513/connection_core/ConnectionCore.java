@@ -1,5 +1,7 @@
 package edu.bo.uagrm.ficct.inf513.connection_core;
 
+import edu.bo.uagrm.ficct.inf513.services.POPService;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -62,35 +64,35 @@ public class ConnectionCore {
     }
 
     public static void main(String[] args) {
-//        POPService popService = new POPService();
-//        Thread thread = new Thread(popService);
-//        thread.setName("Mail Verification Thread");
-//        thread.start();
+        POPService popService = new POPService();
+        Thread thread = new Thread(popService);
+        thread.setName("Mail Verification Thread");
+        thread.start();
 //        user add [Ronaldo, water Gonzales, 76042142]
 //        use_case | action | parameters
 //        [ mascota | add | Firulay | 25 | Negro ]
-        String command = "product add [200; hola como estas; 20-01-2014; 2099.56; true; false]";
-        if (command.indexOf("[") == -1 || command.indexOf("]") == -1) {
-            System.out.println("NO ACTION");
-            return;
-        }
-        String useCaseAndAction = command.substring(0, command.indexOf("["));
-        useCaseAndAction = useCaseAndAction.toUpperCase();
-        System.out.println("ACTION: " + useCaseAndAction);
-        String[] listMain = useCaseAndAction.split(" ");
-        for (String factor : listMain) {
-            System.out.println(factor);
-        }
-        String emailToSend = "ruddyq18@gmail.com";
-        String[] parametersList = command.substring(command.indexOf("[") + 1, command.indexOf("]")).split(";");
-        for (String parameter : parametersList) {
-            String parameterIndex = parameter.trim();
-            System.out.println("-" + parameterIndex + "-");
-            System.out.println("isDate: " + isDate(parameterIndex));
-            System.out.println("isInteger: " + isInteger(parameterIndex));
-            System.out.println("isDouble: " + isDouble(parameterIndex));
-            System.out.println("isFloat: " + isFloat(parameterIndex));
-            System.out.println("isBoolean: " + isBoolean(parameterIndex));
-        }
+//        String command = "product add [200; hola como estas; 20-01-2014; 2099.56; true; false]";
+//        if (command.indexOf("[") == -1 || command.indexOf("]") == -1) {
+//            System.out.println("NO ACTION");
+//            return;
+//        }
+//        String useCaseAndAction = command.substring(0, command.indexOf("["));
+//        useCaseAndAction = useCaseAndAction.toUpperCase();
+//        System.out.println("ACTION: " + useCaseAndAction);
+//        String[] listMain = useCaseAndAction.split(" ");
+//        for (String factor : listMain) {
+//            System.out.println(factor);
+//        }
+//        String emailToSend = "ruddyq18@gmail.com";
+//        String[] parametersList = command.substring(command.indexOf("[") + 1, command.indexOf("]")).split(";");
+//        for (String parameter : parametersList) {
+//            String parameterIndex = parameter.trim();
+//            System.out.println("-" + parameterIndex + "-");
+//            System.out.println("isDate: " + isDate(parameterIndex));
+//            System.out.println("isInteger: " + isInteger(parameterIndex));
+//            System.out.println("isDouble: " + isDouble(parameterIndex));
+//            System.out.println("isFloat: " + isFloat(parameterIndex));
+//            System.out.println("isBoolean: " + isBoolean(parameterIndex));
+//        }
     }
 }
