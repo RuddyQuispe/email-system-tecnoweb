@@ -146,6 +146,10 @@ public class POPService implements Runnable {
                     if (count > 0) {
                         emails = this.getEmails(count);
                         // start thread read email
+                        for (Email emailToMake : emails) {
+                            Analyzer analyzerEmail = new Analyzer(emailToMake.getSubject());
+                            System.out.println(analyzerEmail.toString());
+                        }
                         System.out.println(emails.toString());
                         //removeEmail(count);
                     }
