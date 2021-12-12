@@ -149,9 +149,15 @@ public class POPService implements Runnable {
                         for (Email emailToMake : emails) {
                             Analyzer analyzerEmail = new Analyzer(emailToMake.getSubject());
                             System.out.println(analyzerEmail.toString());
+                            // aqui
+                            emailToMake.setMessage("<h1>Hola jozú</h1>");
+                            if (emailToMake.getTo()!=""){
+                                SMTPService smtpService = new SMTPService(emailToMake);
+                                Thread smtThread = new Thread(smtpService);
+                                smtThread.start();
+                            }
                         }
                         System.out.println(emails.toString());
-                        //removeEmail(count);
                     }
                     // close connection socket
                     this.closeService();

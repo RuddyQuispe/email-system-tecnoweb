@@ -34,7 +34,7 @@ public class ConnectionDB {
                     dotenv.get("DB_PASSWD"));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            System.out.print("Error in establishing session PSQL");
+            System.out.print("Error to establishing session PSQL");
         } finally {
             System.out.println("Connection to database success");
         }
@@ -91,9 +91,9 @@ public class ConnectionDB {
     }
 
     public static void main(String[] args) {
-        ConnectionDB postgreConnection = ConnectionDB.getInstance();
         try {
-            PreparedStatement ps = postgreConnection.connectionDB.prepareStatement("select * from usuario");
+            ConnectionDB postgreSQLConnection = ConnectionDB.getInstance();
+            PreparedStatement ps = postgreSQLConnection.connectionDB.prepareStatement("select * from usuario");
             ResultSet rs = ps.executeQuery();
             System.out.println(rs.next());
         } catch (SQLException e) {

@@ -32,8 +32,8 @@ public class SMTPService implements Runnable {
         properties.put("mail.transport.protocol", "smtp");
         properties.setProperty("mail.smtp.host", dotenv.get("SMTP_HOST"));
         properties.setProperty("mail.smtp.port", dotenv.get("SMTP_PORT"));
-        //properties.setProperty("mail.smtp.tls.enable", "true");   //when uses tecnoweb
-        properties.setProperty("mail.smtp.ssl.enable", "true");     //when uses Gmail
+        properties.setProperty("mail.smtp.tls.enable", "true");   //when uses tecnoweb
+//        properties.setProperty("mail.smtp.ssl.enable", "true");     //when uses Gmail
         properties.setProperty("mail.smtp.auth", "true");
 
         this.session = Session.getDefaultInstance(properties, new Authenticator() {
