@@ -6,10 +6,7 @@ package edu.bo.uagrm.ficct.inf513.services;
  * @date 2021-11-20 06:57
  */
 
-import edu.bo.uagrm.ficct.inf513.utils.Address;
-import edu.bo.uagrm.ficct.inf513.utils.Command;
-import edu.bo.uagrm.ficct.inf513.utils.Email;
-import edu.bo.uagrm.ficct.inf513.utils.Extractor;
+import edu.bo.uagrm.ficct.inf513.utils.*;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -150,11 +148,8 @@ public class POPService implements Runnable {
                             Analyzer analyzerEmail = new Analyzer(emailToMake.getSubject());
                             System.out.println(analyzerEmail.toString());
                             // aqui
-                            emailToMake.setMessage("<h1>Hola jozú</h1>");
-                            if (emailToMake.getTo()!=""){
-                                SMTPService smtpService = new SMTPService(emailToMake);
-                                Thread smtThread = new Thread(smtpService);
-                                smtThread.start();
+                            if (emailToMake.getFrom() != "" && emailToMake.getTo() != "") {
+                                sendEmailResponse(emailToMake);
                             }
                         }
                         System.out.println(emails.toString());
@@ -170,6 +165,22 @@ public class POPService implements Runnable {
                 Logger.getLogger(POPService.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public static void sendEmailResponse(Email emailToSend) {
+        String[] data = {"#", "First", "Last", "Handle", "Actions"};
+        List<String[]> listData = Arrays.asList(
+                new String[]{"1", "Otto", "Otto", "@mdo", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: yellow; border-radius: 8px;\">LISTAR</a>"},
+                new String[]{"2", "Jacob", "Jacob", "@fat", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: blue; border-radius: 8px;\">LISTAR</a>"},
+                new String[]{"3", "Carol", "Matheus", "@twiter", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: green; border-radius: 8px;\">LISTAR</a>"},
+                new String[]{"4", "Marie", "Carla", "@facebook", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: yellow; border-radius: 8px;\">LISTAR</a>"},
+                new String[]{"5", "Curie", "Dario", "@instagram", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: black; border-radius: 8px;\">LISTAR</a>"}
+        );
+        String html = HTMLBuilder.generateTable("Hola Cabezones", data, listData);
+        emailToSend.setMessage(html);
+        SMTPService smtpService = new SMTPService(emailToSend);
+        Thread smtpThread = new Thread(smtpService);
+        smtpThread.run();
     }
 
     private int getEmailCount() {
