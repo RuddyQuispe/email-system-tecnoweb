@@ -139,20 +139,18 @@ public class POPService implements Runnable {
                 if (this.connectService()) {
                     List<Email> emails = null;
                     this.authUser();
-                    int count = this.getEmailCount();
+                    int countEmails = this.getEmailCount();
                     // get count emails saved
-                    if (count > 0) {
-                        emails = this.getEmails(count);
+                    if (countEmails > 0) {
+                        emails = this.getEmails(countEmails);
                         // start thread read email
                         for (Email emailToMake : emails) {
-                            Analyzer analyzerEmail = new Analyzer(emailToMake.getSubject());
-                            System.out.println(analyzerEmail.toString());
-                            // aqui
                             if (emailToMake.getFrom() != "" && emailToMake.getTo() != "") {
-                                sendEmailResponse(emailToMake);
+                                this.sendEmailResponse(emailToMake);
                             }
                         }
                         System.out.println(emails.toString());
+                        //this.removeEmail(countEmails);
                     }
                     // close connection socket
                     this.closeService();
@@ -167,20 +165,30 @@ public class POPService implements Runnable {
         }
     }
 
-    public static void sendEmailResponse(Email emailToSend) {
-        String[] data = {"#", "First", "Last", "Handle", "Actions"};
-        List<String[]> listData = Arrays.asList(
-                new String[]{"1", "Otto", "Otto", "@mdo", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: yellow; border-radius: 8px;\">LISTAR</a>"},
-                new String[]{"2", "Jacob", "Jacob", "@fat", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: blue; border-radius: 8px;\">LISTAR</a>"},
-                new String[]{"3", "Carol", "Matheus", "@twiter", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: green; border-radius: 8px;\">LISTAR</a>"},
-                new String[]{"4", "Marie", "Carla", "@facebook", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: yellow; border-radius: 8px;\">LISTAR</a>"},
-                new String[]{"5", "Curie", "Dario", "@instagram", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: black; border-radius: 8px;\">LISTAR</a>"}
-        );
-        String html = HTMLBuilder.generateTable("Hola Cabezones", data, listData);
-        emailToSend.setMessage(html);
-        SMTPService smtpService = new SMTPService(emailToSend);
-        Thread smtpThread = new Thread(smtpService);
-        smtpThread.run();
+    public void sendEmailResponse(Email emailToSend) {
+        try {
+            // get action, use case and test token
+            Analyzer analyzer = new Analyzer(emailToSend.getSubject());
+            if (analyzer.hasError()) {
+                emailToSend.setMessage(HTMLBuilder.buildMessageError(
+                        "Hubo error en identificar el Token\n" +
+                                "Porfavor envienos un email con subject:\"HELP\" para ayuda con la funcionalidad del sistema"));
+                // send email error, error into token
+            } else {
+                Core coreProcess = new Core(analyzer.getUseCase(), analyzer.getAction(), analyzer.getParameters());
+                String htmlResponse = coreProcess.processApplication();
+                emailToSend.setMessage(htmlResponse);
+            }
+            SMTPService smtpService = new SMTPService(emailToSend);
+            Thread smtpThread = new Thread(smtpService);
+            smtpThread.start();
+        } catch (Exception exception) {
+            System.out.println("ERROR into sendEmailResponse Application: " + exception + "\nEnviando email de error");
+            emailToSend.setMessage(HTMLBuilder.buildMessageError("ERROR en analizar el subject de tu email"));
+            SMTPService smtpService = new SMTPService(emailToSend);
+            Thread smtpThread = new Thread(smtpService);
+            smtpThread.start();
+        }
     }
 
     private int getEmailCount() {
