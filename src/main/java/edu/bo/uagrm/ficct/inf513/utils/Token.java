@@ -8,6 +8,7 @@ package edu.bo.uagrm.ficct.inf513.utils;
 public class Token {
     public static final String TOKEN_PARAMETERS_OPEN = "[";
     public static final String TOKEN_PARAMETERS_CLOSE = "]";
+    public static final String TOKEN_SEPARATOR = ";";
     // EXTRA COMMANDS
     public static final String HELP = "HELP";
 }

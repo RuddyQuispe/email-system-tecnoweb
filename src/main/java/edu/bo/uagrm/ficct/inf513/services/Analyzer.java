@@ -46,7 +46,7 @@ public class Analyzer {
                 }
             } else {
                 // get use case and action
-                String useCaseAndAction = command.substring(0, command.indexOf("[")).toUpperCase();
+                String useCaseAndAction = command.substring(0, command.indexOf(Token.TOKEN_PARAMETERS_OPEN)).toUpperCase();
                 // separate use case and action
                 String[] listHead = useCaseAndAction.split(" ");
                 // assign use case
@@ -54,7 +54,9 @@ public class Analyzer {
                 // assign action
                 this.action = listHead[1];
                 // separate each parameters
-                String[] parametersList = command.substring(command.indexOf("[") + 1, command.indexOf("]")).split(";");
+                String[] parametersList =
+                        command.substring(command.indexOf(Token.TOKEN_PARAMETERS_OPEN) + 1,
+                                command.indexOf(Token.TOKEN_PARAMETERS_CLOSE)).split(Token.TOKEN_SEPARATOR);
                 // add
                 for (String parameter : parametersList) {
                     this.parameters.add(parameter.trim());
