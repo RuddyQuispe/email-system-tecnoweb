@@ -58,7 +58,8 @@ public class Core {
      * @return
      */
     public String processApplication() {
-        if (this.useCase == TokenAction.HELP) {
+        if (this.action == TokenAction.HELP) {
+            return "RECEIVED HELP COMMAND";
             // send action
         } else if (this.useCase == TokenUseCase.USUARIO_EMPLEADO) {
             if (this.action == TokenAction.LISTAR) {

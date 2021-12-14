@@ -23,19 +23,23 @@ public class Analyzer {
         try {
             this.parameters = new ArrayList<>();
 //          String command = "product add [200; hola como estas; 20-01-2014; 2099.56; true; false]";
-            // verify brackets "[" "]"
+            // verify doesn't exists brackets "[" "]"
             if (command.indexOf("[") == -1 || command.indexOf("]") == -1) {
-                if (command.trim() == TokenAction.HELP) {
-                    this.action = command.trim();
+                System.out.println("No tiene parametros: " + command);
+                if (command == "HELP") {
+                    System.out.println("es HELP");
+                    this.action = command;
                     this.error = false;
                 } else {
+                    System.out.println("no es help");
                     String[] listHead = command.toUpperCase().split(" ");
-                    if (listHead[1].trim() == TokenAction.LISTAR) {
+                    if (listHead.length == 2 && listHead[1].trim() == TokenAction.LISTAR) {
+                        System.out.println("son 2 attr y es listar");
                         this.useCase = listHead[0].trim();
                         this.action = listHead[1].trim();
                         this.error = false;
                     } else {
-                        System.out.println("NO ACTION");
+                        System.out.println("NO EXISTS ACTION " + command);
                         this.error = true;
                     }
                 }

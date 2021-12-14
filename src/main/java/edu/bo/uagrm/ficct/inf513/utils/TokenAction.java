@@ -11,5 +11,5 @@ public class TokenAction {
     public static final String ELIMINAR = "ELIMINAR";
     public static final String LISTAR = "LISTAR";
     // EXTRA COMMANDS
-    public static String HELP = "HELP";
+    public static final String HELP = "HELP";
 }

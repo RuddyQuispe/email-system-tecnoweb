@@ -15,10 +15,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -150,7 +147,7 @@ public class POPService implements Runnable {
                             }
                         }
                         System.out.println(emails.toString());
-                        //this.removeEmail(countEmails);
+                        this.removeEmail(countEmails);
                     }
                     // close connection socket
                     this.closeService();
@@ -167,8 +164,9 @@ public class POPService implements Runnable {
 
     public void sendEmailResponse(Email emailToSend) {
         try {
+            System.out.println("Initialize: " + emailToSend.getSubject());
             // get action, use case and test token
-            Analyzer analyzer = new Analyzer(emailToSend.getSubject());
+            Analyzer analyzer = new Analyzer(emailToSend.getSubject().trim().toUpperCase());
             if (analyzer.hasError()) {
                 emailToSend.setMessage(HTMLBuilder.buildMessageError(
                         "Hubo error en identificar el Token\n" +
