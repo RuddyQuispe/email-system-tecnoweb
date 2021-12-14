@@ -60,7 +60,16 @@ public class Core {
      */
     public String processApplication() {
         if (this.action.equals(Token.HELP)) {
-            return "RECEIVED HELP COMMAND";
+            return HTMLBuilder.generateTable(
+                    "Manual de Email System Tecnoweb \"Asociacion 4 de octubre\"",
+                    new String[]{"Token", "Acciones", "Descripcion", ""},
+                    Arrays.asList(
+                            new String[]{"EMPLEADO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestiona usuario empleado (secretaria)", HTMLBuilder.buildButton("LISTAR", "EMPLEADO LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO")},
+                            new String[]{"SOCIO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar socio del mercado", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO")},
+                            new String[]{"KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO")},
+                            new String[]{"ASISTENCIA", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar la asistencia de un dia", HTMLBuilder.buildButton("LISTAR", "ASISTENCIA LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO")}
+                    )
+            );
             // send action
         } else if (this.useCase.equals(TokenUseCase.USUARIO_EMPLEADO)) {
             if (this.action == TokenAction.LISTAR) {

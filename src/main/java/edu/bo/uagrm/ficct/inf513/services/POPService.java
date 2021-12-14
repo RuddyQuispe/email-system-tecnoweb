@@ -169,7 +169,7 @@ public class POPService implements Runnable {
             Analyzer analyzer = new Analyzer(emailToSend.getSubject().trim().toUpperCase());
             if (analyzer.hasError()) {
                 emailToSend.setMessage(HTMLBuilder.buildMessageError(
-                        "Hubo error en identificar el Token\n" +
+                        "Hubo error en identificar el Token </br>" +
                                 "Porfavor envienos un email con subject:\"HELP\" para ayuda con la funcionalidad del sistema"));
                 // send email error, error into token
             } else {

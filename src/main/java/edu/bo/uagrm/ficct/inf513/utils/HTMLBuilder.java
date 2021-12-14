@@ -13,19 +13,19 @@ public class HTMLBuilder {
 
     public static String generateTable(String title, String[] headers, List<String[]> data) {
         String htmlContent = BODY_OPEN + getTitleStyle(title) + "</br>";
-        String headerTable = "<table style=\" border-collapse: collapse; width: 100%; overflow-x: auto; text-align: left;\">" +
-                "<thead><tr>";
+        String headerTable = "<div style=\"padding: 20px;\"><table style=\" border-collapse: collapse; width: 100%; overflow-x: auto; text-align: left;\">" +
+                "<thead><tr style=\"border: 1px solid #4E504E; text-align: left;\">";
         for (String head : headers) {
             headerTable = headerTable +
-                    "<th>" + head + "</th>";
+                    "<th style=\"text-align: left; padding: 8px;\">" + head + "</th>";
         }
         headerTable = headerTable + "</tr></thead>";
         String bodyTable = "<tbody>";
         for (int index = 0; index < data.size(); index++) {
-            bodyTable = bodyTable + ((index % 2 == 0) ? "<tr style=\"background-color: #FFFFFF80;\">" : "<tr>");
+            bodyTable = bodyTable + "<tr style=\"border: 1px solid #4E504E; text-align: left;\">";
             for (String info : data.get(index)) {
                 bodyTable = bodyTable +
-                        "<td>" + info + "</td>";
+                        "<td style=\"text-align: left; padding: 8px;\">" + info + "</td>";
             }
             bodyTable = bodyTable + "</tr>";
         }
@@ -34,6 +34,7 @@ public class HTMLBuilder {
                 headerTable +
                 bodyTable +
                 "</table>" +
+                "</div>" +
                 BODY_CLOSE;
 
     }
