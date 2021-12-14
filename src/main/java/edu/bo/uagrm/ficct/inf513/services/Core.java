@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.bo.uagrm.ficct.inf513.utils.HTMLBuilder;
+import edu.bo.uagrm.ficct.inf513.utils.Token;
 import edu.bo.uagrm.ficct.inf513.utils.TokenAction;
 import edu.bo.uagrm.ficct.inf513.utils.TokenUseCase;
 
@@ -58,10 +59,10 @@ public class Core {
      * @return
      */
     public String processApplication() {
-        if (this.action == TokenAction.HELP) {
+        if (this.action.equals(Token.HELP)) {
             return "RECEIVED HELP COMMAND";
             // send action
-        } else if (this.useCase == TokenUseCase.USUARIO_EMPLEADO) {
+        } else if (this.useCase.equals(TokenUseCase.USUARIO_EMPLEADO)) {
             if (this.action == TokenAction.LISTAR) {
                 String[] data = {"#", "First", "Last", "Handle", "Actions"};
                 List<String[]> listData = Arrays.asList(
