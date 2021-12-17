@@ -46,7 +46,7 @@ public class SMTPService implements Runnable {
                 }
             });
             this.message = new MimeMessage(this.session);
-            this.message.setFrom(new InternetAddress("ruddy_quispe@tecnologia-web.me"));
+            this.message.setFrom(new InternetAddress(dotenv.get("SMTP_MAIL")));
             InternetAddress[] toAddresses = {new InternetAddress(this.email.getFrom())};
             this.message.setRecipients(MimeMessage.RecipientType.TO, toAddresses);
             this.message.setSubject(email.getSubject());

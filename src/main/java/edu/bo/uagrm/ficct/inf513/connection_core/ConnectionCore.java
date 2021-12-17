@@ -15,7 +15,8 @@ public class ConnectionCore {
     public static void main(String[] args) {
         POPService popService = new POPService();
         Thread thread = new Thread(popService);
-        thread.setName("Mail Verification Thread");
+        thread.setName("Mail System Associate Merchants Thread");
+        System.out.println("Initialize: " + thread.getName());
         thread.start();
     }
 }

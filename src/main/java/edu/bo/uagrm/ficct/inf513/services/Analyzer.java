@@ -1,10 +1,12 @@
 package edu.bo.uagrm.ficct.inf513.services;
 
+import edu.bo.uagrm.ficct.inf513.utils.Token;
 import edu.bo.uagrm.ficct.inf513.utils.TokenAction;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,20 +24,29 @@ public class Analyzer {
         try {
             this.parameters = new ArrayList<>();
 //          String command = "product add [200; hola como estas; 20-01-2014; 2099.56; true; false]";
-            // verify brackets "[" "]"
-            if (command.indexOf("[") == -1 || command.indexOf("]") == -1) {
-                String[] listHead = command.toUpperCase().split(" ");
-                if (listHead[1] == TokenAction.LISTAR) {
-                    this.useCase = listHead[0];
-                    this.action = listHead[1];
+            // verify doesn't exists brackets "[" "]"
+            if (command.indexOf(Token.TOKEN_PARAMETERS_OPEN) == -1 || command.indexOf(Token.TOKEN_PARAMETERS_CLOSE) == -1) {
+                System.out.println("No tiene parametros: " + command + " - " + command.equals(Token.HELP));
+                if (command.equals(Token.HELP)) {
+                    System.out.println("es HELP");
+                    this.action = command;
                     this.error = false;
                 } else {
-                    System.out.println("NO ACTION");
-                    this.error = true;
+                    System.out.println("no es help");
+                    String[] listHead = command.toUpperCase().split(" ");
+                    if (listHead.length == 2 && listHead[1].trim().equals(TokenAction.LISTAR)) {
+                        System.out.println("son 2 attr y es listar");
+                        this.useCase = listHead[0].trim();
+                        this.action = listHead[1].trim();
+                        this.error = false;
+                    } else {
+                        System.out.println("NO EXISTS ACTION " + command);
+                        this.error = true;
+                    }
                 }
             } else {
                 // get use case and action
-                String useCaseAndAction = command.substring(0, command.indexOf("[")).toUpperCase();
+                String useCaseAndAction = command.substring(0, command.indexOf(Token.TOKEN_PARAMETERS_OPEN)).toUpperCase();
                 // separate use case and action
                 String[] listHead = useCaseAndAction.split(" ");
                 // assign use case
@@ -43,7 +54,9 @@ public class Analyzer {
                 // assign action
                 this.action = listHead[1];
                 // separate each parameters
-                String[] parametersList = command.substring(command.indexOf("[") + 1, command.indexOf("]")).split(";");
+                String[] parametersList =
+                        command.substring(command.indexOf(Token.TOKEN_PARAMETERS_OPEN) + 1,
+                                command.indexOf(Token.TOKEN_PARAMETERS_CLOSE)).split(Token.TOKEN_SEPARATOR);
                 // add
                 for (String parameter : parametersList) {
                     this.parameters.add(parameter.trim());
@@ -138,13 +151,32 @@ public class Analyzer {
         this.parameters = parameters;
     }
 
+    public boolean hasError() {
+        return error;
+    }
+
     @Override
     public String toString() {
-        return !this.error ? "Analyzer {" +
-                "useCase='" + useCase + '\'' +
-                ", action='" + action + '\'' +
-                ", parameters=" + parameters.toString() +
-                ", error=" + error +
-                '}' : "I have an error!!!";
+        if (this.error) {
+            return "I have an error";
+        } else {
+            return "Analyzer {" +
+                    "useCase='" + this.useCase + '\'' +
+                    ", action='" + this.action + '\'' +
+                    ", parameters=" + this.parameters.toString() + "\n" +
+                    ", error=" + error +
+                    '}';
+        }
+    }
+
+    public static void main(String[] args) {
+        List<String> commandList = Arrays.asList("user remove [123] ", "Mensaje de prueba desde ficct.uagrm.edu.bo \n",
+                "Mensaje de prueba desde outlook \n",
+                "Mensaje de prueba desde gmail \n",
+                "HELP");
+        for (String command : commandList) {
+            Analyzer analyzer = new Analyzer(command);
+            System.out.println(analyzer.toString());
+        }
     }
 }
