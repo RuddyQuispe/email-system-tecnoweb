@@ -1,5 +1,6 @@
 package edu.bo.uagrm.ficct.inf513.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ public class HTMLBuilder {
     private static final String BODY_OPEN = "<body style=\"" + CSS.UI_GRADIENT + "\">";
     private static final String BODY_CLOSE = "</body>";
 
-    public static String generateTable(String title, String[] headers, List<String[]> data) {
+    public static String generateTable(String title, ArrayList<String> headers, ArrayList<ArrayList<String>> data) {
         String htmlContent = BODY_OPEN + getTitleStyle(title) + "</br>";
         String headerTable = "<div style=\"padding: 20px;\"><table style=\" border-collapse: collapse; width: 100%; overflow-x: auto; text-align: left;\">" +
                 "<thead><tr style=\"border: 1px solid #4E504E; text-align: left;\">";

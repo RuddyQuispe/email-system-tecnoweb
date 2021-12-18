@@ -27,14 +27,14 @@ public class Analyzer {
             // verify doesn't exists brackets "[" "]"
             if (command.indexOf(Token.TOKEN_PARAMETERS_OPEN) == -1 || command.indexOf(Token.TOKEN_PARAMETERS_CLOSE) == -1) {
                 System.out.println("No tiene parametros: " + command + " - " + command.equals(Token.HELP));
-                if (command.equals(Token.HELP)) {
+                if (command.equalsIgnoreCase(Token.HELP)) {
                     System.out.println("es HELP");
                     this.action = command;
                     this.error = false;
                 } else {
                     System.out.println("no es help");
                     String[] listHead = command.toUpperCase().split(" ");
-                    if (listHead.length == 2 && listHead[1].trim().equals(TokenAction.LISTAR)) {
+                    if (listHead.length == 2 && listHead[1].trim().equalsIgnoreCase(TokenAction.LISTAR)) {
                         System.out.println("son 2 attr y es listar");
                         this.useCase = listHead[0].trim();
                         this.action = listHead[1].trim();

@@ -166,7 +166,7 @@ public class POPService implements Runnable {
         try {
             System.out.println("Initialize: " + emailToSend.getSubject());
             // get action, use case and test token
-            Analyzer analyzer = new Analyzer(emailToSend.getSubject().trim().toUpperCase());
+            Analyzer analyzer = new Analyzer(emailToSend.getSubject().trim());
             if (analyzer.hasError()) {
                 emailToSend.setMessage(HTMLBuilder.buildMessageError(
                         "Hubo error en identificar el Token </br>" +

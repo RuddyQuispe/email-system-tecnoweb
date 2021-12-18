@@ -32,15 +32,6 @@ create table secretaria(
 	on delete cascade
 );
 
-create table directiva(
-	ci_directiva int primary key,
-	cargo varchar(30) not null,	-- presidente, vice presidente, sec. de hacienda, sec. deportes, sec. actas, vocal 1..
-	fecha_inicio date not null,
-	foreign key (ci_directiva) references usuario(ci)
-	on update cascade
-	on delete cascade
-);
-
 create table socio(
 	ci_socio int primary key,
 	fecha_afiliacion date not null,
@@ -98,9 +89,8 @@ create table aporte(
 	id serial primary key,
 	descripcion varchar(255) not null,
 	fecha_inicio_pago date not null,
-	cant_coutas int not null,
-	monto decimal(8,2) not null,
-	fecha_limite date not null
+    fecha_limite date not null,
+	monto decimal(8,2) not null
 );
 
 create table pago(

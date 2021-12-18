@@ -1,4 +1,4 @@
-import edu.bo.uagrm.ficct.inf513.data.conection_database.ConnectionDB;
+import edu.bo.uagrm.ficct.inf513.services.POPService;
 
 /**
  * @project email-system-tecnoweb
@@ -7,13 +7,16 @@ import edu.bo.uagrm.ficct.inf513.data.conection_database.ConnectionDB;
  */
 
 public class Main {
-    public static void main(String[] args ){
-        System.out.println("Hello World");
-        ConnectionDB conn = ConnectionDB.getInstance();
-        if (conn.isConnected()){
-            System.out.println("CONNECTED");
-        }else {
-            System.out.println("DISCONNECTED");
-        }
+    public static void main(String[] args) {
+        /**
+         * si quieres habiltar tu IP en el servidor tecnologia-web.me para enviar emails
+         * COMMAND: cat ~/lista-comandos-habilitar-ip.txt
+         * ejecuta esa lista de comandos deese archivo
+         */
+        POPService popService = new POPService();
+        Thread thread = new Thread(popService);
+        thread.setName("Mail System Associate Merchants Thread");
+        System.out.println("Initialize: " + thread.getName());
+        thread.start();
     }
 }

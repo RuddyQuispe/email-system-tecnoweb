@@ -1,8 +1,10 @@
 package edu.bo.uagrm.ficct.inf513.services;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.bo.uagrm.ficct.inf513.business.gestion_pago_aporte.AporteBusiness;
 import edu.bo.uagrm.ficct.inf513.utils.HTMLBuilder;
 import edu.bo.uagrm.ficct.inf513.utils.Token;
 import edu.bo.uagrm.ficct.inf513.utils.TokenAction;
@@ -59,28 +61,19 @@ public class Core {
      * @return
      */
     public String processApplication() {
-        if (this.action.equals(Token.HELP)) {
+        if (this.action.equalsIgnoreCase(Token.HELP)) {
+            ArrayList<ArrayList<String>> listHelpManual = new ArrayList<ArrayList<String>>();
+            listHelpManual.add(new ArrayList<String>(Arrays.asList("APORTE", "REGISTRAR, MODIFICAR, LISTAR, ELIMINAR", "Gestionar aporte que los socios pagarán", HTMLBuilder.buildButton("LISTAR", "APORTE LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO"))));
+            listHelpManual.add(new ArrayList<String>(Arrays.asList("SOCIO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar socio del mercado", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO"))));
+            listHelpManual.add(new ArrayList<String>(Arrays.asList("KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO"))));
+            listHelpManual.add(new ArrayList<String>(Arrays.asList("ASISTENCIA", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar la asistencia de un dia", HTMLBuilder.buildButton("LISTAR", "ASISTENCIA LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO"))));
             return HTMLBuilder.generateTable(
                     "Manual de Email System Tecnoweb \"Asociacion 4 de octubre\"",
-                    new String[]{"Token", "Acciones", "Descripcion", ""},
-                    Arrays.asList(
-                            new String[]{"EMPLEADO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestiona usuario empleado (secretaria)", HTMLBuilder.buildButton("LISTAR", "EMPLEADO LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO")},
-                            new String[]{"SOCIO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar socio del mercado", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO")},
-                            new String[]{"KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO")},
-                            new String[]{"ASISTENCIA", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar la asistencia de un dia", HTMLBuilder.buildButton("LISTAR", "ASISTENCIA LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO")}
-                    )
+                    new ArrayList<String>(Arrays.asList("Token", "Acciones", "Descripcion", "")),
+                    listHelpManual
             );
-            // send action
-        } else if (this.useCase.equals(TokenUseCase.USUARIO_EMPLEADO)) {
+        } else if (this.useCase.equalsIgnoreCase(TokenUseCase.USUARIO_EMPLEADO)) {
             if (this.action == TokenAction.LISTAR) {
-                String[] data = {"#", "First", "Last", "Handle", "Actions"};
-                List<String[]> listData = Arrays.asList(
-                        new String[]{"1", "Otto", "Otto", "@mdo", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: yellow; border-radius: 8px;\">LISTAR</a>"},
-                        new String[]{"2", "Jacob", "Jacob", "@fat", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: blue; border-radius: 8px;\">LISTAR</a>"},
-                        new String[]{"3", "Carol", "Matheus", "@twiter", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: green; border-radius: 8px;\">LISTAR</a>"},
-                        new String[]{"4", "Marie", "Carla", "@facebook", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: yellow; border-radius: 8px;\">LISTAR</a>"},
-                        new String[]{"5", "Curie", "Dario", "@instagram", "<a href=\"mailto:ruddy_quispe@tecnologia-web.me?Subject=LISTAR APORTES\" style=\"background-color: black; border-radius: 8px;\">LISTAR</a>"}
-                );
                 //String html = HTMLBuilder.generateTable("Hola Cabezones", data, listData);
             } else if (this.action == TokenAction.REGISTRAR) {
 
@@ -103,8 +96,73 @@ public class Core {
 
         } else if (this.useCase == TokenUseCase.EGRESO) {
 
-        } else if (this.useCase == TokenUseCase.APORTE) {
-
+        } else if (this.useCase.equalsIgnoreCase(TokenUseCase.APORTE)) {
+            AporteBusiness inputBusiness = new AporteBusiness();
+            if (this.action.equalsIgnoreCase(TokenAction.LISTAR)) {
+                ArrayList<ArrayList<String>> listInput = inputBusiness.findAll();
+                ArrayList<String> inputHeader = listInput.remove(0);
+                inputHeader.add("acciones");
+                for (ArrayList<String> rowInput : listInput) {
+                    rowInput.add(
+                            HTMLBuilder.buildButton(
+                                    "MODIFICAR",
+                                    "APORTE MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + Token.TOKEN_PARAMETERS_CLOSE,
+                                    "ruddy_quispe@tecnologia-web.me",
+                                    "WARNING") +
+                                    HTMLBuilder.buildButton(
+                                            "ELIMINAR",
+                                            "APORTE ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "ruddy_quispe@tecnologia-web.me",
+                                            "DANGER"
+                                    ));
+                }
+                String buttonCreate = HTMLBuilder.buildButton(
+                        "REGISTRAR APORTE",
+                        "APORTE REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + "STRING; DD-MM-YYYY; DD-MM-YYYY; DOUBLE" + Token.TOKEN_PARAMETERS_CLOSE,
+                        "ruddy_quispe@tecnologia-web.me",
+                        "PRIMARY"
+                );
+                return HTMLBuilder.generateTable("LISTA APORTES </br>" + buttonCreate, inputHeader, listInput);
+            } else if (this.action.equalsIgnoreCase(TokenAction.REGISTRAR)) {
+                String message = inputBusiness.createAporte(this.parameters);
+                message = message + "</br>" + HTMLBuilder.buildButton(
+                        "LISTAR",
+                        "APORTE LISTAR",
+                        "ruddy_quispe@tecnologia-web.me",
+                        "INFO"
+                );
+                return message.contains("ERROR: ") ?
+                        HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+            } else if (this.action.equalsIgnoreCase(TokenAction.MODIFICAR)) {
+                String message = inputBusiness.updateAporte(this.parameters);
+                message = message + "</br>" + HTMLBuilder.buildButton(
+                        "LISTAR",
+                        "APORTE LISTAR",
+                        "ruddy_quispe@tecnologia-web.me",
+                        "INFO"
+                );
+                return message.contains("ERROR: ") ?
+                        HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+            } else if (this.action.equalsIgnoreCase(TokenAction.ELIMINAR)) {
+                String message = inputBusiness.removeAporte(this.parameters);
+                message = message + "</br>" + HTMLBuilder.buildButton(
+                        "LISTAR",
+                        "APORTE LISTAR",
+                        "ruddy_quispe@tecnologia-web.me",
+                        "INFO"
+                );
+                return message.contains("ERROR: ") ?
+                        HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+            } else {
+                String message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "</br>";
+                message = message + "</br>" + HTMLBuilder.buildButton(
+                        "LISTAR",
+                        "APORTE LISTAR",
+                        "ruddy_quispe@tecnologia-web.me",
+                        "INFO"
+                );
+                return message;
+            }
         } else if (this.useCase == TokenUseCase.MULTA) {
 
         } else if (this.useCase == TokenUseCase.PAGO) {

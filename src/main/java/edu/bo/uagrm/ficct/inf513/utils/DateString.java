@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 
 public class DateString {
     public static Calendar StringToDate(String date) {
@@ -60,13 +60,13 @@ public class DateString {
     }
 
     public static Date StringToDateSQL(String date) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         Date dt = new Date(format.parse(date).getTime());
         return dt;
     }
 
     public static String DateSQLToString(Date date) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         String dt = format.format(date);
         return dt;
     }
