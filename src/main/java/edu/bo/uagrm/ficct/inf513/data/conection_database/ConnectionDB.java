@@ -1,6 +1,6 @@
 package edu.bo.uagrm.ficct.inf513.data.conection_database;
 
-import edu.bo.uagrm.ficct.inf513.utils.Address;
+import edu.bo.uagrm.ficct.inf513.utils.Info;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.*;
@@ -20,18 +20,14 @@ public class ConnectionDB {
      */
     private ConnectionDB() {
         // get info to .env file
-        Dotenv dotenv = Dotenv.configure()
-                // address file .env
-                .directory(Address.addressFileENV)
-                .load();
-        // url JDBC drive connection
-        this.connectionURL = "jdbc:postgresql://" + dotenv.get("DB_HOST") + ":" + dotenv.get("DB_PORT") +
-                "/" + dotenv.get("DB_DATABASE");
+        Info info = Info.getInstance();
+        this.connectionURL = "jdbc:postgresql://" + info.environmentVariables.get("DB_HOST") + ":" + info.environmentVariables.get("DB_PORT") +
+                "/" + info.environmentVariables.get("DB_DATABASE");
         // establishing the connection to the database
         try {
             this.connectionDB = DriverManager.getConnection(this.connectionURL,
-                    dotenv.get("DB_USERNAME"),
-                    dotenv.get("DB_PASSWD"));
+                    info.environmentVariables.get("DB_USERNAME"),
+                    info.environmentVariables.get("DB_PASSWD"));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.print("Error to establishing session PSQL");

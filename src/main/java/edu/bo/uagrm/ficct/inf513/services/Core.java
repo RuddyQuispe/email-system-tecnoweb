@@ -62,11 +62,14 @@ public class Core {
      */
     public String processApplication() {
         if (this.action.equalsIgnoreCase(Token.HELP)) {
-            ArrayList<ArrayList<String>> listHelpManual = new ArrayList<ArrayList<String>>();
-            listHelpManual.add(new ArrayList<String>(Arrays.asList("APORTE", "REGISTRAR, MODIFICAR, LISTAR, ELIMINAR", "Gestionar aporte que los socios pagarán", HTMLBuilder.buildButton("LISTAR", "APORTE LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO"))));
-            listHelpManual.add(new ArrayList<String>(Arrays.asList("SOCIO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar socio del mercado", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO"))));
-            listHelpManual.add(new ArrayList<String>(Arrays.asList("KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO"))));
-            listHelpManual.add(new ArrayList<String>(Arrays.asList("ASISTENCIA", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar la asistencia de un dia", HTMLBuilder.buildButton("LISTAR", "ASISTENCIA LISTAR", "grupo14sc@tecnoweb.org.bo", "INFO"))));
+            ArrayList<ArrayList<String>> listHelpManual = new ArrayList<ArrayList<String>>(
+                    Arrays.asList(
+                            new ArrayList<String>(Arrays.asList("APORTE", "REGISTRAR, MODIFICAR, LISTAR, ELIMINAR", "Gestionar aporte que los socios pagarán", HTMLBuilder.buildButton("LISTAR", "APORTE LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("SOCIO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar socio del mercado", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("ASISTENCIA", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar la asistencia de un dia", HTMLBuilder.buildButton("LISTAR", "ASISTENCIA LISTAR", "INFO")))
+                    )
+            );
             return HTMLBuilder.generateTable(
                     "Manual de Email System Tecnoweb \"Asociacion 4 de octubre\"",
                     new ArrayList<String>(Arrays.asList("Token", "Acciones", "Descripcion", "")),
@@ -107,19 +110,16 @@ public class Core {
                             HTMLBuilder.buildButton(
                                     "MODIFICAR",
                                     "APORTE MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + Token.TOKEN_PARAMETERS_CLOSE,
-                                    "ruddy_quispe@tecnologia-web.me",
                                     "WARNING") +
                                     HTMLBuilder.buildButton(
                                             "ELIMINAR",
                                             "APORTE ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
-                                            "ruddy_quispe@tecnologia-web.me",
                                             "DANGER"
                                     ));
                 }
                 String buttonCreate = HTMLBuilder.buildButton(
                         "REGISTRAR APORTE",
                         "APORTE REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + "STRING; DD-MM-YYYY; DD-MM-YYYY; DOUBLE" + Token.TOKEN_PARAMETERS_CLOSE,
-                        "ruddy_quispe@tecnologia-web.me",
                         "PRIMARY"
                 );
                 return HTMLBuilder.generateTable("LISTA APORTES </br>" + buttonCreate, inputHeader, listInput);
@@ -128,7 +128,6 @@ public class Core {
                 message = message + "</br>" + HTMLBuilder.buildButton(
                         "LISTAR",
                         "APORTE LISTAR",
-                        "ruddy_quispe@tecnologia-web.me",
                         "INFO"
                 );
                 return message.contains("ERROR: ") ?
@@ -138,7 +137,6 @@ public class Core {
                 message = message + "</br>" + HTMLBuilder.buildButton(
                         "LISTAR",
                         "APORTE LISTAR",
-                        "ruddy_quispe@tecnologia-web.me",
                         "INFO"
                 );
                 return message.contains("ERROR: ") ?
@@ -148,7 +146,6 @@ public class Core {
                 message = message + "</br>" + HTMLBuilder.buildButton(
                         "LISTAR",
                         "APORTE LISTAR",
-                        "ruddy_quispe@tecnologia-web.me",
                         "INFO"
                 );
                 return message.contains("ERROR: ") ?
@@ -158,7 +155,6 @@ public class Core {
                 message = message + "</br>" + HTMLBuilder.buildButton(
                         "LISTAR",
                         "APORTE LISTAR",
-                        "ruddy_quispe@tecnologia-web.me",
                         "INFO"
                 );
                 return message;

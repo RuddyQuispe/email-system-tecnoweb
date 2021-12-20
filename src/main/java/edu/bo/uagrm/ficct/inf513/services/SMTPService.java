@@ -1,6 +1,6 @@
 package edu.bo.uagrm.ficct.inf513.services;
 
-import edu.bo.uagrm.ficct.inf513.utils.Address;
+import edu.bo.uagrm.ficct.inf513.utils.Info;
 import edu.bo.uagrm.ficct.inf513.utils.Email;
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -20,6 +20,7 @@ public class SMTPService implements Runnable {
     private Email email;
     private Session session;
     private MimeMessage message;
+    private static Info info = Info.getInstance();
 
     public SMTPService(Email email) {
         this.email = email;
@@ -29,24 +30,22 @@ public class SMTPService implements Runnable {
     public void run() {
         try {
             // get info to .env file
-            Dotenv dotenv = Dotenv.configure()
-                    // address file .env
-                    .directory(Address.addressFileENV)
-                    .load();
             Properties properties = new Properties();
             properties.put("mail.transport.protocol", "smtp");
-            properties.setProperty("mail.smtp.host", dotenv.get("SMTP_HOST"));
-            properties.setProperty("mail.smtp.port", dotenv.get("SMTP_PORT"));
+            properties.setProperty("mail.smtp.host", info.environmentVariables.get("SMTP_HOST"));
+            properties.setProperty("mail.smtp.port", info.environmentVariables.get("SMTP_PORT"));
             properties.setProperty("mail.smtp.tls.enable", "true");   //when uses tecnoweb
             // properties.setProperty("mail.smtp.ssl.enable", "true");     //when uses Gmail
             properties.setProperty("mail.smtp.auth", "false");
             this.session = Session.getDefaultInstance(properties, new Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(dotenv.get("SMTP_USER"), dotenv.get("SMTP_PASSWD"));
+                    return new PasswordAuthentication(
+                            info.environmentVariables.get("SMTP_USER"),
+                            info.environmentVariables.get("SMTP_PASSWD"));
                 }
             });
             this.message = new MimeMessage(this.session);
-            this.message.setFrom(new InternetAddress(dotenv.get("SMTP_MAIL")));
+            this.message.setFrom(new InternetAddress(info.environmentVariables.get("SMTP_MAIL")));
             InternetAddress[] toAddresses = {new InternetAddress(this.email.getFrom())};
             this.message.setRecipients(MimeMessage.RecipientType.TO, toAddresses);
             this.message.setSubject(email.getSubject());

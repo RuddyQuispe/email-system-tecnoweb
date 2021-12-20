@@ -11,6 +11,7 @@ import java.util.List;
 public class HTMLBuilder {
     private static final String BODY_OPEN = "<body style=\"" + CSS.UI_GRADIENT + "\">";
     private static final String BODY_CLOSE = "</body>";
+    private static final Info info = Info.getInstance();
 
     public static String generateTable(String title, ArrayList<String> headers, ArrayList<ArrayList<String>> data) {
         String htmlContent = BODY_OPEN + getTitleStyle(title) + "</br>";
@@ -56,35 +57,41 @@ public class HTMLBuilder {
                 "</div>";
     }
 
-    public static String buildButton(String labelButton, String subject, String mailTo, String typeButton) {
+    public static String buildButton(String labelButton, String subject, String typeButton) {
         switch (typeButton) {
             case "SUCCESS":
-                return "<a type=\"button\" href=\"mailto:" + mailTo + "?Subject=" + subject + "\" " +
+                return "<a type=\"button\" href=\"mailto:" +
+                        info.environmentVariables.get("SMTP_MAIL") + "?Subject=" + subject + "\" " +
                         "style=\"" + CSS.BUTTON_STYLE_SUCCESS + "\">" +
                         labelButton +
                         "</a>";
             case "WARNING":
-                return "<a type=\"button\" href=\"mailto:" + mailTo + "?Subject=" + subject + "\" " +
+                return "<a type=\"button\" href=\"mailto:" +
+                        info.environmentVariables.get("SMTP_MAIL") + "?Subject=" + subject + "\" " +
                         "style=\"" + CSS.BUTTON_STYLE_WARNING + "\">" +
                         labelButton +
                         "</a>";
             case "DANGER":
-                return "<a type=\"button\" href=\"mailto:" + mailTo + "?Subject=" + subject + "\" " +
+                return "<a type=\"button\" href=\"mailto:" +
+                        info.environmentVariables.get("SMTP_MAIL") + "?Subject=" + subject + "\" " +
                         "style=\"" + CSS.BUTTON_STYLE_DANGER + "\">" +
                         labelButton +
                         "</a>";
             case "PRIMARY":
-                return "<a type=\"button\" href=\"mailto:" + mailTo + "?Subject=" + subject + "\" " +
+                return "<a type=\"button\" href=\"mailto:" +
+                        info.environmentVariables.get("SMTP_MAIL") + "?Subject=" + subject + "\" " +
                         "style=\"" + CSS.BUTTON_STYLE_PRIMARY + "\">" +
                         labelButton +
                         "</a>";
             case "INFO":
-                return "<a type=\"button\" href=\"mailto:" + mailTo + "?Subject=" + subject + "\" " +
+                return "<a type=\"button\" href=\"mailto:" +
+                        info.environmentVariables.get("SMTP_MAIL") + "?Subject=" + subject + "\" " +
                         "style=\"" + CSS.BUTTON_STYLE_INFO + "\">" +
                         labelButton +
                         "</a>";
             default:
-                return "<a type=\"button\" href=\"mailto:" + mailTo + "?Subject=" + subject + "\">" +
+                return "<a type=\"button\" href=\"mailto:" +
+                        info.environmentVariables.get("SMTP_MAIL") + "?Subject=" + subject + "\">" +
                         labelButton +
                         "</a>";
         }
