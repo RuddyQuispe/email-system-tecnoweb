@@ -1,6 +1,7 @@
-package edu.bo.uagrm.ficct.inf513.business;
+package edu.bo.uagrm.ficct.inf513.business.gestion_pago_aporte;
 
-import edu.bo.uagrm.ficct.inf513.data.PagoData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.PagoData;
+import edu.bo.uagrm.ficct.inf513.utils.DateString;
 
 
 import java.sql.Date;
@@ -25,20 +26,11 @@ public class PagoBusiness {
      * @return a message
      */
     public String createPago(List<String> parameters) {
-        if (parameters.size() != 8) return "data Pago incomplete";
+        if (parameters.size() != 7) return "data Pago incomplete";
         try {
-            ResultSet response = this.pagoData.findBy("nro_pago", parameters.get(0));
-            if (response == null) return "Error to search Pago";
-            if (!response.next()) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                dateFormat.setLenient(false);
-                Date fechaPago = (Date) dateFormat.parse(parameters.get(1).trim());
-                boolean isCreatedPago = this.pagoData.create(Integer.parseInt(parameters.get(0)),fechaPago, Double.parseDouble(parameters.get(2)), parameters.get(3), Double.parseDouble(parameters.get(4)), Integer.parseInt(parameters.get(5)), Integer.parseInt(parameters.get(6)), Integer.parseInt(parameters.get(7)));
-                return isCreatedPago ? "saved Pago successfully" : "I have an error to create Pago";
-            } else {
-                return "Does exists Pago , don't have repeat";
-            }
-        } catch (SQLException | ParseException e) {
+            boolean isCreatedPago = this.pagoData.create(DateString.StringToDateSQL(parameters.get(0)), Double.parseDouble(parameters.get(1)), parameters.get(2), Double.parseDouble(parameters.get(3)), Integer.parseInt(parameters.get(4)), Integer.parseInt(parameters.get(5)), Integer.parseInt(parameters.get(6)));
+            return isCreatedPago ? "saved Pago successfully" : "I have an error to create Pago";
+        } catch (ParseException e) {
             e.printStackTrace();
             return "I have an error to create Pago";
         }
@@ -46,7 +38,6 @@ public class PagoBusiness {
 
     /**
      * get all data
-     * @param parameters
      * @return a list of data(the first list have the attributes names)
      */
     public ArrayList<ArrayList<String>> findAll(){
