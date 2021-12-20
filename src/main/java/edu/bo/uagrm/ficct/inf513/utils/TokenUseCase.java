@@ -7,23 +7,23 @@ package edu.bo.uagrm.ficct.inf513.utils;
  */
 public class TokenUseCase {
     // SHC
-    public static String USUARIO_EMPLEADO = "EMPLEADO";
-    public static String USUARIO_SOCIO = "SOCIO";
+    public static final String USUARIO_EMPLEADO = "EMPLEADO";
+    public static final String USUARIO_SOCIO = "SOCIO";
     // RQM
-    public static String KARDEX = "KARDEX";
+    public static final String KARDEX = "KARDEX";
     // SHC
-    public static String ASISTENCIA = "ASISTENCIA";
+    public static final String ASISTENCIA = "ASISTENCIA";
     // SHC
-    public static String ACTA_REUNIONES = "ACTA_REUNIONES";
+    public static final String ACTA_REUNIONES = "ACTA_REUNIONES";
     // ZCR
-    public static String INGRESO = "INGRESO";
-    public static String EGRESO = "EGRESO";
+    public static final String INGRESO = "INGRESO";
+    public static final String EGRESO = "EGRESO";
     // RQM
-    public static String APORTE = "APORTE";
-    public static String MULTA = "MULTA";
+    public static final String APORTE = "APORTE";
+    public static final String MULTA = "MULTA";
     // ZCR
-    public static String PAGO = "PAGO";
-    public static String MORA = "MORA";
+    public static final String PAGO = "PAGO";
+    public static final String MORA = "MORA";
     // DIOSITO
-    public static String REPORTE_ESTADISTICA = "REPORTE_ESTADISTICA";
+    public static final String REPORTE_ESTADISTICA = "REPORTE_ESTADISTICA";
 }

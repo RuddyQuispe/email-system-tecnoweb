@@ -9,8 +9,8 @@ import io.github.cdimascio.dotenv.Dotenv;
  * object Info class for initialize .env file data (SINGLETON PATTERN)
  */
 public class Info {
-    //    public static final String addressFileENV = "/home/cruz/Escritorio/Semestre 10/Tecnología Web/projects/first project/email-system-tecnoweb/src/main/resources/.env";
-    public static final String addressFileENV = "/home/ruddy/IdeaProjects/email-system-tecnoweb/src/main/resources/.env";
+    public static final String addressFileENV = "/home/cruz/Escritorio/Semestre 10/Tecnología Web/projects/first project/email-system-tecnoweb/src/main/resources/.env";
+    //public static final String addressFileENV = "/home/ruddy/IdeaProjects/email-system-tecnoweb/src/main/resources/.env";
     public Dotenv environmentVariables;
     public static Info info;
 
