@@ -24,6 +24,7 @@ public class POPService implements Runnable {
     private Socket socket;
     private BufferedReader input;
     private DataOutputStream output;
+    private static Info info = Info.getInstance();
 
     public POPService() {
         this.socket = null;
@@ -33,10 +34,7 @@ public class POPService implements Runnable {
 
     public boolean connectService() {
         try {
-            Dotenv dotenv = Dotenv.configure()
-                    // address file .env
-                    .directory(Address.addressFileENV).load();
-            this.socket = new Socket(dotenv.get("POP_HOST"), Integer.parseInt(Objects.requireNonNull(dotenv.get("POP_PORT"))));
+            this.socket = new Socket(info.environmentVariables.get("POP_HOST"), Integer.parseInt(Objects.requireNonNull(info.environmentVariables.get("POP_PORT"))));
             this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.output = new DataOutputStream(socket.getOutputStream());
             System.out.println("CONNECTION ESTABLISHED SUCCESSFULLY");
@@ -50,17 +48,14 @@ public class POPService implements Runnable {
     private boolean authUser() {
         if (this.socket != null && this.input != null && this.output != null) {
             try {
-                Dotenv dotenv = Dotenv.configure()
-                        // address file .env
-                        .directory(Address.addressFileENV).load();
                 String messageResponseMessage = this.input.readLine();
                 System.out.println("SERVER: " + messageResponseMessage);
-                String command = Command.user(dotenv.get("POP_USER"));
+                String command = Command.user(info.environmentVariables.get("POP_USER"));
                 this.output.writeBytes(command);
                 System.out.println("CLIENT: " + command);
                 messageResponseMessage = this.input.readLine();
                 System.out.println("SERVER: " + messageResponseMessage);
-                command = Command.pass(dotenv.get("POP_PASSWD"));
+                command = Command.pass(info.environmentVariables.get("POP_PASSWD"));
                 this.output.writeBytes(command);
                 System.out.println("CLIENT: " + command);
                 messageResponseMessage = this.input.readLine();
