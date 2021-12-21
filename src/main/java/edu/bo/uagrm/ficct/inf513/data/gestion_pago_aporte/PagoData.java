@@ -1,4 +1,4 @@
-package edu.bo.uagrm.ficct.inf513.data;
+package edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte;
 import edu.bo.uagrm.ficct.inf513.data.conection_database.ConnectionDB;
 
 import java.sql.*;
@@ -24,21 +24,20 @@ public class PagoData {
      * @param idAporte id of aporte
      * @return true if the pago was created successfully else return, false have an error
      */
-    public boolean create(int nroPago, Date fechaPago, Double monto, String comprobante, Double montoMora, int ciSocio, int ciSecretaria, int idAporte) {
+    public boolean create(Date fechaPago, Double monto, String comprobante, Double montoMora, int ciSocio, int ciSecretaria, int idAporte) {
         try {
             // string query structure
-            String query = "insert into pago(nro_pago, fecha_pago, monto, comprobante, monto_mora, ci_socio, ci_secretaria, id_aporte)"
+            String query = "insert into pago(fecha_pago, monto, comprobante, monto_mora, ci_socio, ci_secretaria, id_aporte)"
                     + " values(?,?,?,?,?,?,?)";
             // get object connection to add Pago information to make
             PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1, nroPago);
-            preparedStatement.setDate(2, fechaPago);
-            preparedStatement.setDouble(3, monto);
-            preparedStatement.setString(4, comprobante);
-            preparedStatement.setDouble(5, montoMora);
-            preparedStatement.setInt(6, ciSocio);
-            preparedStatement.setInt(7, ciSecretaria);
-            preparedStatement.setInt(8, idAporte);
+            preparedStatement.setDate(1, fechaPago);
+            preparedStatement.setDouble(2, monto);
+            preparedStatement.setString(3, comprobante);
+            preparedStatement.setDouble(4, montoMora);
+            preparedStatement.setInt(5, ciSocio);
+            preparedStatement.setInt(6, ciSecretaria);
+            preparedStatement.setInt(7, idAporte);
             // execute query with its data
             if (preparedStatement.executeUpdate() == 0) {
                 System.err.println("error in: Class PagoData > create()");

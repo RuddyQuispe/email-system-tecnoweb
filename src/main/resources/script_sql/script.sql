@@ -43,17 +43,11 @@ create table socio(
 	on delete cascade
 );
 
-create table tipo_ingreso(
-	codigo serial primary key,
-	nombre varchar(20) not null
-);
-
 create table ingreso(
 	nro_ingreso serial primary key,
 	detalle varchar(255) not null,
 	fecha_ingreso date not null,
 	monto decimal(8,2) not null,
-	cod_tipo_ingreso int not null,
 	ci_secretaria int not null,
 	foreign key (cod_tipo_ingreso) references tipo_ingreso(codigo)
 	on update cascade
@@ -89,8 +83,9 @@ create table aporte(
 	id serial primary key,
 	descripcion varchar(255) not null,
 	fecha_inicio_pago date not null,
-    fecha_limite date not null,
-	monto decimal(8,2) not null
+	cant_coutas int not null,
+	monto decimal(8,2) not null,
+	fecha_limite date not null
 );
 
 create table pago(
@@ -160,3 +155,55 @@ create table asistencia_socio(
 	on update cascade
 	on delete cascade
 );
+
+insert into usuario values(9719822, 'zuleny', '76431901', 'zuleny.cr@gmail.com', '1', '11235813', 'Avenida Banzer', 'S');
+insert into usuario values(9719823, 'stephani', '68629092', 'stephani.hc.97@gmail.com', '1', '11235813', 'Avenida Pirai', 'P');
+
+insert into secretaria values(9719822, '2021-12-12', '2022-12-12');
+
+insert into socio values(9719822, '12-12-2020', 12, '1', '12-08-2021');
+
+insert into tipo_ingreso(nombre) values('PAGO DE LUZ');
+insert into tipo_ingreso(nombre) values('PAGO DE AGUA');
+insert into tipo_ingreso(nombre) values('PAGO DE SEGURIDAD');
+
+insert into ingreso(detalle, fecha_ingreso, monto, ci_secretaria) values
+('recibo de donacion de autoridades municipales', '10-10-2021', 500, 9719822),
+('ingreso por aportes voluntarios', '15-10-2021', 150, 9719822),
+('ingreso de ventas de mercado', '20-10-2021', 300, 9719822),
+('ingreso de efectivo en ek servicio de baño publico', '30-10-2021', 2500, 9719822);
+
+insert into acta_reunion(fecha_reunion,descripcion,ci_secretaria) values
+('21-12-2021', 'Lorem ipsum dolor sit amet consectetur adipiscing elit justo, urna nulla penatibus vivamus cras nostra eget, est fusce eu montes curabitur facilisi egestas. Pellentesque habitasse tempor at rutrum consequat, vulputate cras quis nullam sed lacinia, vel curae ad mus. Hac sagittis dictumst volutpat nisi sociosqu quam senectus scelerisque aptent, semper habitasse lacus nunc fusce mus consequat suscipit, nulla donec vulputate hendrerit accumsan sociis dis taciti. Aptent lectus tincidunt quam laoreet posuere a suscipit proin arcu, placerat tristique egestas cubilia bibendum vehicula sagittis penatibus taciti donec, tellus accumsan aliquet id facilisi imperdiet sem hendrerit. Taciti magnis leo netus nascetur litora velit rhoncus orci feugiat, curabitur hac fringilla enim porta luctus urna aptent in, fermentum hendrerit praesent augue turpis at eu senectus. Tristique leo nisi odio pellentesque nibh, taciti tortor aliquam fringilla mollis magnis, erat suspendisse accumsan hendrerit.',9719822);
+
+insert into egreso(detalle,monto,fecha_egreso,actor_receptor,ci_secretaria) values
+('pago de servico basico de luz', 1500, '8-12-2021','Empresa CRE', 9719822),
+('pago de servico basico de agua', 1200, '8-12-2021','Empresa Saguapac', 9719822);
+
+insert into aporte (descripcion,fecha_inicio_pago,monto,fecha_limite) values
+('Aporte por fiestas de navidad', '3-12-2021', 50, '20-12-2021'),
+('Aporte por aniversario', '1-9-2021', 30, '20-9-2021');
+
+insert into pago (fecha_pago,monto,comprobante,monto_mora,ci_socio,ci_secretaria,id_aporte) values
+('1-12-2021', 120, '873291047', 0, 9719822, 9719822, 2),
+('10-12-2021', 170, '872721047', 0, 9719822, 9719822, 2);
+
+insert into multa (descripcion,monto) values
+('Multa por faltar a reunion', 20),
+('Multa por no salir a vender', 100);
+
+insert into multa_pago values
+(1, 1),
+(2, 2);
+
+insert into multa_socio values
+(9719822, 1),
+(9719822, 2);
+
+insert into asistencia(fecha_actividad,actividad) values
+('1-12-2021', 'Reunion Semanal'),
+('3-12-2021', 'Reunion Para definir nueva directiva');
+
+insert into asistencia_socio values
+(1, 9719822),
+(2, 9719822);
