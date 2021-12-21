@@ -1,6 +1,7 @@
 package edu.bo.uagrm.ficct.inf513.business.gestion_pago_aporte;
 
 import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.AporteData;
+import edu.bo.uagrm.ficct.inf513.services.Analyzer;
 import edu.bo.uagrm.ficct.inf513.utils.DateString;
 
 import java.sql.Date;

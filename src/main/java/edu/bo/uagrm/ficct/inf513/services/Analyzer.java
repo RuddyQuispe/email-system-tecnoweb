@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.sql.Date;
 
 /**
  * @project email-system-tecnoweb
@@ -117,14 +118,12 @@ public class Analyzer {
     }
 
     public static boolean isDate(String inDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        dateFormat.setLenient(false);
         try {
-            dateFormat.parse(inDate.trim());
-        } catch (ParseException pe) {
+            Date.valueOf(inDate.trim());
+            return true;
+        } catch (Exception exception) {
             return false;
         }
-        return true;
     }
 
     public String getUseCase() {

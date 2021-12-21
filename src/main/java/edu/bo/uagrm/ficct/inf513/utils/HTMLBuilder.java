@@ -2,6 +2,7 @@ package edu.bo.uagrm.ficct.inf513.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @project email-system-tecnoweb
@@ -38,7 +39,6 @@ public class HTMLBuilder {
                 "</table>" +
                 "</div>" +
                 BODY_CLOSE;
-
     }
 
     public static String getTitleStyle(String title) {
@@ -97,14 +97,25 @@ public class HTMLBuilder {
         }
     }
 
-//    public static void main(String[] args) {
-//        String[] data = {"#", "First", "Last", "Handle"};
-//        List<String[]> listData = Arrays.asList(
-//                new String[]{"1", "Otto", "Otto", "@mdo"},
-//                new String[]{"2", "Jacob", "Jacob", "@fat"},
-//                new String[]{"3", "Carol", "Matheus", "@twiter"}
-//        );
-//        String html = generateTable("Hola Cabezones", data, listData);
-//        System.out.println(html);
-//    }
+    // color rgb(116, 194, 92)
+    private static String buildProgressBar(String label, double percentValue, String color) {
+        return "<p style=\"font-size: 20px;\">" + label + "</p>" +
+                "<div style=\"width: 100%; border-radius: 15px;\">" +
+                "<div style=\"background-color: " + color + "; color: white; padding: 1%; text-align: right; font-size: 20px; border-radius: 25px; width: " + percentValue + "%;\">" +
+                +percentValue + "%</div></div>";
+    }
+
+    public static String generateGraphics(String title, ArrayList<String> labelsChart, ArrayList<Double> dataChart, ArrayList<String> colors) {
+        String htmlContent = BODY_OPEN + getTitleStyle(title) + "</br>";
+        String headerTable = "<div style=\"padding: 20px;\">";
+        String chartDetail = "";
+        for (int index = 0; index < labelsChart.size(); index++) {
+            chartDetail = chartDetail + HTMLBuilder.buildProgressBar(labelsChart.get(index), dataChart.get(index), colors.get(index));
+        }
+        return htmlContent +
+                headerTable +
+                chartDetail +
+                "</div>" +
+                BODY_CLOSE;
+    }
 }

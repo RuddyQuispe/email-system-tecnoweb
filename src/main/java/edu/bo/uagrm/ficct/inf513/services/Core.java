@@ -165,8 +165,13 @@ public class Core {
 
         } else if (this.useCase == TokenUseCase.MORA) {
 
-        } else if (this.useCase == TokenUseCase.REPORTE_ESTADISTICA) {
-
+        } else if (this.useCase.equalsIgnoreCase(TokenUseCase.REPORTE_ESTADISTICA)) {
+            return HTMLBuilder.generateGraphics(
+                    "HELLO CHART TECHNOLOGY-WEB",
+                    new ArrayList<String>(Arrays.asList("City Ostego", "Oswego country", "New York State", "United States")),
+                    new ArrayList<Double>(Arrays.asList(29.0, 19.0, 16.0, 16.0)),
+                    new ArrayList<String>(Arrays.asList("red", "blue", "green", "orange"))
+            );
         } else {
             // send message ("use case unidentified");
             return HTMLBuilder.buildMessageError(

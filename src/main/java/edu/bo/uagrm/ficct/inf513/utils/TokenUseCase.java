@@ -18,7 +18,7 @@ public class TokenUseCase {
     // ZCR
     public static String INGRESO = "INGRESO";
     public static String EGRESO = "EGRESO";
-    // RQM
+    // RQM [ DONE ]
     public static String APORTE = "APORTE";
     public static String MULTA = "MULTA";
     // ZCR
