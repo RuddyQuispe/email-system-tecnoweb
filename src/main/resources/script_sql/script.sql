@@ -49,9 +49,6 @@ create table ingreso(
 	fecha_ingreso date not null,
 	monto decimal(8,2) not null,
 	ci_secretaria int not null,
-	foreign key (cod_tipo_ingreso) references tipo_ingreso(codigo)
-	on update cascade
-	on delete cascade,
 	foreign key (ci_secretaria) references secretaria(ci_secretaria)
 	on update cascade
 	on delete cascade
@@ -83,7 +80,6 @@ create table aporte(
 	id serial primary key,
 	descripcion varchar(255) not null,
 	fecha_inicio_pago date not null,
-	cant_coutas int not null,
 	monto decimal(8,2) not null,
 	fecha_limite date not null
 );
@@ -161,11 +157,7 @@ insert into usuario values(9719823, 'stephani', '68629092', 'stephani.hc.97@gmai
 
 insert into secretaria values(9719822, '2021-12-12', '2022-12-12');
 
-insert into socio values(9719822, '12-12-2020', 12, '1', '12-08-2021');
-
-insert into tipo_ingreso(nombre) values('PAGO DE LUZ');
-insert into tipo_ingreso(nombre) values('PAGO DE AGUA');
-insert into tipo_ingreso(nombre) values('PAGO DE SEGURIDAD');
+insert into socio values(9719823, '12-12-2020', 12, '1', '12-08-2021');
 
 insert into ingreso(detalle, fecha_ingreso, monto, ci_secretaria) values
 ('recibo de donacion de autoridades municipales', '10-10-2021', 500, 9719822),
@@ -185,8 +177,8 @@ insert into aporte (descripcion,fecha_inicio_pago,monto,fecha_limite) values
 ('Aporte por aniversario', '1-9-2021', 30, '20-9-2021');
 
 insert into pago (fecha_pago,monto,comprobante,monto_mora,ci_socio,ci_secretaria,id_aporte) values
-('1-12-2021', 120, '873291047', 0, 9719822, 9719822, 2),
-('10-12-2021', 170, '872721047', 0, 9719822, 9719822, 2);
+('1-12-2021', 120, '873291047', 0, 9719823, 9719822, 1),
+('10-12-2021', 170, '872721047', 0, 9719823, 9719822, 2);
 
 insert into multa (descripcion,monto) values
 ('Multa por faltar a reunion', 20),
@@ -197,13 +189,13 @@ insert into multa_pago values
 (2, 2);
 
 insert into multa_socio values
-(9719822, 1),
-(9719822, 2);
+(9719823, 1),
+(9719823, 2);
 
 insert into asistencia(fecha_actividad,actividad) values
 ('1-12-2021', 'Reunion Semanal'),
 ('3-12-2021', 'Reunion Para definir nueva directiva');
 
 insert into asistencia_socio values
-(1, 9719822),
-(2, 9719822);
+(1, 9719823),
+(2, 9719823);
