@@ -15,7 +15,7 @@ public class HTMLBuilder {
     private static final Info info = Info.getInstance();
 
     public static String generateTable(String title, ArrayList<String> headers, ArrayList<ArrayList<String>> data) {
-        String htmlContent = BODY_OPEN + getTitleStyle(title) + "</br>";
+        String htmlContent = BODY_OPEN + "<br>"+getTitleStyle(title) + "<br>";
         String headerTable = "<div style=\"padding: 20px;\"><table style=\" border-collapse: collapse; width: 100%; overflow-x: auto; text-align: left;\">" +
                 "<thead><tr style=\"border: 1px solid #4E504E; text-align: left;\">";
         for (String head : headers) {
@@ -42,7 +42,7 @@ public class HTMLBuilder {
     }
 
     public static String getTitleStyle(String title) {
-        return "<h1 style=\"font-family: 'Raleway',sans-serif; font-weight: 800; text-align: center; text-transform: uppercase;\">" + title + "</h1>";
+        return "<h2 style=\"font-family: 'Raleway',sans-serif; font-weight: 800; text-align: center; text-transform: uppercase;\">" + title + "</h2>";
     }
 
     public static String buildMessageSuccess(String message) {

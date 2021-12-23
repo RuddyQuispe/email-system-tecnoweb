@@ -173,11 +173,15 @@ public class Core {
                         ArrayList<ArrayList<String>> listInput = pagoBusiness.findAll();
                         ArrayList<String> inputHeader = listInput.remove(0);
                         inputHeader.add("acciones");
+                        String[] dateArr;
+                        String dateFormat ="";
                         for (ArrayList<String> rowInput : listInput) {
+                            dateArr = rowInput.get(1).split("-");
+                            dateFormat = dateArr[2]+"-"+ dateArr[1]+"-"+dateArr[0];
                             rowInput.add(
                                     HTMLBuilder.buildButton(
                                             "MODIFICAR",
-                                            "PAGO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + "; " + rowInput.get(6) + "; " + rowInput.get(7) + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "PAGO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + dateFormat + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + "; " + rowInput.get(6) + "; " + rowInput.get(7) + Token.TOKEN_PARAMETERS_CLOSE,
                                             "WARNING") +
                                             HTMLBuilder.buildButton(
                                                     "ELIMINAR",

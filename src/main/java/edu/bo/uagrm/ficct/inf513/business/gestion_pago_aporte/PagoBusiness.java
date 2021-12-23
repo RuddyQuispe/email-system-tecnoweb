@@ -66,10 +66,8 @@ public class PagoBusiness {
             ResultSet response = this.pagoData.findBy("nro_pago", parameters.get(0));
             if (response == null) return "Error to search nro_pago Pago";
             if (response.next()) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                dateFormat.setLenient(false);
-                Date fechaPago = (Date) dateFormat.parse(parameters.get(1).trim());
-                boolean isUpdatedPago = this.pagoData.update(Integer.parseInt(parameters.get(0)), fechaPago, Double.parseDouble(parameters.get(2)), parameters.get(3), Double.parseDouble(parameters.get(4)), Integer.parseInt(parameters.get(5)), Integer.parseInt(parameters.get(6)), Integer.parseInt(parameters.get(7)));
+
+                boolean isUpdatedPago = this.pagoData.update(Integer.parseInt(parameters.get(0)), DateString.StringToDateSQL(parameters.get(1)), Double.parseDouble(parameters.get(2)), parameters.get(3), Double.parseDouble(parameters.get(4)), Integer.parseInt(parameters.get(5)), Integer.parseInt(parameters.get(6)), Integer.parseInt(parameters.get(7)));
                 return isUpdatedPago ? "updated Pago successfully" : "I have an error to update Pago";
             } else {
                 return "Doesn't exists Pago ";
