@@ -81,25 +81,21 @@ create table aporte(
 	descripcion varchar(255) not null,
 	fecha_inicio_pago date not null,
 	monto decimal(8,2) not null,
-	fecha_limite date not null
+	fecha_limite date not null,
+	porcentaje_mora smallint
 );
 
 create table pago(
 	nro_pago serial primary key,
 	fecha_pago date not null,
-	monto decimal(8,2) not null,
+	monto_total decimal(8,2) not null,
 	comprobante varchar(255) null,
-	monto_mora decimal(8,2) not null,
 	ci_socio int not null,
 	ci_secretaria int not null,
-	id_aporte int not null,
 	foreign key (ci_socio) references socio(ci_socio)
 	on update cascade
 	on delete cascade,
 	foreign key (ci_secretaria) references secretaria(ci_secretaria)
-	on update cascade
-	on delete cascade,
-	foreign key (id_aporte) references aporte(id)
 	on update cascade
 	on delete cascade
 );
@@ -118,6 +114,19 @@ create table multa_pago(
 	on update cascade
 	on delete cascade,
 	foreign key (id_multa) references multa(id)
+	on update cascade
+	on delete cascade
+);
+
+create table aporte_pago(
+	nro_pago int not null,
+	id_aporte int not null,
+	monto_mora decimal(8,2) not null,
+	primary key (nro_pago,id_aporte),
+	foreign key (nro_pago) references pago(nro_pago)
+	on update cascade
+	on delete cascade,
+	foreign key (id_aporte) references aporte(id)
 	on update cascade
 	on delete cascade
 );
@@ -172,13 +181,13 @@ insert into egreso(detalle,monto,fecha_egreso,actor_receptor,ci_secretaria) valu
 ('pago de servico basico de luz', 1500, '8-12-2021','Empresa CRE', 9719822),
 ('pago de servico basico de agua', 1200, '8-12-2021','Empresa Saguapac', 9719822);
 
-insert into aporte (descripcion,fecha_inicio_pago,monto,fecha_limite) values
-('Aporte por fiestas de navidad', '3-12-2021', 50, '20-12-2021'),
-('Aporte por aniversario', '1-9-2021', 30, '20-9-2021');
+insert into aporte (descripcion,fecha_inicio_pago,monto,fecha_limite, porcentaje_mora) values
+('Aporte por fiestas de navidad', '3-12-2021', 50, '20-12-2021', 3),
+('Aporte por aniversario', '1-9-2021', 30, '20-9-2021', 3);
 
-insert into pago (fecha_pago,monto,comprobante,monto_mora,ci_socio,ci_secretaria,id_aporte) values
-('1-12-2021', 120, '873291047', 0, 9719823, 9719822, 1),
-('10-12-2021', 170, '872721047', 0, 9719823, 9719822, 2);
+insert into pago (fecha_pago,monto_total,comprobante,ci_socio,ci_secretaria) values
+('1-12-2021', 120, '873291047', 9719823, 9719822),
+('10-12-2021', 170, '872721047', 9719823, 9719822);
 
 insert into multa (descripcion,monto) values
 ('Multa por faltar a reunion', 20),
@@ -187,6 +196,10 @@ insert into multa (descripcion,monto) values
 insert into multa_pago values
 (1, 1),
 (2, 2);
+
+insert into aporte_pago values
+(1, 1, 1.5),
+(1, 2, 0.9)
 
 insert into multa_socio values
 (9719823, 1),
