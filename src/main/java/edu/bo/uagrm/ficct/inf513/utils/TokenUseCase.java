@@ -9,7 +9,7 @@ public class TokenUseCase {
     // SHC
     public static final String USUARIO_EMPLEADO = "EMPLEADO";
     public static final String USUARIO_SOCIO = "SOCIO";
-    // RQM
+    // ZCR Y RQM
     public static final String KARDEX = "KARDEX";
     // SHC
     public static final String ASISTENCIA = "ASISTENCIA";
@@ -19,11 +19,11 @@ public class TokenUseCase {
     public static final String INGRESO = "INGRESO";
     public static final String EGRESO = "EGRESO";
     // RQM
-    public static final String APORTE = "APORTE";
+    public static final String APORTE = "APORTE";   // COMPLETED
     public static final String MULTA = "MULTA";
     // ZCR
     public static final String PAGO = "PAGO";
-    public static final String MORA = "MORA";
-    // DIOSITO
+    public static final String MORA = "MORA";       // INTEGRATED WITH APORTE MANAGE
+    // RQM
     public static final String REPORTE_ESTADISTICA = "REPORTE_ESTADISTICA";
 }

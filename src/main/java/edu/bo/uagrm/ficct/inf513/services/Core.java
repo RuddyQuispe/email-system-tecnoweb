@@ -105,22 +105,25 @@ public class Core {
                     case TokenAction.LISTAR:
                         ArrayList<ArrayList<String>> listInput = inputBusiness.findAll();
                         ArrayList<String> inputHeader = listInput.remove(0);
+                        inputHeader.set(5, inputHeader.get(5) + "(%)");
                         inputHeader.add("acciones");
                         for (ArrayList<String> rowInput : listInput) {
                             rowInput.add(
-                                    HTMLBuilder.buildButton(
-                                            "MODIFICAR",
-                                            "APORTE MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + Token.TOKEN_PARAMETERS_CLOSE,
-                                            "WARNING") +
+                                    "<div style=\"display: block;\">" +
+                                            HTMLBuilder.buildButton(
+                                                    "MODIFICAR",
+                                                    "APORTE MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + Token.TOKEN_PARAMETERS_CLOSE,
+                                                    "WARNING") +
                                             HTMLBuilder.buildButton(
                                                     "ELIMINAR",
                                                     "APORTE ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
                                                     "DANGER"
-                                            ));
+                                            ) +
+                                            "</div>");
                         }
                         String buttonCreate = HTMLBuilder.buildButton(
                                 "REGISTRAR APORTE",
-                                "APORTE REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + "STRING; DD-MM-YYYY; DD-MM-YYYY; DOUBLE" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "APORTE REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + "descripcion(STRING); fecha_inicio(DD-MM-YYYY); fecha_limit(DD-MM-YYYY); monto(DOUBLE); mora(INT)" + Token.TOKEN_PARAMETERS_CLOSE,
                                 "PRIMARY"
                         );
                         htmlResponse = HTMLBuilder.generateTable("LISTA APORTES </br>" + buttonCreate, inputHeader, listInput);
@@ -174,10 +177,10 @@ public class Core {
                         ArrayList<String> inputHeader = listInput.remove(0);
                         inputHeader.add("acciones");
                         String[] dateArr;
-                        String dateFormat ="";
+                        String dateFormat = "";
                         for (ArrayList<String> rowInput : listInput) {
                             dateArr = rowInput.get(1).split("-");
-                            dateFormat = dateArr[2]+"-"+ dateArr[1]+"-"+dateArr[0];
+                            dateFormat = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
                             rowInput.add(
                                     HTMLBuilder.buildButton(
                                             "MODIFICAR",
@@ -237,9 +240,9 @@ public class Core {
                         break;
                 }
                 break;
-            case TokenUseCase.MORA:
-
-                break;
+//            case TokenUseCase.MORA:
+//
+//                break;
             case TokenUseCase.REPORTE_ESTADISTICA:
                 return HTMLBuilder.generateGraphics(
                         "HELLO CHART TECHNOLOGY-WEB",

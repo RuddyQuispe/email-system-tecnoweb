@@ -28,17 +28,18 @@ public class AporteData {
      * @param monto:           amount to collect
      * @return true if saved successfully, else return false
      */
-    public boolean create(String descripcion, Date fechaInicioPago, Date fechaLimite, Double monto) {
+    public boolean create(String descripcion, Date fechaInicioPago, Date fechaLimite, Double monto, int porcentajeMora) {
         try {
             // string query structure
             String query = "insert into aporte(descripcion, fecha_inicio_pago, fecha_limite, monto) " +
-                    "values (?,?,?,?)";
+                    "values (?,?,?,?,?)";
             // get object connection to add Pago information to make
             PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query);
             preparedStatement.setString(1, descripcion);
             preparedStatement.setDate(2, fechaInicioPago);
             preparedStatement.setDate(3, fechaLimite);
             preparedStatement.setDouble(4, monto);
+            preparedStatement.setInt(5, porcentajeMora);
             // execute query with its data
             if (preparedStatement.executeUpdate() == 0) {
                 System.err.println("error in: Class AporteData > create()");
@@ -59,8 +60,7 @@ public class AporteData {
      */
     public ResultSet findAll() {
         try {
-            String query = "select id, descripcion, to_char(fecha_inicio_pago,'DD-MM-YYYY') as fecha_inicio_pago , to_char(fecha_limite,'DD-MM-YYYY') as fecha_limite, monto " +
-                    "from aporte order by id";
+            String query = "select id, descripcion,to_char(fecha_inicio_pago,'DD-MM-YYYY') as fecha_inicio_pago,to_char(fecha_limite,'DD-MM-YYYY') as fecha_limite,monto, coalesce (porcentaje_mora ,0) as porcentaje_mora from aporte order by id";
             Statement statement = this.connection.getConnection().createStatement();
             return statement.executeQuery(query);
         } catch (SQLException e) {
@@ -79,11 +79,11 @@ public class AporteData {
      * @param monto:           new amount collect
      * @return true if updated successfully, else return false
      */
-    public boolean update(int id, String descripcion, Date fechaInicioPago, Date fechaLimite, Double monto) {
+    public boolean update(int id, String descripcion, Date fechaInicioPago, Date fechaLimite, Double monto, int porcentajeMora) {
         try {
             // string query structure
             String query = "update aporte " +
-                    "set descripcion=?, fecha_inicio_pago=?, fecha_limite=?, monto=? " +
+                    "set descripcion=?, fecha_inicio_pago=?, fecha_limite=?, monto=?, porcentaje_mora=cast(? as smallint) " +
                     "where id=?";
             // get object connection to add Pago information to make
             PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query);
@@ -91,7 +91,8 @@ public class AporteData {
             preparedStatement.setDate(2, fechaInicioPago);
             preparedStatement.setDate(3, fechaLimite);
             preparedStatement.setDouble(4, monto);
-            preparedStatement.setInt(5, id);
+            preparedStatement.setInt(5, porcentajeMora);
+            preparedStatement.setInt(6, id);
             // execute query with its data
             if (preparedStatement.executeUpdate() == 0) {
                 System.err.println("error in: Class AporteData > update()");

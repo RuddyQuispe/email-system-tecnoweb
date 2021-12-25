@@ -1,10 +1,8 @@
 package edu.bo.uagrm.ficct.inf513.business.gestion_pago_aporte;
 
 import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.AporteData;
-import edu.bo.uagrm.ficct.inf513.services.Analyzer;
 import edu.bo.uagrm.ficct.inf513.utils.DateString;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -31,14 +29,15 @@ public class AporteBusiness {
      * @return message to return email
      */
     public String createAporte(List<String> parameters) {
-        if (parameters.size() != 4) return "ERROR: Datos insuficientes para crear un aporte";
+        if (parameters.size() != 5) return "ERROR: Datos insuficientes para crear un aporte";
         try {
             boolean isCreatedAporte =
                     this.aporteData.create(
                             parameters.get(0),
                             DateString.StringToDateSQL(parameters.get(1)),
                             DateString.StringToDateSQL(parameters.get(2)),
-                            Double.parseDouble(parameters.get(3)));
+                            Double.parseDouble(parameters.get(3)),
+                            Integer.parseInt(parameters.get(4)));
             return isCreatedAporte ? "Aporte guardado correctamente" : "ERROR: Hubo errores al guardar un aporte";
         } catch (ParseException e) {
             e.printStackTrace();
@@ -64,13 +63,14 @@ public class AporteBusiness {
      */
     public String updateAporte(List<String> parameters) {
         try {
-            if (parameters.size() != 5) return "ERROR: Datos insuficiente para modificar aporte";
+            if (parameters.size() != 6) return "ERROR: Datos insuficiente para modificar aporte";
             boolean isUpdatedAporte = this.aporteData.update(
                     Integer.parseInt(parameters.get(0)),
                     parameters.get(1),
                     DateString.StringToDateSQL(parameters.get(2).trim()),
                     DateString.StringToDateSQL(parameters.get(3).trim()),
-                    Double.parseDouble(parameters.get(4)));
+                    Double.parseDouble(parameters.get(4)),
+                    Integer.parseInt(parameters.get(5)));
             return isUpdatedAporte ?
                     "Aporte modificado correctamente" : "ERROR: no se pudo modificar los datos de aporte";
         } catch (ParseException e) {
