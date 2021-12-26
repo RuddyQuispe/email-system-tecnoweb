@@ -99,7 +99,7 @@ public class UserData {
             // string query structure
             String query = "update usuario set " +
                     "nombre=?, telefono=?, email=?, estado=?, contraseña=?, direccion=? " +
-                    "where ci=? and tipo_usuario='P';";
+                    "where ci=? and tipo_usuario=?;";
             // get object connection to add user information to make
             PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query);
             preparedStatement.setString(1, name);
@@ -108,8 +108,8 @@ public class UserData {
             preparedStatement.setString(4, status ? "1" : "0");
             preparedStatement.setString(5, password);
             preparedStatement.setString(6, address);
-            preparedStatement.setString(7, userType);
             preparedStatement.setInt(7, ci);
+            preparedStatement.setString(8, userType);
             // execute query with its data
             if (preparedStatement.executeUpdate() == 0) {
                 System.err.println("Class UserData.java dice: "
