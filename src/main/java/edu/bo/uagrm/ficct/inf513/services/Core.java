@@ -19,10 +19,7 @@ public class Core {
     private String useCase;
     private String action;
     private List<String> parameters;
-
-    private String title;
-    private String[] dataHeader;
-    private List<String[]> rowsInfoList;
+    private String message;
 
 
     public Core(String useCase, String action, List<String> parameters) {
@@ -66,9 +63,10 @@ public class Core {
             ArrayList<ArrayList<String>> listHelpManual = new ArrayList<ArrayList<String>>(
                     Arrays.asList(
                             new ArrayList<String>(Arrays.asList("APORTE", "REGISTRAR, MODIFICAR, LISTAR, ELIMINAR", "Gestionar aporte que los socios pagarán", HTMLBuilder.buildButton("LISTAR", "APORTE LISTAR", "INFO"))),
-                            new ArrayList<String>(Arrays.asList("SOCIO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar socio del mercado", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "INFO"))),
-                            new ArrayList<String>(Arrays.asList("KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR", "INFO"))),
-                            new ArrayList<String>(Arrays.asList("ASISTENCIA", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar la asistencia de un dia", HTMLBuilder.buildButton("LISTAR", "ASISTENCIA LISTAR", "INFO")))
+                            new ArrayList<String>(Arrays.asList("MULTA", "REGISTRAR, MODIFICAR, LISTAR, ELIMINAR, AGREGAR_SOCIO", "Gestionar multa por sancion a los socios", HTMLBuilder.buildButton("LISTAR", "MULTA LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("SOCIO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar socio del mercado", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "INFO")))
+                            //new ArrayList<String>(Arrays.asList("KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR", "INFO"))),
+                            //new ArrayList<String>(Arrays.asList("ASISTENCIA", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar la asistencia de un dia", HTMLBuilder.buildButton("LISTAR", "ASISTENCIA LISTAR", "INFO")))
                     )
             );
             return HTMLBuilder.generateTable(
@@ -93,6 +91,69 @@ public class Core {
             case TokenUseCase.ACTA_REUNIONES:
 
                 break;
+            case TokenUseCase.MULTA:
+                MultaBusiness multaBusiness = new MultaBusiness();
+                switch (this.action) {
+                    case TokenAction.LISTAR:
+                        ArrayList<ArrayList<String>> listMulta = multaBusiness.findAll();
+                        ArrayList<String> inputHeader = listMulta.remove(0);
+                        inputHeader.add("acciones");
+                        for (ArrayList<String> rowInput : listMulta) {
+                            rowInput.add(
+                                    "<div style=\"display: block;\">" +
+                                            HTMLBuilder.buildButton(
+                                                    "MODIFICAR",
+                                                    "MULTA MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + Token.TOKEN_PARAMETERS_CLOSE,
+                                                    "WARNING") +
+                                            HTMLBuilder.buildButton(
+                                                    "ELIMINAR",
+                                                    "MULTA ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
+                                                    "DANGER"
+                                            ) +
+                                            "</div>");
+                        }
+                        String buttonCreate = "<br><br><br>" + HTMLBuilder.buildButton(
+                                "REGISTRAR MULTA",
+                                "MULTA REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + "descripcion(STRING); monto(DOUBLE)" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "PRIMARY"
+                        );
+                        return HTMLBuilder.generateTable("LISTA MULTA" + buttonCreate, inputHeader, listMulta);
+                    case TokenAction.REGISTRAR:
+                        this.message = multaBusiness.createMulta(this.parameters);
+                        this.message = this.message + "<br><br><br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "MULTA LISTAR",
+                                "INFO"
+                        );
+                        return this.message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(this.message) : HTMLBuilder.buildMessageSuccess(this.message);
+                    case TokenAction.MODIFICAR:
+                        this.message = multaBusiness.updateMulta(this.parameters);
+                        this.message = this.message + "<br><br><br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "MULTA LISTAR",
+                                "INFO"
+                        );
+                        return this.message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(this.message) : HTMLBuilder.buildMessageSuccess(this.message);
+                    case TokenAction.ELIMINAR:
+                        this.message = multaBusiness.removeMulta(this.parameters);
+                        this.message = this.message + "<br><br><br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "MULTA LISTAR",
+                                "INFO"
+                        );
+                        return this.message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                    default:
+                        this.message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "<br>";
+                        this.message = this.message + "<br><br><br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "MULTA LISTAR",
+                                "INFO"
+                        );
+                        return this.message;
+                }
             case TokenUseCase.INGRESO:
 
                 break;
@@ -105,67 +166,64 @@ public class Core {
                     case TokenAction.LISTAR:
                         ArrayList<ArrayList<String>> listInput = inputBusiness.findAll();
                         ArrayList<String> inputHeader = listInput.remove(0);
+                        inputHeader.set(5, inputHeader.get(5) + "(%)");
                         inputHeader.add("acciones");
                         for (ArrayList<String> rowInput : listInput) {
                             rowInput.add(
-                                    HTMLBuilder.buildButton(
-                                            "MODIFICAR",
-                                            "APORTE MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + Token.TOKEN_PARAMETERS_CLOSE,
-                                            "WARNING") +
+                                    "<div style=\"display: block;\">" +
+                                            HTMLBuilder.buildButton(
+                                                    "MODIFICAR",
+                                                    "APORTE MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + Token.TOKEN_PARAMETERS_CLOSE,
+                                                    "WARNING") +
                                             HTMLBuilder.buildButton(
                                                     "ELIMINAR",
                                                     "APORTE ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
                                                     "DANGER"
-                                            ));
+                                            ) +
+                                            "</div>");
                         }
-                        String buttonCreate = HTMLBuilder.buildButton(
+                        String buttonCreate = "<br><br><br>" + HTMLBuilder.buildButton(
                                 "REGISTRAR APORTE",
-                                "APORTE REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + "STRING; DD-MM-YYYY; DD-MM-YYYY; DOUBLE" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "APORTE REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + "descripcion(STRING); fecha_inicio(DD-MM-YYYY); fecha_limit(DD-MM-YYYY); monto(DOUBLE); mora(INT)" + Token.TOKEN_PARAMETERS_CLOSE,
                                 "PRIMARY"
                         );
-                        htmlResponse = HTMLBuilder.generateTable("LISTA APORTES </br>" + buttonCreate, inputHeader, listInput);
-                        break;
+                        return HTMLBuilder.generateTable("LISTA APORTES  " + buttonCreate, inputHeader, listInput);
                     case TokenAction.REGISTRAR:
-                        String message = inputBusiness.createAporte(this.parameters);
-                        message = message + "</br>" + HTMLBuilder.buildButton(
+                        this.message = inputBusiness.createAporte(this.parameters);
+                        this.message = this.message + "<br><br><br>" + HTMLBuilder.buildButton(
                                 "LISTAR",
                                 "APORTE LISTAR",
                                 "INFO"
                         );
-                        htmlResponse = message.contains("ERROR: ") ?
-                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
-                        break;
+                        return this.message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(this.message) : HTMLBuilder.buildMessageSuccess(this.message);
                     case TokenAction.MODIFICAR:
-                        message = inputBusiness.updateAporte(this.parameters);
-                        message = message + "</br>" + HTMLBuilder.buildButton(
+                        this.message = inputBusiness.updateAporte(this.parameters);
+                        this.message = this.message + "<br><br><br>" + HTMLBuilder.buildButton(
                                 "LISTAR",
                                 "APORTE LISTAR",
                                 "INFO"
                         );
-                        htmlResponse = message.contains("ERROR: ") ?
-                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
-                        break;
+                        return this.message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(this.message) : HTMLBuilder.buildMessageSuccess(this.message);
                     case TokenAction.ELIMINAR:
-                        message = inputBusiness.removeAporte(this.parameters);
-                        message = message + "</br>" + HTMLBuilder.buildButton(
+                        this.message = inputBusiness.removeAporte(this.parameters);
+                        this.message = this.message + "<br><br><br>" + HTMLBuilder.buildButton(
                                 "LISTAR",
                                 "APORTE LISTAR",
                                 "INFO"
                         );
-                        htmlResponse = message.contains("ERROR: ") ?
-                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
-                        break;
+                        return this.message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(this.message) : HTMLBuilder.buildMessageSuccess(this.message);
                     default:
-                        message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "</br>";
-                        message = message + "</br>" + HTMLBuilder.buildButton(
+                        this.message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "</br>";
+                        this.message = this.message + "<br><br><br>" + HTMLBuilder.buildButton(
                                 "LISTAR",
                                 "APORTE LISTAR",
                                 "INFO"
                         );
-                        htmlResponse = message;
-                        break;
+                        return this.message;
                 }
-                break;
             case TokenUseCase.PAGO:
                 PagoBusiness pagoBusiness = new PagoBusiness();
                 switch (this.action) {
@@ -174,10 +232,10 @@ public class Core {
                         ArrayList<String> inputHeader = listInput.remove(0);
                         inputHeader.add("acciones");
                         String[] dateArr;
-                        String dateFormat ="";
+                        String dateFormat = "";
                         for (ArrayList<String> rowInput : listInput) {
                             dateArr = rowInput.get(1).split("-");
-                            dateFormat = dateArr[2]+"-"+ dateArr[1]+"-"+dateArr[0];
+                            dateFormat = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
                             rowInput.add(
                                             HTMLBuilder.buildButton(
                                             "\uD83D\uDD8A️",
@@ -239,9 +297,6 @@ public class Core {
                         htmlResponse = message;
                         break;
                 }
-                break;
-            case TokenUseCase.MORA:
-
                 break;
             case TokenUseCase.REPORTE_ESTADISTICA:
                 return HTMLBuilder.generateGraphics(
