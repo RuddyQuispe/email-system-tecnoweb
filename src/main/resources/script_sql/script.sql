@@ -212,3 +212,10 @@ insert into asistencia(fecha_actividad,actividad) values
 insert into asistencia_socio values
 (1, 9719823),
 (2, 9719823);
+
+--procedures and functions
+create or replace function get_name_by_userci(ci_usuario integer)returns varchar(255) as
+$BODY$
+begin
+	return (select nombre from usuario u where ci = ci_usuario);
+end $BODY$ language plpgsql;

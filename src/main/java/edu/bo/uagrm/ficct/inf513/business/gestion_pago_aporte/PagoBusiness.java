@@ -26,9 +26,12 @@ public class PagoBusiness {
      * @return a message
      */
     public String createPago(List<String> parameters) {
-        if (parameters.size() != 7) return "data Pago incomplete";
+        if (parameters.size() != 4) return "data Pago incomplete";
         try {
-            boolean isCreatedPago = this.pagoData.create(DateString.StringToDateSQL(parameters.get(0)), Double.parseDouble(parameters.get(1)), parameters.get(2), Double.parseDouble(parameters.get(3)), Integer.parseInt(parameters.get(4)), Integer.parseInt(parameters.get(5)), Integer.parseInt(parameters.get(6)));
+            //TODO: call Secretaria and Socio Method to search id by name
+            int ciSocio = Integer.parseInt(parameters.get(2));
+            int ciSecretaria =  Integer.parseInt(parameters.get(3));
+            boolean isCreatedPago = this.pagoData.create(DateString.StringToDateSQL(parameters.get(0)), parameters.get(1), ciSocio, ciSecretaria);
             return isCreatedPago ? "saved Pago successfully" : "I have an error to create Pago";
         } catch (ParseException e) {
             e.printStackTrace();
@@ -61,13 +64,15 @@ public class PagoBusiness {
      * @return a message
      */
     public String updatePago(List<String> parameters) {
-        if (parameters.size() != 8) return "data Pago incomplete";
+        if (parameters.size() != 5) return "data Pago incomplete";
         try {
             ResultSet response = this.pagoData.findBy("nro_pago", parameters.get(0));
             if (response == null) return "Error to search nro_pago Pago";
             if (response.next()) {
-
-                boolean isUpdatedPago = this.pagoData.update(Integer.parseInt(parameters.get(0)), DateString.StringToDateSQL(parameters.get(1)), Double.parseDouble(parameters.get(2)), parameters.get(3), Double.parseDouble(parameters.get(4)), Integer.parseInt(parameters.get(5)), Integer.parseInt(parameters.get(6)), Integer.parseInt(parameters.get(7)));
+                //TODO: call Secretaria and Socio Method to search id by name
+                int ciSocio = Integer.parseInt(parameters.get(3));
+                int ciSecretaria =  Integer.parseInt(parameters.get(4));
+                boolean isUpdatedPago = this.pagoData.update(Integer.parseInt(parameters.get(0)), DateString.StringToDateSQL(parameters.get(1)), parameters.get(2), ciSocio, ciSecretaria);
                 return isUpdatedPago ? "updated Pago successfully" : "I have an error to update Pago";
             } else {
                 return "Doesn't exists Pago ";

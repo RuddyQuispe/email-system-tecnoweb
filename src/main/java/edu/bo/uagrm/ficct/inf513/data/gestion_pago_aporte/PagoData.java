@@ -16,28 +16,23 @@ public class PagoData {
     /**
      * create a new Pago
      * @param fechaPago date of Pago
-     * @param monto the quantity to pay
      * @param comprobante
-     * @param montoMora the quantity to pay for late
      * @param ciSocio ci of the socio
      * @param ciSecretaria ci of the secretaria
-     * @param idAporte id of aporte
      * @return true if the pago was created successfully else return, false have an error
      */
-    public boolean create(Date fechaPago, Double monto, String comprobante, Double montoMora, int ciSocio, int ciSecretaria, int idAporte) {
+    public boolean create(Date fechaPago, String comprobante, int ciSocio, int ciSecretaria) {
         try {
             // string query structure
-            String query = "insert into pago(fecha_pago, monto, comprobante, monto_mora, ci_socio, ci_secretaria, id_aporte)"
-                    + " values(?,?,?,?,?,?,?)";
+            String query = "insert into pago(fecha_pago, monto_total, comprobante, ci_socio, ci_secretaria)"
+                    + " values(?,?,?,?,?)";
             // get object connection to add Pago information to make
             PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query);
             preparedStatement.setDate(1, fechaPago);
-            preparedStatement.setDouble(2, monto);
+            preparedStatement.setInt(2, 0);
             preparedStatement.setString(3, comprobante);
-            preparedStatement.setDouble(4, montoMora);
-            preparedStatement.setInt(5, ciSocio);
-            preparedStatement.setInt(6, ciSecretaria);
-            preparedStatement.setInt(7, idAporte);
+            preparedStatement.setInt(4, ciSocio);
+            preparedStatement.setInt(5, ciSecretaria);
             // execute query with its data
             if (preparedStatement.executeUpdate() == 0) {
                 System.err.println("error in: Class PagoData > create()");
@@ -57,7 +52,8 @@ public class PagoData {
      */
     public ResultSet findAll() {
         try {
-            String query = "select * from pago;";
+            String query = "select p.nro_pago , p.fecha_pago , p.monto_total ,p.comprobante ,get_name_by_userci(p.ci_socio) as nombre_socio, get_name_by_userci(p.ci_secretaria) as nombre_secretaria  \n" +
+                    "from pago p;";
             Statement statement = this.connection.getConnection().createStatement();
             return statement.executeQuery(query);
         } catch (SQLException e) {
@@ -87,29 +83,24 @@ public class PagoData {
      * update Pago data
      * @param nroPago
      * @param fechaPago
-     * @param monto
      * @param comprobante
-     * @param montoMora
      * @param ciSocio
      * @param ciSecretaria
      * @return true if updated success else return, false have an error
      */
-    public boolean update(int nroPago, Date fechaPago, Double monto, String comprobante, Double montoMora, int ciSocio, int ciSecretaria, int idAporte) {
+    public boolean update(int nroPago, Date fechaPago, String comprobante, int ciSocio, int ciSecretaria) {
         try {
             // string query structure
             String query = "update pago set " +
-                    "fecha_pago=?, monto=?, comprobante=?,  monto_mora=?, ci_socio=?, ci_secretaria=?, id_aporte=? " +
+                    "fecha_pago=?, comprobante=?, ci_socio=?, ci_secretaria=?" +
                     "where nro_pago=?;";
             // get object connection to add Pago information to make
             PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query);
             preparedStatement.setDate(1, fechaPago);
-            preparedStatement.setDouble(2, monto);
-            preparedStatement.setString(3, comprobante);
-            preparedStatement.setDouble(4, montoMora);
-            preparedStatement.setInt(5, ciSocio);
-            preparedStatement.setInt(6, ciSecretaria);
-            preparedStatement.setInt(7, idAporte);
-            preparedStatement.setInt(8, nroPago);
+            preparedStatement.setString(2, comprobante);
+            preparedStatement.setInt(3, ciSocio);
+            preparedStatement.setInt(4, ciSecretaria);
+            preparedStatement.setInt(5, nroPago);
             // execute query with its data
             if (preparedStatement.executeUpdate() == 0) {
                 System.err.println("error in: Class PagoData > update()");

@@ -179,19 +179,22 @@ public class Core {
                             dateArr = rowInput.get(1).split("-");
                             dateFormat = dateArr[2]+"-"+ dateArr[1]+"-"+dateArr[0];
                             rowInput.add(
-                                    HTMLBuilder.buildButton(
-                                            "MODIFICAR",
-                                            "PAGO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + dateFormat + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + "; " + rowInput.get(6) + "; " + rowInput.get(7) + Token.TOKEN_PARAMETERS_CLOSE,
+                                            HTMLBuilder.buildButton(
+                                            "\uD83D\uDD8A️",
+                                            "PAGO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + dateFormat + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + Token.TOKEN_PARAMETERS_CLOSE,
                                             "WARNING") +
                                             HTMLBuilder.buildButton(
-                                                    "ELIMINAR",
+                                                    "\uD83D\uDDD1️",
                                                     "PAGO ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
                                                     "DANGER"
-                                            ));
+                                            )+
+                                            HTMLBuilder.buildButton("Aportes", "PAGO LISTAR APORTES", "INFO")+
+                                            HTMLBuilder.buildButton("Multas", "PAGO LISTAR MULTAS", "INFO")
+                                    );
                         }
                         String buttonCreate = HTMLBuilder.buildButton(
                                 "REGISTRAR PAGO",
-                                "PAGO REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + "DD-MM-YYYY; DOUBLE; STRING; DOUBLE; INT; INT; INT" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "PAGO REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + "25-12-2021; 123434924; stephani; zuleny" + Token.TOKEN_PARAMETERS_CLOSE,
                                 "PRIMARY"
                         );
                         htmlResponse = HTMLBuilder.generateTable("LISTA PAGOS </br>" + buttonCreate, inputHeader, listInput);
