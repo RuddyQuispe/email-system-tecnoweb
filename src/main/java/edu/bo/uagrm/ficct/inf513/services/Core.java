@@ -63,6 +63,7 @@ public class Core {
             ArrayList<ArrayList<String>> listHelpManual = new ArrayList<ArrayList<String>>(
                     Arrays.asList(
                             new ArrayList<String>(Arrays.asList("APORTE", "REGISTRAR, MODIFICAR, LISTAR, ELIMINAR", "Gestionar aporte que los socios pagarán", HTMLBuilder.buildButton("LISTAR", "APORTE LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("PAGO", "REGISTRAR, MODIFICAR, LISTAR, ELIMINAR", "Gestionar pagos que realizan los socios", HTMLBuilder.buildButton("LISTAR", "PAGO LISTAR", "INFO"))),
                             new ArrayList<String>(Arrays.asList("MULTA", "REGISTRAR, MODIFICAR, LISTAR, ELIMINAR, AGREGAR_SOCIO", "Gestionar multa por sancion a los socios", HTMLBuilder.buildButton("LISTAR", "MULTA LISTAR", "INFO"))),
                             new ArrayList<String>(Arrays.asList("SOCIO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar socio del mercado", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "INFO")))
                             //new ArrayList<String>(Arrays.asList("KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR", "INFO"))),
