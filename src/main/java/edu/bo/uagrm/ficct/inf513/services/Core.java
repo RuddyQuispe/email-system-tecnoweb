@@ -111,6 +111,11 @@ public class Core {
                                                     "MULTA ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
                                                     "DANGER"
                                             ) +
+                                            HTMLBuilder.buildButton(
+                                                    "LISTAR SOCIOS",
+                                                    "MULTA LISTAR_SOCIO_MULTA [" + rowInput.get(0) + "]",
+                                                    "INFO"
+                                            ) +
                                             "</div>");
                         }
                         String buttonCreate = "<br><br><br>" + HTMLBuilder.buildButton(
@@ -142,6 +147,44 @@ public class Core {
                         this.message = this.message + "<br><br><br>" + HTMLBuilder.buildButton(
                                 "LISTAR",
                                 "MULTA LISTAR",
+                                "INFO"
+                        );
+                        return this.message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                    case TokenAction.LISTAR_SOCIO_MULTA:
+                        ArrayList<ArrayList<String>> listSocioMulta = multaBusiness.getListByIdMulta(this.parameters);
+                        ArrayList<String> inputHeaderSocioMulta = listSocioMulta.remove(0);
+                        inputHeaderSocioMulta.add("acciones");
+                        for (ArrayList<String> rowInput : listSocioMulta) {
+                            rowInput.add(
+                                    "<div style=\"display: block;\">" +
+                                            HTMLBuilder.buildButton(
+                                                    "ELIMINAR",
+                                                    "MULTA ELIMINAR_SOCIO_MULTA " + Token.TOKEN_PARAMETERS_OPEN + this.parameters.get(0) + "; " + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
+                                                    "DANGER"
+                                            ) +
+                                            "</div>");
+                        }
+                        String buttonCreteSocioMulta = "<br><br><br>" + HTMLBuilder.buildButton(
+                                "REGISTRAR SOCIO EN MULTA",
+                                "MULTA ADICIONAR_SOCIO_MULTA " + Token.TOKEN_PARAMETERS_OPEN + this.parameters.get(0) +"; "+ "nombre(STRING)" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "PRIMARY"
+                        );
+                        return HTMLBuilder.generateTable("LISTA SOCIOS DE MULTA: " + this.parameters.get(0).trim() + buttonCreteSocioMulta, inputHeaderSocioMulta, listSocioMulta);
+                    case TokenAction.ADICIONAR_SOCIO_MULTA:
+                        this.message = multaBusiness.createSocioMulta(this.parameters);
+                        this.message = this.message + "<br><br><br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "MULTA LISTAR_SOCIO_MULTA [" + this.parameters.get(0).trim() + "]",
+                                "INFO"
+                        );
+                        return this.message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                    case TokenAction.ELIMINAR_SOCIO_MULTA:
+                        this.message = multaBusiness.removeSocioMulta(this.parameters);
+                        this.message = this.message + "<br><br><br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "MULTA LISTAR_SOCIO_MULTA [" + this.parameters.get(0).trim() + "]",
                                 "INFO"
                         );
                         return this.message.contains("ERROR: ") ?
@@ -238,7 +281,7 @@ public class Core {
                             dateArr = rowInput.get(1).split("-");
                             dateFormat = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
                             rowInput.add(
-                                            HTMLBuilder.buildButton(
+                                    HTMLBuilder.buildButton(
                                             "\uD83D\uDD8A️",
                                             "PAGO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + dateFormat + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + Token.TOKEN_PARAMETERS_CLOSE,
                                             "WARNING") +
@@ -246,10 +289,10 @@ public class Core {
                                                     "\uD83D\uDDD1️",
                                                     "PAGO ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
                                                     "DANGER"
-                                            )+
-                                            HTMLBuilder.buildButton("Aportes", "PAGO LISTAR APORTES", "INFO")+
+                                            ) +
+                                            HTMLBuilder.buildButton("Aportes", "PAGO LISTAR APORTES", "INFO") +
                                             HTMLBuilder.buildButton("Multas", "PAGO LISTAR MULTAS", "INFO")
-                                    );
+                            );
                         }
                         String buttonCreate = HTMLBuilder.buildButton(
                                 "REGISTRAR PAGO",

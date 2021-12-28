@@ -1,11 +1,14 @@
 package edu.bo.uagrm.ficct.inf513.business.gestion_pago_aporte;
 
 import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.MultaData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.MultaSocioData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.SocioData;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,9 +18,13 @@ import java.util.List;
  */
 public class MultaBusiness {
     private MultaData multaData;
+    private MultaSocioData multaSocioData;
+    private SocioData socioData;
 
     public MultaBusiness() {
         this.multaData = new MultaData();
+        this.multaSocioData = new MultaSocioData();
+        this.socioData = new SocioData();
     }
 
     public String createMulta(List<String> parameters) {
@@ -85,6 +92,59 @@ public class MultaBusiness {
     }
 
     /**
+     * get list partners by anything id multa assigned
+     *
+     * @param parameters [id multa identified]
+     * @return list | null
+     */
+    public ArrayList<ArrayList<String>> getListByIdMulta(List<String> parameters) {
+        if (parameters.size() != 1) return null;
+        ResultSet data = this.multaSocioData.findByIdMulta(Integer.parseInt(parameters.get(0).trim()));
+        return this.getDataList(data);
+    }
+
+    public String createSocioMulta(List<String> paramenters) {
+        if (paramenters.size() != 2) return "ERROR: Datos insuficientes para asignar a un socio en una multa";
+        try {
+            ResultSet resulSet = socioData.findBy("nombre", paramenters.get(1).trim());
+            if (resulSet.next()) {
+                int ciUser = Integer.parseInt(resulSet.getString("ci"));
+                boolean isCreatedSocioMulta =
+                        this.multaSocioData.create(
+                                ciUser,
+                                Integer.parseInt(paramenters.get(0).trim()));
+                return isCreatedSocioMulta ? "Socio asignado a una multa correctamente" : "ERROR: Hubo errores al guardar un socio a una multa";
+            } else {
+                return "ERROR: No existe socio " + paramenters.get(0).trim() + ". No lo tenemos registrado";
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+            return "ERROR: Tengo errores al guardar socio a una  nueva multa";
+        }
+    }
+
+    /**
+     * remove socio multa assigne
+     *
+     * @param parameters
+     * @return
+     */
+    public String removeSocioMulta(List<String> parameters) {
+        if (parameters.size() != 2) return "ERROR: Datos insufientes para eliminar un socio de una multa";
+        try {
+            boolean isRemovedSocioMulta =
+                    this.multaSocioData.removeSocioByMulta(
+                            Integer.parseInt(parameters.get(1).trim()),
+                            Integer.parseInt(parameters.get(0).trim()));
+            return isRemovedSocioMulta ?
+                    "Socio elimina de la multa correctamente" : "ERROR: No se elimino al socio de la multa, intente de nuevo porfavor";
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return "ERROR: Tengo problemas al eliminar una multa";
+        }
+    }
+
+    /**
      * Get all rows of a table
      */
     private ArrayList<ArrayList<String>> getDataList(ResultSet rs) {
@@ -110,4 +170,8 @@ public class MultaBusiness {
         return result;
     }
 
+    public static void main(String[] args) {
+        MultaBusiness m = new MultaBusiness();
+        System.out.println(m.removeSocioMulta(Arrays.asList("2", "stephani")));
+    }
 }

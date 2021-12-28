@@ -163,10 +163,12 @@ create table asistencia_socio(
 
 insert into usuario values(9719822, 'zuleny', '76431901', 'zuleny.cr@gmail.com', '1', '11235813', 'Avenida Banzer', 'S');
 insert into usuario values(9719823, 'stephani', '68629092', 'stephani.hc.97@gmail.com', '1', '11235813', 'Avenida Pirai', 'P');
+insert into usuario(ci,nombre,telefono,email,estado,contraseña,direccion,tipo_usuario) values (6868161, 'Jose Pereira', '68686965', 'jose@gmail.com', '0','123456', 'Av. La Barranca #45', 'S');
 
 insert into secretaria values(9719822, '2021-12-12', '2022-12-12');
 
 insert into socio values(9719823, '12-12-2020', 12, '1', '12-08-2021');
+insert into socio(ci_socio, fecha_afiliacion, nro_puesto, tipo_socio, fecha_inicio) values (6868161, '2021-01-08', 45, '1', '2021-01-08');
 
 insert into ingreso(detalle, fecha_ingreso, monto, ci_secretaria) values
 ('recibo de donacion de autoridades municipales', '10-10-2021', 500, 9719822),

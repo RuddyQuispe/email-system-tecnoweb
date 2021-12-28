@@ -71,7 +71,7 @@ public class UserData {
      */
     public ResultSet findBy(String attribute, String data) {
         try {
-            String query = "select * from usuario u where u." + attribute + " ='" + data + "';";
+            String query = "select ci, nombre, telefono, email, estado, direccion from usuario u where u." + attribute + " ='" + data + "';";
             Statement statement = this.connection.getConnection().createStatement();
             return statement.executeQuery(query);
         } catch (SQLException e) {

@@ -68,10 +68,6 @@ public class Extractor {
         return aux.substring(1, aux.length() - 1);
     }
 
-    private static String getToFromFICCTUAGRM(String plain_text) {
-        return getToCommon(plain_text);
-    }
-
     private static String getToFromYahooOrOutlook(String plain_text) {
         int index = plain_text.indexOf("To: ");
         int i = plain_text.indexOf("<", index);
