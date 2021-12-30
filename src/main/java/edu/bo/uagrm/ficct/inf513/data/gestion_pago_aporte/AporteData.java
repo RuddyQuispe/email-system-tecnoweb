@@ -128,4 +128,21 @@ public class AporteData {
             return false;
         }
     }
+
+    /**
+     * find by attribute one data selected
+     * @param attribute the attribute to find by
+     * @param data the attribute value
+     * @return result query sql
+     */
+    public ResultSet findBy(String attribute, String data) {
+        try {
+            String query = "select * from aporte a where a." + attribute + " ='" + data + "';";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

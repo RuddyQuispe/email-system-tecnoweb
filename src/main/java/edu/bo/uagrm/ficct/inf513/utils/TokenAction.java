@@ -13,4 +13,10 @@ public class TokenAction {
     public static final String ADICIONAR_SOCIO_MULTA = "ADICIONAR_SOCIO_MULTA";
     public static final String LISTAR_SOCIO_MULTA = "LISTAR_SOCIO_MULTA";
     public static final String ELIMINAR_SOCIO_MULTA = "ELIMINAR_SOCIO_MULTA";
+    public static final String ADICIONAR_MULTA_PAGO = "ADICIONAR_MULTA_PAGO";
+    public static final String LISTAR_MULTA_PAGO = "LISTAR_MULTA_PAGO";
+    public static final String ELIMINAR_MULTA_PAGO = "ELIMINAR_MULTA_PAGO";
+    public static final String ADICIONAR_APORTE_PAGO = "ADICIONAR_APORTE_PAGO";
+    public static final String LISTAR_APORTE_PAGO = "LISTAR_APORTE_PAGO";
+    public static final String ELIMINAR_APORTE_PAGO = "ELIMINAR_APORTE_PAGO";
 }

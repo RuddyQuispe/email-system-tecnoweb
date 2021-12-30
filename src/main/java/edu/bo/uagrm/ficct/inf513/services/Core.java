@@ -290,8 +290,8 @@ public class Core {
                                                     "PAGO ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
                                                     "DANGER"
                                             ) +
-                                            HTMLBuilder.buildButton("Aportes", "PAGO LISTAR APORTES", "INFO") +
-                                            HTMLBuilder.buildButton("Multas", "PAGO LISTAR MULTAS", "INFO")
+                                            HTMLBuilder.buildButton("Aportes", "PAGO LISTAR_APORTE_PAGO " + Token.TOKEN_PARAMETERS_OPEN+ rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE, "INFO") +
+                                            HTMLBuilder.buildButton("Multas", "PAGO LISTAR_MULTA_PAGO " + Token.TOKEN_PARAMETERS_OPEN+ rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE, "INFO")
                             );
                         }
                         String buttonCreate = HTMLBuilder.buildButton(
@@ -326,6 +326,86 @@ public class Core {
                         message = message + "</br>" + HTMLBuilder.buildButton(
                                 "LISTAR",
                                 "PAGO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.LISTAR_MULTA_PAGO:
+                        listInput = pagoBusiness.findAllMultaPago(this.parameters);
+                        inputHeader = listInput.remove(0);
+                        inputHeader.add("acciones");
+                        for (ArrayList<String> rowInput : listInput) {
+                            rowInput.add(
+                                            HTMLBuilder.buildButton(
+                                                    "Eliminar️",
+                                                    "PAGO ELIMINAR_MULTA_PAGO " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; "+rowInput.get(1)+ Token.TOKEN_PARAMETERS_CLOSE,
+                                                    "DANGER"
+                                            )
+                            );
+                        }
+                        buttonCreate = HTMLBuilder.buildButton(
+                                "ADICIONAR MULTA ",
+                                "PAGO ADICIONAR_MULTA_PAGO " + Token.TOKEN_PARAMETERS_OPEN + this.parameters.get(0).trim() + "; 1" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "PRIMARY"
+                        );
+                        htmlResponse = HTMLBuilder.generateTable("MULTAS PAGADAS DEL PAGO N° " + this.parameters.get(0).trim() + "</br>" + buttonCreate, inputHeader, listInput);
+                        break;
+                    case TokenAction.ADICIONAR_MULTA_PAGO:
+                        message = pagoBusiness.createMultaPago(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR PAGO DE MULTAS",
+                                "PAGO LISTAR_MULTA_PAGO "+ Token.TOKEN_PARAMETERS_OPEN + this.parameters.get(0).trim()+ Token.TOKEN_PARAMETERS_CLOSE,
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.ELIMINAR_MULTA_PAGO:
+                        message = pagoBusiness.removeMultaPago(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR PAGO DE MULTAS",
+                                "PAGO LISTAR_MULTA_PAGO "+ Token.TOKEN_PARAMETERS_OPEN + this.parameters.get(0).trim()+ Token.TOKEN_PARAMETERS_CLOSE,
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.LISTAR_APORTE_PAGO:
+                        listInput = pagoBusiness.findAllAportePago(this.parameters);
+                        inputHeader = listInput.remove(0);
+                        inputHeader.add("acciones");
+                        for (ArrayList<String> rowInput : listInput) {
+                            rowInput.add(
+                                    HTMLBuilder.buildButton(
+                                            "Eliminar️",
+                                            "PAGO ELIMINAR_APORTE_PAGO " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) +  "; " +rowInput.get(1)+ Token.TOKEN_PARAMETERS_CLOSE,
+                                            "DANGER"
+                                    )
+                            );
+                        }
+                        buttonCreate = HTMLBuilder.buildButton(
+                                "ADICIONAR APORTE",
+                                "PAGO ADICIONAR_APORTE_PAGO " + Token.TOKEN_PARAMETERS_OPEN + this.parameters.get(0).trim() +"; 1" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "PRIMARY"
+                        );
+                        htmlResponse = HTMLBuilder.generateTable("APORTES PAGADOS DEL PAGO N° " + this.parameters.get(0).trim() + "</br>" + buttonCreate, inputHeader, listInput);
+                        break;
+                    case TokenAction.ADICIONAR_APORTE_PAGO:
+                        message = pagoBusiness.createAportePago(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR PAGO DE APORTES",
+                                "PAGO LISTAR_APORTE_PAGO " + Token.TOKEN_PARAMETERS_OPEN + this.parameters.get(0).trim()+ Token.TOKEN_PARAMETERS_CLOSE,
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.ELIMINAR_APORTE_PAGO:
+                        message = pagoBusiness.removeAportePago(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR PAGO DE APORTES",
+                                "PAGO LISTAR_APORTE_PAGO "+ Token.TOKEN_PARAMETERS_OPEN + this.parameters.get(0).trim()+ Token.TOKEN_PARAMETERS_CLOSE,
                                 "INFO"
                         );
                         htmlResponse = message.contains("ERROR: ") ?

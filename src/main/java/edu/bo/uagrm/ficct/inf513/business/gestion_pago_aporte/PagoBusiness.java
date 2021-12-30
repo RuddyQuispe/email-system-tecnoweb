@@ -1,23 +1,29 @@
 package edu.bo.uagrm.ficct.inf513.business.gestion_pago_aporte;
 
+import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.AporteData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.AportePagoData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.MultaPagoData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.PagoData;
 import edu.bo.uagrm.ficct.inf513.utils.DateString;
 
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class PagoBusiness {
     private PagoData pagoData;
+    private AportePagoData aportePagoData;
+    private MultaPagoData multaPagoData;
 
     public PagoBusiness() {
         this.pagoData = new PagoData();
+        this.aportePagoData = new AportePagoData();
+        this.multaPagoData = new MultaPagoData();
     }
 
     /**
@@ -103,6 +109,82 @@ public class PagoBusiness {
             e.printStackTrace();
             return "I have an error to remove Pago";
         }
+    }
+    //Aporte Pago methods
+    /**
+     * create a new AportePago
+     * @param parameters list of parameters
+     * @return a message
+     */
+    public String createAportePago(List<String> parameters) {
+        if (parameters.size() != 2) return "data AportePago incomplete";
+        AporteData aporteData = new AporteData();
+        ResultSet findBy = aporteData.findBy("id", parameters.get(1));
+        ArrayList<ArrayList<String>> data = getDataList(findBy);
+        Calendar dateNow = Calendar.getInstance();
+        Calendar fechaLimite = DateString.StringToDate(data.get(1).get(4));
+        System.out.println("fecha actual: "+ dateNow.toString()+ "\nfecha limite: "+ fechaLimite.toString());
+        double montoMora = 0;
+        if(dateNow.after(fechaLimite)){ //time is over
+            double monto = Double.parseDouble(data.get(1).get(3));
+            int porcentajeMora = Integer.parseInt(data.get(1).get(5));
+            montoMora = (monto*porcentajeMora)/100;
+        }
+        boolean isCreated = this.aportePagoData.create(Integer.parseInt(parameters.get(0)), Integer.parseInt(parameters.get(1)), montoMora);
+        return isCreated ? "saved Aporte Pago successfully" : "I have an error to create Aporte Pago";
+    }
+    /**
+     * get all data of a aporte pago
+     * @param  parameters list of parameters
+     * @return a list of data(the first list have the attributes names)
+     */
+    public ArrayList<ArrayList<String>> findAllAportePago(List<String> parameters){
+        if (parameters.size() != 1) return new ArrayList();
+        ResultSet data = this.aportePagoData.findAllByPago(Integer.parseInt(parameters.get(0)));
+        return this.getDataList(data);
+    }
+
+    /**
+     * delete a specific aporte pago
+     * @param parameters list of parameters
+     * @return a message
+     */
+    public String removeAportePago(List<String> parameters) {
+        if (parameters.size() != 2) return "data AportePago incomplete";
+        boolean isRemoved = this.aportePagoData.removeByPago(Integer.parseInt(parameters.get(0)), Integer.parseInt(parameters.get(1)));
+        return isRemoved ? "removed AportePago successfully" : "I have an error to remove AportePago";
+    }
+
+    //Multa Pago methods
+    /**
+     * create a new MultaPago
+     * @param parameters list of parameters
+     * @return a message
+     */
+    public String createMultaPago(List<String> parameters) {
+        if (parameters.size() != 2) return "data Pago incomplete";
+        boolean isCreated = this.multaPagoData.create(Integer.parseInt(parameters.get(0)), Integer.parseInt(parameters.get(1)));
+        return isCreated ? "saved Multa Pago successfully" : "I have an error to create Multa Pago";
+    }
+    /**
+     * get all data
+     * @param  parameters list of parameters
+     * @return a list of data(the first list have the attributes names)
+     */
+    public ArrayList<ArrayList<String>> findAllMultaPago(List<String> parameters){
+        if (parameters.size() != 1) return new ArrayList();
+        ResultSet data = this.multaPagoData.findAllByPago(Integer.parseInt(parameters.get(0)));
+        return this.getDataList(data);
+    }
+    /**
+     * delete a specific aporte pago
+     * @param parameters list of parameters
+     * @return a message
+     */
+    public String removeMultaPago(List<String> parameters) {
+        if (parameters.size() != 2) return "data MultaPago incomplete";
+        boolean isRemoved = this.multaPagoData.removeByPago(Integer.parseInt(parameters.get(0)), Integer.parseInt(parameters.get(1)));
+        return isRemoved ? "removed MultaPago successfully" : "I have an error to remove MultaPago";
     }
 
     /**
