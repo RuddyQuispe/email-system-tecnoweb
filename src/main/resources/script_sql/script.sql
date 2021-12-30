@@ -221,3 +221,60 @@ $BODY$
 begin
 	return (select nombre from usuario u where ci = ci_usuario);
 end $BODY$ language plpgsql;
+
+create or replace function insert_aporte_pago()returns trigger as
+$BODY$
+declare monto_aporte decimal(8,2) = (select monto from aporte a where a.id = new.id_aporte);
+declare monto_mora decimal(8,2) = new.monto_mora;
+begin
+	update pago set monto_total = monto_total + monto_aporte + monto_mora where nro_pago = new.nro_pago;
+	return new;
+end $BODY$ language plpgsql;
+
+create trigger t_insert_aporte_pago after insert
+on aporte_pago
+for each row
+	execute procedure insert_aporte_pago();
+
+
+create or replace function delete_aporte_pago()returns trigger as
+$BODY$
+declare monto_aporte decimal(8,2) = (select monto from aporte a where a.id = old.id_aporte);
+declare monto_mora decimal(8,2) = old.monto_mora;
+begin
+	update pago set monto_total = monto_total - monto_aporte - monto_mora where nro_pago = old.nro_pago;
+	return old;
+end $BODY$ language plpgsql;
+
+create trigger t_delete_aporte_pago after delete
+on aporte_pago
+for each row
+	execute procedure delete_aporte_pago();
+
+
+create or replace function insert_multa_pago()returns trigger as
+$BODY$
+declare monto_multa decimal(8,2) = (select monto from multa where id = new.id_multa);
+begin
+	update pago set monto_total = monto_total + monto_multa where nro_pago = new.nro_pago;
+	return new;
+end $BODY$ language plpgsql;
+
+create trigger t_insert_multa_pago after insert
+on multa_pago
+for each row
+	execute procedure insert_multa_pago();
+
+
+create or replace function delete_multa_pago()returns trigger as
+$BODY$
+declare monto_multa decimal(8,2) = (select monto from multa where id = old.id_multa);
+begin
+	update pago set monto_total = monto_total - monto_multa where nro_pago = old.nro_pago;
+	return old;
+end $BODY$ language plpgsql;
+
+create trigger t_delete_multa_pago after delete
+on multa_pago
+for each row
+	execute procedure delete_multa_pago();
