@@ -34,10 +34,10 @@ public class PagoBusiness {
     public String createPago(List<String> parameters) {
         if (parameters.size() != 4) return "data Pago incomplete";
         try {
-            //TODO: call Secretaria and Socio Method to search id by name
+            //TODO: call Empleado and Socio Method to search id by name
             int ciSocio = Integer.parseInt(parameters.get(2));
-            int ciSecretaria =  Integer.parseInt(parameters.get(3));
-            boolean isCreatedPago = this.pagoData.create(DateString.StringToDateSQL(parameters.get(0)), parameters.get(1), ciSocio, ciSecretaria);
+            int ciEmpleado =  Integer.parseInt(parameters.get(3));
+            boolean isCreatedPago = this.pagoData.create(DateString.StringToDateSQL(parameters.get(0)), parameters.get(1), ciSocio, ciEmpleado);
             return isCreatedPago ? "saved Pago successfully" : "I have an error to create Pago";
         } catch (ParseException e) {
             e.printStackTrace();
@@ -75,10 +75,10 @@ public class PagoBusiness {
             ResultSet response = this.pagoData.findBy("nro_pago", parameters.get(0));
             if (response == null) return "Error to search nro_pago Pago";
             if (response.next()) {
-                //TODO: call Secretaria and Socio Method to search id by name
+                //TODO: call Empleado and Socio Method to search id by name
                 int ciSocio = Integer.parseInt(parameters.get(3));
-                int ciSecretaria =  Integer.parseInt(parameters.get(4));
-                boolean isUpdatedPago = this.pagoData.update(Integer.parseInt(parameters.get(0)), DateString.StringToDateSQL(parameters.get(1)), parameters.get(2), ciSocio, ciSecretaria);
+                int ciEmpleado =  Integer.parseInt(parameters.get(4));
+                boolean isUpdatedPago = this.pagoData.update(Integer.parseInt(parameters.get(0)), DateString.StringToDateSQL(parameters.get(1)), parameters.get(2), ciSocio, ciEmpleado);
                 return isUpdatedPago ? "updated Pago successfully" : "I have an error to update Pago";
             } else {
                 return "Doesn't exists Pago ";

@@ -18,13 +18,13 @@ public class PagoData {
      * @param fechaPago date of Pago
      * @param comprobante
      * @param ciSocio ci of the socio
-     * @param ciSecretaria ci of the secretaria
+     * @param ciEmpleado ci of the empleado
      * @return true if the pago was created successfully else return, false have an error
      */
-    public boolean create(Date fechaPago, String comprobante, int ciSocio, int ciSecretaria) {
+    public boolean create(Date fechaPago, String comprobante, int ciSocio, int ciEmpleado) {
         try {
             // string query structure
-            String query = "insert into pago(fecha_pago, monto_total, comprobante, ci_socio, ci_secretaria)"
+            String query = "insert into pago(fecha_pago, monto_total, comprobante, ci_socio, ci_empleado)"
                     + " values(?,?,?,?,?)";
             // get object connection to add Pago information to make
             PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query);
@@ -32,7 +32,7 @@ public class PagoData {
             preparedStatement.setInt(2, 0);
             preparedStatement.setString(3, comprobante);
             preparedStatement.setInt(4, ciSocio);
-            preparedStatement.setInt(5, ciSecretaria);
+            preparedStatement.setInt(5, ciEmpleado);
             // execute query with its data
             if (preparedStatement.executeUpdate() == 0) {
                 System.err.println("error in: Class PagoData > create()");
@@ -52,7 +52,7 @@ public class PagoData {
      */
     public ResultSet findAll() {
         try {
-            String query = "select p.nro_pago , p.fecha_pago , p.monto_total ,p.comprobante ,get_name_by_userci(p.ci_socio) as nombre_socio, get_name_by_userci(p.ci_secretaria) as nombre_secretaria  \n" +
+            String query = "select p.nro_pago , p.fecha_pago , p.monto_total ,p.comprobante ,get_name_by_userci(p.ci_socio) as nombre_socio, get_name_by_userci(p.ci_empleado) as nombre_empleado  \n" +
                     "from pago p;";
             Statement statement = this.connection.getConnection().createStatement();
             return statement.executeQuery(query);
@@ -85,21 +85,21 @@ public class PagoData {
      * @param fechaPago
      * @param comprobante
      * @param ciSocio
-     * @param ciSecretaria
+     * @param ciEmpleado
      * @return true if updated success else return, false have an error
      */
-    public boolean update(int nroPago, Date fechaPago, String comprobante, int ciSocio, int ciSecretaria) {
+    public boolean update(int nroPago, Date fechaPago, String comprobante, int ciSocio, int ciEmpleado) {
         try {
             // string query structure
             String query = "update pago set " +
-                    "fecha_pago=?, comprobante=?, ci_socio=?, ci_secretaria=?" +
+                    "fecha_pago=?, comprobante=?, ci_socio=?, ci_empleado=?" +
                     "where nro_pago=?;";
             // get object connection to add Pago information to make
             PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query);
             preparedStatement.setDate(1, fechaPago);
             preparedStatement.setString(2, comprobante);
             preparedStatement.setInt(3, ciSocio);
-            preparedStatement.setInt(4, ciSecretaria);
+            preparedStatement.setInt(4, ciEmpleado);
             preparedStatement.setInt(5, nroPago);
             // execute query with its data
             if (preparedStatement.executeUpdate() == 0) {
