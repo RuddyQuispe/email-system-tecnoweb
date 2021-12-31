@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.bo.uagrm.ficct.inf513.business.gestion_ingreso_egreso.EgresoBusiness;
+import edu.bo.uagrm.ficct.inf513.business.gestion_ingreso_egreso.IngresoBusiness;
 import edu.bo.uagrm.ficct.inf513.business.gestion_pago_aporte.*;
 import edu.bo.uagrm.ficct.inf513.utils.HTMLBuilder;
 import edu.bo.uagrm.ficct.inf513.utils.Token;
@@ -65,7 +67,9 @@ public class Core {
                             new ArrayList<String>(Arrays.asList("APORTE", "REGISTRAR, MODIFICAR, LISTAR, ELIMINAR", "Gestionar aporte que los socios pagarán", HTMLBuilder.buildButton("LISTAR", "APORTE LISTAR", "INFO"))),
                             new ArrayList<String>(Arrays.asList("PAGO", "REGISTRAR, MODIFICAR, LISTAR, ELIMINAR", "Gestionar pagos que realizan los socios", HTMLBuilder.buildButton("LISTAR", "PAGO LISTAR", "INFO"))),
                             new ArrayList<String>(Arrays.asList("MULTA", "REGISTRAR, MODIFICAR, LISTAR, ELIMINAR, AGREGAR_SOCIO", "Gestionar multa por sancion a los socios", HTMLBuilder.buildButton("LISTAR", "MULTA LISTAR", "INFO"))),
-                            new ArrayList<String>(Arrays.asList("SOCIO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar socio del mercado", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "INFO")))
+                            new ArrayList<String>(Arrays.asList("SOCIO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar socio del mercado", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("INGRESO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar Ingresos", HTMLBuilder.buildButton("LISTAR", "INGRESO LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("EGRESO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar Egresos", HTMLBuilder.buildButton("LISTAR", "EGRESO LISTAR", "INFO")))
                             //new ArrayList<String>(Arrays.asList("KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR", "INFO"))),
                             //new ArrayList<String>(Arrays.asList("ASISTENCIA", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar la asistencia de un dia", HTMLBuilder.buildButton("LISTAR", "ASISTENCIA LISTAR", "INFO")))
                     )
@@ -199,10 +203,148 @@ public class Core {
                         return this.message;
                 }
             case TokenUseCase.INGRESO:
-
+                IngresoBusiness ingresoBusiness = new IngresoBusiness();
+                switch (this.action){
+                    case TokenAction.LISTAR:
+                        ArrayList<ArrayList<String>> listInput = ingresoBusiness.findAll();
+                        ArrayList<String> inputHeader = listInput.remove(0);
+                        inputHeader.add("acciones");
+                        String[] dateArr;
+                        String dateFormat = "";
+                        for (ArrayList<String> rowInput : listInput) {
+                            dateArr = rowInput.get(2).split("-");
+                            dateFormat = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+                            rowInput.add(
+                                    HTMLBuilder.buildButton(
+                                            "\uD83D\uDD8A️",
+                                            "INGRESO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1)+"; "+ dateFormat + "; " + rowInput.get(3) + "; " + rowInput.get(4) + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "WARNING") +
+                                            HTMLBuilder.buildButton(
+                                                    "\uD83D\uDDD1️",
+                                                    "INGRESO ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
+                                                    "DANGER"
+                                            )
+                            );
+                        }
+                        String buttonCreate = HTMLBuilder.buildButton(
+                                "REGISTRAR INGRESO",
+                                "INGRESO REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + "ingreso por aportes voluntarios; 29-12-2021; 120; zuleny" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "PRIMARY"
+                        );
+                        htmlResponse = HTMLBuilder.generateTable("LISTA INGRESOS </br>" + buttonCreate, inputHeader, listInput);
+                        break;
+                    case TokenAction.REGISTRAR:
+                        String message = ingresoBusiness.createIngreso(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "INGRESO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.MODIFICAR:
+                        message = ingresoBusiness.updateIngreso(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "INGRESO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case  TokenAction.ELIMINAR:
+                        message = ingresoBusiness.removeIngreso(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "INGRESO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    default:
+                        message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "</br>";
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "INGRESO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message;
+                        break;
+                }
                 break;
             case TokenUseCase.EGRESO:
-
+                EgresoBusiness egresoBusiness = new EgresoBusiness();
+                switch (this.action){
+                    case TokenAction.LISTAR:
+                        ArrayList<ArrayList<String>> listInput = egresoBusiness.findAll();
+                        ArrayList<String> inputHeader = listInput.remove(0);
+                        inputHeader.add("acciones");
+                        String[] dateArr;
+                        String dateFormat = "";
+                        for (ArrayList<String> rowInput : listInput) {
+                            dateArr = rowInput.get(3).split("-");
+                            dateFormat = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+                            rowInput.add(
+                                    HTMLBuilder.buildButton(
+                                            "\uD83D\uDD8A️",
+                                            "EGRESO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1)+ "; "+rowInput.get(2)+ "; "+dateFormat + "; " + rowInput.get(4) + "; " + rowInput.get(5) + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "WARNING") +
+                                            HTMLBuilder.buildButton(
+                                                    "\uD83D\uDDD1️",
+                                                    "EGRESO ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
+                                                    "DANGER"
+                                            )
+                            );
+                        }
+                        String buttonCreate = HTMLBuilder.buildButton(
+                                "REGISTRAR EGRESO",
+                                "EGRESO REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + "pago de servico basico de agua; 1200; 29-12-2021; Empresa COTAS; zuleny" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "PRIMARY"
+                        );
+                        htmlResponse = HTMLBuilder.generateTable("LISTA EGRESOS </br>" + buttonCreate, inputHeader, listInput);
+                        break;
+                    case TokenAction.REGISTRAR:
+                        String message = egresoBusiness.createEgreso(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "EGRESO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.MODIFICAR:
+                        message = egresoBusiness.updateEgreso(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "EGRESO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case  TokenAction.ELIMINAR:
+                        message = egresoBusiness.removeEgreso(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "EGRESO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    default:
+                        message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "</br>";
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "EGRESO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message;
+                        break;
+                }
                 break;
             case TokenUseCase.APORTE:
                 AporteBusiness inputBusiness = new AporteBusiness();
