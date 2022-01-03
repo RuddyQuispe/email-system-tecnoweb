@@ -123,10 +123,4 @@ public class AporteBusiness {
         }
         return result;
     }
-
-    public static void main(String[] args) {
-        AporteBusiness inputBusiness = new AporteBusiness();
-        ArrayList<ArrayList<String>> response = inputBusiness.findAll();
-        System.out.println(response);
-    }
 }

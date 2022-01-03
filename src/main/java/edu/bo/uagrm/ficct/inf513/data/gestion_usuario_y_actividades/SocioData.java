@@ -1,8 +1,5 @@
 package edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades;
 
-import edu.bo.uagrm.ficct.inf513.data.UserData;
-import edu.bo.uagrm.ficct.inf513.data.conection_database.ConnectionDB;
-
 import java.sql.*;
 
 /**
@@ -10,8 +7,7 @@ import java.sql.*;
  * @autor ruddy
  * @date 2021-12-25 16:51
  */
-public class SocioData extends UserData {
-    private ConnectionDB connection;
+public class SocioData extends UsuarioData {
 
     /**
      * @Constructor
@@ -61,4 +57,24 @@ public class SocioData extends UserData {
         }
     }
 
+    /**
+     * get find by any attribute assigned a data
+     *
+     * @param attribute: attribute of table user
+     * @param data:      info of attribute
+     * @return list result
+     */
+    public ResultSet findBy(String attribute, String data) {
+        try {
+            String query = "select u.ci, u.nombre, u.telefono, u.email, u.estado, u.direccion, u.tipo_usuario " +
+                    "from usuario u " +
+                    "where u." + attribute + "='" + data + "' and u.tipo_usuario='S';";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }

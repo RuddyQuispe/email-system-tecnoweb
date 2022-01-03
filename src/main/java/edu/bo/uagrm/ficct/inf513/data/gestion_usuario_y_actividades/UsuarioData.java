@@ -1,24 +1,22 @@
-package edu.bo.uagrm.ficct.inf513.data;
+package edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades;
 
 import edu.bo.uagrm.ficct.inf513.data.conection_database.ConnectionDB;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * @project email-system-tecnoweb
  * @autor ruddy
  * @date 12/9/21 20:22
  */
-public class UserData {
-    private ConnectionDB connection;
+public class UsuarioData {
+    protected ConnectionDB connection;
 
     /**
      * @Constructor
      */
-    public UserData() {
+    public UsuarioData() {
         this.connection = ConnectionDB.getInstance();
     }
 
@@ -60,25 +58,6 @@ public class UserData {
             e.printStackTrace();
             return false;
         }
-    }
-
-    /**
-     * find by attribute one data selected
-     *
-     * @param attribute: attribute
-     * @param data
-     * @return
-     */
-    public ResultSet findBy(String attribute, String data) {
-        try {
-            String query = "select ci, nombre, telefono, email, estado, direccion from usuario u where u." + attribute + " ='" + data + "';";
-            Statement statement = this.connection.getConnection().createStatement();
-            return statement.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-
     }
 
     /**

@@ -61,13 +61,6 @@ public class Analyzer {
                 // add
                 for (String parameter : parametersList) {
                     this.parameters.add(parameter.trim());
-//                String parameterIndex = parameter.trim();
-//                System.out.println("-" + parameterIndex + "-");
-//                System.out.println("isDate: " + isDate(parameterIndex));
-//                System.out.println("isInteger: " + isInteger(parameterIndex));
-//                System.out.println("isDouble: " + isDouble(parameterIndex));
-//                System.out.println("isFloat: " + isFloat(parameterIndex));
-//                System.out.println("isBoolean: " + isBoolean(parameterIndex));
                 }
                 this.error = false;
             }
@@ -168,14 +161,14 @@ public class Analyzer {
         }
     }
 
-    public static void main(String[] args) {
-        List<String> commandList = Arrays.asList("user remove [123] ", "Mensaje de prueba desde ficct.uagrm.edu.bo \n",
-                "Mensaje de prueba desde outlook \n",
-                "Mensaje de prueba desde gmail \n",
-                "HELP");
-        for (String command : commandList) {
-            Analyzer analyzer = new Analyzer(command);
-            System.out.println(analyzer.toString());
-        }
-    }
+//    public static void main(String[] args) {
+//        List<String> commandList = Arrays.asList("user remove [123] ", "Mensaje de prueba desde ficct.uagrm.edu.bo \n",
+//                "Mensaje de prueba desde outlook \n",
+//                "Mensaje de prueba desde gmail \n",
+//                "HELP");
+//        for (String command : commandList) {
+//            Analyzer analyzer = new Analyzer(command);
+//            System.out.println(analyzer.toString());
+//        }
+//    }
 }

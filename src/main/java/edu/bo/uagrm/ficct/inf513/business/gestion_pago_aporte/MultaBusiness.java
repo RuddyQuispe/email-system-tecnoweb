@@ -106,19 +106,21 @@ public class MultaBusiness {
     public String createSocioMulta(List<String> paramenters) {
         if (paramenters.size() != 2) return "ERROR: Datos insuficientes para asignar a un socio en una multa";
         try {
-            ResultSet resulSet = socioData.findBy("nombre", paramenters.get(1).trim());
+            ResultSet resulSet = this.socioData.findBy("nombre", paramenters.get(1).trim());
             if (resulSet.next()) {
                 int ciUser = Integer.parseInt(resulSet.getString("ci"));
                 boolean isCreatedSocioMulta =
                         this.multaSocioData.create(
                                 ciUser,
                                 Integer.parseInt(paramenters.get(0).trim()));
-                return isCreatedSocioMulta ? "Socio asignado a una multa correctamente" : "ERROR: Hubo errores al guardar un socio a una multa";
+                return isCreatedSocioMulta ?
+                        "Socio asignado a una multa correctamente" :
+                        "ERROR: Hubo errores al guardar un socio a una multa";
             } else {
-                return "ERROR: No existe socio " + paramenters.get(0).trim() + ". No lo tenemos registrado";
+                return "ERROR: No existe socio " + paramenters.get(1).trim() + ". No lo tenemos registrado";
             }
         } catch (Exception e) {
-            System.out.println("ERROR: " + e.getMessage());
+            System.err.println("ERROR: " + e);
             return "ERROR: Tengo errores al guardar socio a una  nueva multa";
         }
     }
@@ -168,10 +170,5 @@ public class MultaBusiness {
             System.out.println(ex.getMessage());
         }
         return result;
-    }
-
-    public static void main(String[] args) {
-        MultaBusiness m = new MultaBusiness();
-        System.out.println(m.removeSocioMulta(Arrays.asList("2", "stephani")));
     }
 }

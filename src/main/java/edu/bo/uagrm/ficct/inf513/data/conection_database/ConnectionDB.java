@@ -86,14 +86,14 @@ public class ConnectionDB {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            ConnectionDB postgreSQLConnection = ConnectionDB.getInstance();
-            PreparedStatement ps = postgreSQLConnection.connectionDB.prepareStatement("select * from usuario");
-            ResultSet rs = ps.executeQuery();
-            System.out.println(rs.next());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            ConnectionDB postgreSQLConnection = ConnectionDB.getInstance();
+//            PreparedStatement ps = postgreSQLConnection.connectionDB.prepareStatement("select * from usuario");
+//            ResultSet rs = ps.executeQuery();
+//            System.out.println(rs.next());
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
