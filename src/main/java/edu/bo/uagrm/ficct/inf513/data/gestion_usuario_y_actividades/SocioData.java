@@ -75,6 +75,26 @@ public class SocioData extends UsuarioData {
             e.printStackTrace();
             return null;
         }
+    }
 
+    /**
+     * get count all socios registered into database
+     *
+     * @return
+     */
+    public int getCountSocio() {
+        try {
+            String query = "select count(distinct s.ci_socio) as count_socios from socio s;";
+            Statement statement = this.connection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                return Integer.parseInt(resultSet.getString("count_socios"));
+            } else {
+                return 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }

@@ -15,7 +15,7 @@ public class HTMLBuilder {
     private static final Info info = Info.getInstance();
 
     public static String generateTable(String title, ArrayList<String> headers, ArrayList<ArrayList<String>> data) {
-        String htmlContent = BODY_OPEN + "<br>"+getTitleStyle(title) + "<br>";
+        String htmlContent = BODY_OPEN + "<br>" + getTitleStyle(title) + "<br>";
         String headerTable = "<div style=\"padding: 20px;\"><table style=\" border-collapse: collapse; width: 100%; overflow-x: auto; text-align: left;\">" +
                 "<thead><tr style=\"border: 1px solid #4E504E; text-align: left;\">";
         for (String head : headers) {
@@ -99,18 +99,25 @@ public class HTMLBuilder {
 
     // color rgb(116, 194, 92)
     private static String buildProgressBar(String label, double percentValue, String color) {
-        return "<p style=\"font-size: 20px;\">" + label + "</p>" +
-                "<div style=\"width: 100%; border-radius: 15px;\">" +
-                "<div style=\"background-color: " + color + "; color: white; padding: 1%; text-align: right; font-size: 20px; border-radius: 25px; width: " + percentValue + "%;\">" +
-                +percentValue + "%</div></div>";
+        if (percentValue > 100) {
+            return "<p style=\"font-size: 20px;\">" + label + "</p>" +
+                    "<div style=\"width: 100%; border-radius: 15px;\">" +
+                    "<div style=\"background-color: " + color + "; color: white; padding: 1%; text-align: right; font-size: 20px; border-radius: 25px; width: 100%;\">" +
+                    +percentValue + "</div></div>";
+        } else {
+            return "<p style=\"font-size: 20px;\">" + label + "</p>" +
+                    "<div style=\"width: 100%; border-radius: 15px;\">" +
+                    "<div style=\"background-color: " + color + "; color: white; padding: 1%; text-align: right; font-size: 20px; border-radius: 25px; width: " + percentValue + "%;\">" +
+                    +percentValue + "%</div></div>";
+        }
     }
 
-    public static String generateGraphics(String title, ArrayList<String> labelsChart, ArrayList<Double> dataChart, ArrayList<String> colors) {
+    public static String generateGraphics(String title, ArrayList<ArrayList<String>> dataList) {
         String htmlContent = BODY_OPEN + getTitleStyle(title) + "</br>";
         String headerTable = "<div style=\"padding: 20px;\">";
         String chartDetail = "";
-        for (int index = 0; index < labelsChart.size(); index++) {
-            chartDetail = chartDetail + HTMLBuilder.buildProgressBar(labelsChart.get(index), dataChart.get(index), colors.get(index));
+        for (ArrayList<String> data : dataList) {
+            chartDetail = chartDetail + HTMLBuilder.buildProgressBar(data.get(0), Double.parseDouble(data.get(1)), data.get(2));
         }
         return htmlContent +
                 headerTable +

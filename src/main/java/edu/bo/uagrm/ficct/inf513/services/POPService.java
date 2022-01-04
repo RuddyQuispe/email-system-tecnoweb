@@ -176,7 +176,7 @@ public class POPService implements Runnable {
             Thread smtpThread = new Thread(smtpService);
             smtpThread.start();
         } catch (Exception exception) {
-            System.out.println("ERROR into sendEmailResponse Application: " + exception + "\nEnviando email de error");
+            System.out.println("ERROR into sendEmailResponse Application: " + exception + "...\nEnviando email de error");
             emailToSend.setMessage(HTMLBuilder.buildMessageError("ERROR en analizar el subject de tu email"));
             SMTPService smtpService = new SMTPService(emailToSend);
             Thread smtpThread = new Thread(smtpService);

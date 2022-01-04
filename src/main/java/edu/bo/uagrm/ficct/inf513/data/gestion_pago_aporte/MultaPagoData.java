@@ -30,7 +30,7 @@ public class MultaPagoData {
             preparedStatement.setInt(1, nroPago);
             preparedStatement.setInt(2, idMulta);
             if (preparedStatement.executeUpdate() == 0) {
-                System.err.println("error in: Class "+ this.getClass().getName()+ " > create()");
+                System.err.println("error in: Class " + this.getClass().getName() + " > create()");
                 throw new SQLException();
             } else {
                 return true;
@@ -43,11 +43,12 @@ public class MultaPagoData {
 
     /**
      * returns all fines paid from a specific payment
+     *
      * @return result query sql
      */
     public ResultSet findAllByPago(int nroPago) {
         try {
-            String query = "select mp.nro_pago, mp.id_multa , m.descripcion, m.monto from multa_pago mp, multa m where mp.id_multa = m.id and mp.nro_pago = "+nroPago +";";
+            String query = "select mp.nro_pago, mp.id_multa , m.descripcion, m.monto from multa_pago mp, multa m where mp.id_multa = m.id and mp.nro_pago = " + nroPago + ";";
             Statement statement = this.connection.getConnection().createStatement();
             return statement.executeQuery(query);
         } catch (SQLException e) {
@@ -58,6 +59,7 @@ public class MultaPagoData {
 
     /**
      * removes a fine paid
+     *
      * @param nroPago : number of pago
      * @param idMulta : identifier of multa
      * @return true is removed, else return false
@@ -77,6 +79,17 @@ public class MultaPagoData {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public ResultSet getCountPagoByMulta(int idMulta) {
+        try {
+            String query = "select count(distinct mp.nro_pago) as count_pagos from multa_pago mp where mp.id_multa=" + idMulta + ";";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

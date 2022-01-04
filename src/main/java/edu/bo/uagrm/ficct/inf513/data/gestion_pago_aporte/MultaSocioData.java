@@ -85,4 +85,26 @@ public class MultaSocioData {
             return false;
         }
     }
+
+    /**
+     * get count socio assigned to multa
+     *
+     * @param idMulta
+     * @return
+     */
+    public int getCountSocioByMulta(int idMulta) {
+        try {
+            String query = "select count(distinct ms.ci_socio) as count_socios from multa_socio ms where ms.id_multa=" + idMulta + ";";
+            Statement statement = this.connection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                return Integer.parseInt(resultSet.getString("count_socios"));
+            } else {
+                return 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

@@ -2,6 +2,7 @@ package edu.bo.uagrm.ficct.inf513.services;
 
 import edu.bo.uagrm.ficct.inf513.utils.Token;
 import edu.bo.uagrm.ficct.inf513.utils.TokenAction;
+import edu.bo.uagrm.ficct.inf513.utils.TokenUseCase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,8 +36,9 @@ public class Analyzer {
                 } else {
                     System.out.println("no es help");
                     String[] listHead = command.toUpperCase().split(" ");
-                    if (listHead.length == 2 && listHead[1].trim().equalsIgnoreCase(TokenAction.LISTAR)) {
-                        System.out.println("son 2 attr y es listar");
+                    if ((listHead.length == 2 && listHead[1].trim().equalsIgnoreCase(TokenAction.LISTAR)) ||
+                            (listHead.length == 2 && listHead[0].trim().equalsIgnoreCase(TokenUseCase.REPORTE_ESTADISTICA))) {
+                        System.out.println("son 2 attr y es listar o reporte");
                         this.useCase = listHead[0].trim();
                         this.action = listHead[1].trim();
                         this.error = false;
