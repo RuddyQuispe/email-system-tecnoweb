@@ -8,10 +8,16 @@ import edu.bo.uagrm.ficct.inf513.business.gestion_ingreso_egreso.EgresoBusiness;
 import edu.bo.uagrm.ficct.inf513.business.gestion_ingreso_egreso.IngresoBusiness;
 import edu.bo.uagrm.ficct.inf513.business.gestion_pago_aporte.*;
 import edu.bo.uagrm.ficct.inf513.business.gestion_reportes.ReportsBusiness;
+import edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades.SocioBusiness;
+import edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades.EmpleadoBusiness;
+import edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades.ActaReunionesBusiness;
+import edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades.AsistenciaBusiness;
 import edu.bo.uagrm.ficct.inf513.utils.HTMLBuilder;
 import edu.bo.uagrm.ficct.inf513.utils.Token;
 import edu.bo.uagrm.ficct.inf513.utils.TokenAction;
 import edu.bo.uagrm.ficct.inf513.utils.TokenUseCase;
+
+import java.text.ParseException;
 
 /**
  * @project email-system-tecnoweb
@@ -60,7 +66,7 @@ public class Core {
      *
      * @return
      */
-    public String processApplication() {
+    public String processApplication() throws ParseException {
         String htmlResponse = "";
         if (this.action.equalsIgnoreCase(Token.HELP)) {
             ArrayList<ArrayList<String>> listHelpManual = new ArrayList<ArrayList<String>>(
@@ -72,7 +78,12 @@ public class Core {
                             new ArrayList<String>(Arrays.asList("INGRESO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar Ingresos", HTMLBuilder.buildButton("LISTAR", "INGRESO LISTAR", "INFO"))),
                             new ArrayList<String>(Arrays.asList("EGRESO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar Egresos", HTMLBuilder.buildButton("LISTAR", "EGRESO LISTAR", "INFO"))),
                             //new ArrayList<String>(Arrays.asList("KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("SOCIO", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar socio", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("EMPLEADO", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar empleado", HTMLBuilder.buildButton("LISTAR", "EMPLEADO LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("ACTA_REUNION", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar acta de reunion", HTMLBuilder.buildButton("LISTAR", "ACTA_REUNION LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("ASISTENCIA", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar la asistencia de un dia", HTMLBuilder.buildButton("LISTAR", "ASISTENCIA LISTAR", "INFO"))),
                             new ArrayList<String>(Arrays.asList("REPORTES", "INGRESOS, EGRESOS", "reporte de ingresos y gastos de la asociación", HTMLBuilder.buildButton("INGRESOS", TokenUseCase.REPORTE_ESTADISTICA + " " + TokenAction.INGRESOS, "INFO") + HTMLBuilder.buildButton("EGRESOS", TokenUseCase.REPORTE_ESTADISTICA + " " + TokenAction.EGRESOS, "INFO")))
+
                     )
             );
             return HTMLBuilder.generateTable(
@@ -83,19 +94,265 @@ public class Core {
         }
         switch (this.useCase) {
             case TokenUseCase.USUARIO_EMPLEADO:
-
+                EmpleadoBusiness empleadoBusiness = new EmpleadoBusiness();
+                switch (this.action) {
+                    case TokenAction.LISTAR:
+                        ArrayList<ArrayList<String>> listInput = empleadoBusiness.findAll();
+                        ArrayList<String> inputHeader = listInput.remove(0);
+                        inputHeader.add("acciones");
+                        String[] dateArr;
+                        String dateFormat = "";
+                        for (ArrayList<String> rowInput : listInput) {
+                            dateArr = rowInput.get(1).split("-");
+                            dateFormat = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+                            rowInput.add(
+                                    HTMLBuilder.buildButton(
+                                            "\uD83D\uDD8A️",
+                                            "EMPLEADO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + "; " + rowInput.get(6) + "; " + dateFormat + "; " + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "WARNING")
+                            );
+                        }
+                        String buttonCreate = HTMLBuilder.buildButton(
+                                "REGISTRAR EMPLEADO",
+                                "EMPLEADO REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + " 7487414; Juan Chumacero; 74587417; juan@gmail.com; 123456; true; B/ brigida; 02-01-2022;" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "PRIMARY"
+                        );
+                        htmlResponse = HTMLBuilder.generateTable("LISTA EMPLEADO </br>" + buttonCreate, inputHeader, listInput);
+                        break;
+                    case TokenAction.REGISTRAR:
+                        String message = empleadoBusiness.create(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "EMPLEADO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.MODIFICAR:
+                        message = empleadoBusiness.updateEmpleado(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "EMPLEADO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    default:
+                        message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "</br>";
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "EMPLEADO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message;
+                        break;
+                }
                 break;
             case TokenUseCase.USUARIO_SOCIO:
-
+                SocioBusiness socioBusiness = new SocioBusiness();
+                switch (this.action) {
+                    case TokenAction.LISTAR:
+                        ArrayList<ArrayList<String>> listInput = socioBusiness.findAll();
+                        ArrayList<String> inputHeader = listInput.remove(0);
+                        inputHeader.add("acciones");
+                        String[] dateArr;
+                        String dateFormat = "";
+                        for (ArrayList<String> rowInput : listInput) {
+                            dateArr = rowInput.get(1).split("-");
+                            dateFormat = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+                            rowInput.add(
+                                    HTMLBuilder.buildButton(
+                                            "\uD83D\uDD8A️",
+                                            "SOCIO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + "; " + dateFormat + "; " + rowInput.get(7) + "; " + rowInput.get(8) + "; " + dateFormat + "; " + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "WARNING")
+                            );
+                        }
+                        String buttonCreate = HTMLBuilder.buildButton(
+                                "REGISTRAR SOCIO",
+                                "SOCIO REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + " 7587414; Juan Chumacero; 74587417; juan@gmail.com; 123456; B/ brigida; 02-01-2022; 53; 1; 02-01-2022;" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "PRIMARY"
+                        );
+                        htmlResponse = HTMLBuilder.generateTable("LISTA SOCIO </br>" + buttonCreate, inputHeader, listInput);
+                        break;
+                    case TokenAction.REGISTRAR:
+                        String message = socioBusiness.create(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "SOCIO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.MODIFICAR:
+                        message = socioBusiness.updateSocio(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "SOCIO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    default:
+                        message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "</br>";
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "SOCIO LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message;
+                        break;
+                }
                 break;
             case TokenUseCase.KARDEX:
 
                 break;
             case TokenUseCase.ASISTENCIA:
-
+                AsistenciaBusiness asistenciaBusiness = new AsistenciaBusiness();
+                switch (this.action) {
+                    case TokenAction.LISTAR:
+                        ArrayList<ArrayList<String>> listInput = asistenciaBusiness.findAll();
+                        ArrayList<String> inputHeader = listInput.remove(0);
+                        inputHeader.add("acciones");
+                        String[] dateArr;
+                        String dateFormat = "";
+                        for (ArrayList<String> rowInput : listInput) {
+                            dateArr = rowInput.get(1).split("-");
+                            dateFormat = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+                            rowInput.add(
+                                    HTMLBuilder.buildButton(
+                                            "\uD83D\uDD8A️",
+                                            "ASISTENCIA MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + dateFormat + "; " + rowInput.get(2) + "; " + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "WARNING") +
+                                            HTMLBuilder.buildButton(
+                                                    "\uD83D\uDDD1️",
+                                                    "ASISTENCIA ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
+                                                    "DANGER"
+                                            )
+                            );
+                        }
+                        String buttonCreate = HTMLBuilder.buildButton(
+                                "REGISTRAR ASISTENCIA",
+                                "ASISTENCIA REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + " 02-01-2022;  asistencia a reunion;" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "PRIMARY"
+                        );
+                        htmlResponse = HTMLBuilder.generateTable("LISTA ASISTENCIA </br>" + buttonCreate, inputHeader, listInput);
+                        break;
+                    case TokenAction.REGISTRAR:
+                        String message = asistenciaBusiness.createAsistencia(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "ASISTENCIA LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.MODIFICAR:
+                        message = asistenciaBusiness.updateAsistencia(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "ASISTENCIA LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.ELIMINAR:
+                        message = asistenciaBusiness.removeAsistencia(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "ASISTENCIA LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    default:
+                        message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "</br>";
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "ASISTENCIA LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message;
+                        break;
+                }
                 break;
             case TokenUseCase.ACTA_REUNIONES:
-
+                ActaReunionesBusiness actaReunionesBusiness = new ActaReunionesBusiness();
+                switch (this.action) {
+                    case TokenAction.LISTAR:
+                        ArrayList<ArrayList<String>> listInput = actaReunionesBusiness.findAll();
+                        ArrayList<String> inputHeader = listInput.remove(0);
+                        inputHeader.add("acciones");
+                        String[] dateArr;
+                        String dateFormat = "";
+                        for (ArrayList<String> rowInput : listInput) {
+                            dateArr = rowInput.get(1).split("-");
+                            dateFormat = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+                            rowInput.add(
+                                    HTMLBuilder.buildButton(
+                                            "\uD83D\uDD8A️",
+                                            "ACTA_REUNION MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + dateFormat + "; " + rowInput.get(2) + "; " + rowInput.get(3) + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "WARNING") +
+                                            HTMLBuilder.buildButton(
+                                                    "\uD83D\uDDD1️",
+                                                    "ACTA_REUNION ELIMINAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
+                                                    "DANGER"
+                                            )
+                            );
+                        }
+                        String buttonCreate = HTMLBuilder.buildButton(
+                                "REGISTRAR ACTA_REUNION",
+                                "ACTA_REUNION REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + " 02-01-2022;  acta de reunion de informacion acerca de las nuevas normas; zuleny" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "PRIMARY"
+                        );
+                        htmlResponse = HTMLBuilder.generateTable("LISTA ACTA_REUNION </br>" + buttonCreate, inputHeader, listInput);
+                        break;
+                    case TokenAction.REGISTRAR:
+                        String message = actaReunionesBusiness.createActaReunion(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "ACTA_REUNION LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.MODIFICAR:
+                        message = actaReunionesBusiness.updateActaReunion(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "ACTA_REUNION LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    case TokenAction.ELIMINAR:
+                        message = actaReunionesBusiness.removeActaReunion(this.parameters);
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "ACTA_REUNION LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message.contains("ERROR: ") ?
+                                HTMLBuilder.buildMessageError(message) : HTMLBuilder.buildMessageSuccess(message);
+                        break;
+                    default:
+                        message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "</br>";
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "ACTA_REUNION LISTAR",
+                                "INFO"
+                        );
+                        htmlResponse = message;
+                        break;
+                }
                 break;
             case TokenUseCase.MULTA:
                 MultaBusiness multaBusiness = new MultaBusiness();

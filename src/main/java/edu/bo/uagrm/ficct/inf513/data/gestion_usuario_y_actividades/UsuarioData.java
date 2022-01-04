@@ -3,7 +3,9 @@ package edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades;
 import edu.bo.uagrm.ficct.inf513.data.conection_database.ConnectionDB;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * @project email-system-tecnoweb
@@ -57,6 +59,17 @@ public class UsuarioData {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    
+    public ResultSet findAll() {
+        try {
+            String query = "select ci, nombre, telefono, email ,estado, contrasenia, direccion, tipo_usuario from usuario";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

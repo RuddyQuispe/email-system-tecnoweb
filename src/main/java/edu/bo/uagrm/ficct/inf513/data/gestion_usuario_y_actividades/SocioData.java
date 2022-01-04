@@ -97,4 +97,39 @@ public class SocioData extends UsuarioData {
             return -1;
         }
     }
+    
+    public ResultSet findAll() {
+        try {
+            String query = "select s.ci_socio , s.fecha_afiliacion, s.nro_puesto, from socio s;";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public boolean update(int ci, String nombre, String telefono, String email, String contrasenia, boolean estado, String direccion, int nroPuesto ){
+        try {
+            // string query structure 
+            boolean updateUser = super.update(ci, nombre, telefono, email, contrasenia, estado, direccion, "S");
+            if (!updateUser) return false;
+            String query = "update socio " +
+                    "set nroPuesto=?" + "where ci=?";
+  
+            PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query); 
+            preparedStatement.setInt(1, nroPuesto);
+            preparedStatement.setInt(2, ci);
+            // execute query with its data
+            if (preparedStatement.executeUpdate() == 0) {
+                System.err.println("error in: Class SocioData > update()");
+                throw new SQLException();
+            } else {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
