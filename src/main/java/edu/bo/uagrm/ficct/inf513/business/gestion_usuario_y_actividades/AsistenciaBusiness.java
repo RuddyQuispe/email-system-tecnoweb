@@ -6,6 +6,7 @@
 package edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades;
  
 import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.AsistenciaData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.AsistenciaSocioData;
 import edu.bo.uagrm.ficct.inf513.utils.DateString;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -20,9 +21,11 @@ import java.util.List;
  */
 public class AsistenciaBusiness {
     private AsistenciaData asistenciaData;
+    private AsistenciaSocioData asistenciaSocioData;
 
     public AsistenciaBusiness() {
         this.asistenciaData = new AsistenciaData();
+        this.asistenciaSocioData = new AsistenciaSocioData();
     }
 
     /**
@@ -35,8 +38,8 @@ public class AsistenciaBusiness {
         try { 
             boolean isCreatedAsistencia = 
                     this.asistenciaData.create( 
-                            DateString.StringToDateSQL(parameters.get(1)), 
-                            parameters.get(2));
+                            DateString.StringToDateSQL(parameters.get(0)), 
+                            parameters.get(1));
             return isCreatedAsistencia ? "saved successfully" : "I have an error to create";
         } catch (ParseException e) {
             e.printStackTrace();
@@ -89,9 +92,9 @@ public class AsistenciaBusiness {
         try {
             if (parameters.size() != 3) return "ERROR: Datos insuficiente para modificar asistencia";
             boolean isUpdatedAsistencia= this.asistenciaData.update(
-                    Integer.parseInt(parameters.get(1)), 
-                    DateString.StringToDateSQL(parameters.get(2).trim()), 
-                    parameters.get(3));
+                    Integer.parseInt(parameters.get(0)), 
+                    DateString.StringToDateSQL(parameters.get(1).trim()), 
+                    parameters.get(2));
             return isUpdatedAsistencia ?
                     "modificado correctamente" : "ERROR: no se pudo modificar los datos";
         } catch (ParseException e) {
@@ -110,12 +113,38 @@ public class AsistenciaBusiness {
         if (parameters.size() != 1) return "ERROR: Datos insufientes para eliminar ";
         try {
             boolean isRemovedAsistencia =
-                    this.asistenciaData.remove(Integer.parseInt(parameters.get(1)));
+                    this.asistenciaData.remove(Integer.parseInt(parameters.get(0)));
             return isRemovedAsistencia ?
                     "eliminado correctamente" : "ERROR: No se elimino el acta, intente nuevamente";
         } catch (Exception exception) {
             exception.printStackTrace();
             return "ERROR: Tengo problemas al eliminar";
         }
+    }
+    
+    public String createAsistenciaSocio(List<String> parameters) {
+        if (parameters.size() != 2) return "datos de asistencia de socio incompleto";
+        boolean isCreated = this.asistenciaSocioData.createAsistenciaSocio(Integer.parseInt(parameters.get(0)), Integer.parseInt(parameters.get(1)));
+        return isCreated ? "saved successfully" : "I have an error to create";
+    }
+    /**
+     * get all data
+     * @param  parameters list of parameters
+     * @return a list of data(the first list have the attributes names)
+     */
+    public ArrayList<ArrayList<String>> findAllAsistenciaSocio(List<String> parameters){
+        if (parameters.size() != 1) return new ArrayList();
+        ResultSet data = this.asistenciaSocioData.findAllByAsistencia(Integer.parseInt(parameters.get(0)));
+        return this.getDataList(data);
+    }
+    /**
+     * delete a specific aporte pago
+     * @param parameters list of parameters
+     * @return a message
+     */
+    public String removeAsistenciaSocio(List<String> parameters) {
+        if (parameters.size() != 2) return "datos de una asistencia d eun socio incompleto";
+        boolean isRemoved = this.asistenciaSocioData.removeAsistenciaSocio(Integer.parseInt(parameters.get(0)), Integer.parseInt(parameters.get(1)));
+        return isRemoved ? "removed successfully" : "I have an error to remove";
     }
 }

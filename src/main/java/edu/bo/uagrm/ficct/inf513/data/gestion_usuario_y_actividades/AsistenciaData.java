@@ -64,9 +64,6 @@ public class AsistenciaData {
             return null;
         }
     }
-
- 
-
     
     public boolean update(int id,  Date fecha_actividad, String actividad) {
         try {

@@ -42,7 +42,17 @@ public class EmpleadoData extends UsuarioData{
             return false;
         }
     }
-     
+    
+    public ResultSet findAll() {
+        try {
+            String query = "select e.ci_empleado , e.fecha_inicio, e.fecha_fin from empleado e;";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
     public boolean update(int ci, String nombre, String telefono, String email, String contrasenia, boolean estado, String direccion, Date fechaFin){
         try {

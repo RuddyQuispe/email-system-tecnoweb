@@ -31,14 +31,14 @@ public class ActaReunionesBusiness {
      * @return a message
      */
     public String createActaReunion(List<String> parameters) {
-        if (parameters.size() != 4) return "datos incompletos de acta de reuniones";
+        if (parameters.size() != 3) return "datos incompletos de acta de reuniones";
         try {
             //TODO get ciEmpleado by empleado's name
-            int ciEmpleado =  Integer.parseInt(parameters.get(3));
+            int ciEmpleado =  Integer.parseInt(parameters.get(2));
             boolean isCreatedActaReunion = 
                     this.actaReunionData.create( 
-                            DateString.StringToDateSQL(parameters.get(1)), 
-                            parameters.get(2), 
+                            DateString.StringToDateSQL(parameters.get(0)), 
+                            parameters.get(1), 
                             ciEmpleado);
             return isCreatedActaReunion ? "saved successfully" : "I have an error to create";
         } catch (ParseException e) {
@@ -92,10 +92,10 @@ public class ActaReunionesBusiness {
         try {
             if (parameters.size() != 4) return "ERROR: Datos insuficiente para modificar actas";
             boolean isUpdatedActaReunion = this.actaReunionData.update(
-                    Integer.parseInt(parameters.get(1)), 
-                    DateString.StringToDateSQL(parameters.get(2).trim()), 
-                    parameters.get(3), 
-                    Integer.parseInt(parameters.get(4)));
+                    Integer.parseInt(parameters.get(0)), 
+                    DateString.StringToDateSQL(parameters.get(1).trim()), 
+                    parameters.get(2), 
+                    Integer.parseInt(parameters.get(3)));
             return isUpdatedActaReunion ?
                     "modificado correctamente" : "ERROR: no se pudo modificar los datos";
         } catch (ParseException e) {
@@ -114,7 +114,7 @@ public class ActaReunionesBusiness {
         if (parameters.size() != 1) return "ERROR: Datos insufientes para eliminar ";
         try {
             boolean isRemovedActaReunion =
-                    this.actaReunionData.remove(Integer.parseInt(parameters.get(1)));
+                    this.actaReunionData.remove(Integer.parseInt(parameters.get(0)));
             return isRemovedActaReunion ?
                     "eliminado correctamente" : "ERROR: No se elimino el acta, intente nuevamente";
         } catch (Exception exception) {

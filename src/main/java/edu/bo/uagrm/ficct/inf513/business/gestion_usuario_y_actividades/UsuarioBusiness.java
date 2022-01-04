@@ -5,14 +5,10 @@
  */
 package edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades;
 
-import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.UsuarioData;
-import edu.bo.uagrm.ficct.inf513.utils.DateString;
-import java.util.List;
+import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.UsuarioData; 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.ParseException;
+import java.sql.SQLException; 
 import java.util.ArrayList;
 import java.util.List; 
 
@@ -32,17 +28,17 @@ public class UsuarioBusiness {
      * @param parameters list of parameters
      * @return a message
      */
-    public String createEgreso(List<String> parameters) {
+    public String createUsuario(List<String> parameters) {
         if (parameters.size() != 7) return "datos de usuario incompleto";
         //try {
             boolean isCreatedUsuario =  this.usuarioData.create( 
-                            Integer.parseInt(parameters.get(1)),
+                            Integer.parseInt(parameters.get(0)),
+                            parameters.get(1),
                             parameters.get(2),
                             parameters.get(3),
                             parameters.get(4),
-                            parameters.get(5),
-                            parameters.get(6), 
-                            parameters.get(7));
+                            parameters.get(5), 
+                            parameters.get(6));
             return isCreatedUsuario ? "usuario guardado correctamente" : "ERROR: Hubo errores al crear un usuario";
         //} catch (ParseException e) {
         //    e.printStackTrace();
@@ -81,23 +77,18 @@ public class UsuarioBusiness {
     } 
     
     public String updateUsuario(List<String> parameters) {
-        //try {
-            if (parameters.size() != 8) return "Datos insuficiente para modificar usuario";
-            boolean isUpdatedUsuario = this.usuarioData.update(
-                    Integer.parseInt(parameters.get(0)),
-                    parameters.get(1),
-                    parameters.get(2),
-                    parameters.get(3),
-                    parameters.get(4),
-                    Boolean.parseBoolean(parameters.get(5)),
-                    parameters.get(6),
-                    parameters.get(7));
-            return isUpdatedUsuario ?
-                    "usuario modificado correctamente" : "no se pudo modificar los datos de usuario";
-        //} catch (ParseException e) {
-        //    e.printStackTrace();
-        //    return "ERROR: tuvimos problemas para modificar usuario";
-        //} 
+        if (parameters.size() != 8) return "Datos insuficiente para modificar usuario";
+        boolean isUpdatedUsuario = this.usuarioData.update(
+                Integer.parseInt(parameters.get(0)),
+                parameters.get(1),
+                parameters.get(2),
+                parameters.get(3),
+                parameters.get(4),
+                Boolean.parseBoolean(parameters.get(5)),
+                parameters.get(6),
+                parameters.get(7));
+        return isUpdatedUsuario ?
+                "usuario modificado correctamente" : "no se pudo modificar los datos de usuario"; 
     }
     
     public static void main(String[] args) {

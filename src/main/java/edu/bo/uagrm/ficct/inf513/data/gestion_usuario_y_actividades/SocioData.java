@@ -78,6 +78,16 @@ public class SocioData extends UsuarioData {
 
     }
     
+    public ResultSet findAll() {
+        try {
+            String query = "select s.ci_socio , s.fecha_afiliacion, s.nro_puesto, from socio s;";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
     public boolean update(int ci, String nombre, String telefono, String email, String contrasenia, boolean estado, String direccion, int nroPuesto ){
         try {
