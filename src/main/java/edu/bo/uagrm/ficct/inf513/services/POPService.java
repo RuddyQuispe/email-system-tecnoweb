@@ -7,7 +7,6 @@ package edu.bo.uagrm.ficct.inf513.services;
  */
 
 import edu.bo.uagrm.ficct.inf513.utils.*;
-import io.github.cdimascio.dotenv.Dotenv;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
@@ -25,6 +24,8 @@ public class POPService implements Runnable {
     private BufferedReader input;
     private DataOutputStream output;
     private static Info info = Info.getInstance();
+    private Analyzer analyzer;
+    private Core coreProcess;
 
     public POPService() {
         this.socket = null;
@@ -161,15 +162,15 @@ public class POPService implements Runnable {
         try {
             System.out.println("Initialize: " + emailToSend.getSubject());
             // get action, use case and test token
-            Analyzer analyzer = new Analyzer(emailToSend.getSubject().trim());
+            this.analyzer = new Analyzer(emailToSend.getSubject().trim());
             if (analyzer.hasError()) {
                 emailToSend.setMessage(HTMLBuilder.buildMessageError(
                         "Hubo error en identificar el Token </br>" +
                                 "Porfavor envienos un email con subject:\"HELP\" para ayuda con la funcionalidad del sistema"));
                 // send email error, error into token
             } else {
-                Core coreProcess = new Core(analyzer.getUseCase(), analyzer.getAction(), analyzer.getParameters());
-                String htmlResponse = coreProcess.processApplication();
+                this.coreProcess = new Core(this.analyzer.getUseCase(), this.analyzer.getAction(), this.analyzer.getParameters());
+                String htmlResponse = this.coreProcess.processApplication();
                 emailToSend.setMessage(htmlResponse);
             }
             SMTPService smtpService = new SMTPService(emailToSend);

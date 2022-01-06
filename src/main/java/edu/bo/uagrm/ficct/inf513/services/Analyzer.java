@@ -4,12 +4,9 @@ import edu.bo.uagrm.ficct.inf513.utils.Token;
 import edu.bo.uagrm.ficct.inf513.utils.TokenAction;
 import edu.bo.uagrm.ficct.inf513.utils.TokenUseCase;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @project email-system-tecnoweb
@@ -23,6 +20,10 @@ public class Analyzer {
     private boolean error;
 
     public Analyzer(String command) {
+        this.analyzeCommand(command);
+    }
+
+    private void analyzeCommand(String command) {
         try {
             this.parameters = new ArrayList<>();
 //          String command = "product add [200; hola como estas; 20-01-2014; 2099.56; true; false]";
@@ -72,54 +73,54 @@ public class Analyzer {
         }
     }
 
-    private static boolean isDouble(String s) {
-        boolean isValid = true;
-        try {
-            Double.parseDouble(s);
-        } catch (NumberFormatException nfe) {
-            isValid = false;
-        }
-        return isValid;
-    }
-
-    private static boolean isFloat(String s) {
-        boolean isValid = true;
-        try {
-            Float.parseFloat(s);
-        } catch (NumberFormatException nfe) {
-            isValid = false;
-        }
-        return isValid;
-    }
-
-    private static boolean isInteger(String s) {
-        boolean isValid = true;
-        try {
-            Integer.parseInt(s);
-        } catch (NumberFormatException nfe) {
-            isValid = false;
-        }
-        return isValid;
-    }
-
-    private static boolean isBoolean(String s) {
-        boolean isValid = true;
-        try {
-            Boolean.parseBoolean(s);
-        } catch (NumberFormatException nfe) {
-            isValid = false;
-        }
-        return isValid;
-    }
-
-    public static boolean isDate(String inDate) {
-        try {
-            Date.valueOf(inDate.trim());
-            return true;
-        } catch (Exception exception) {
-            return false;
-        }
-    }
+//    private static boolean isDouble(String s) {
+//        boolean isValid = true;
+//        try {
+//            Double.parseDouble(s);
+//        } catch (NumberFormatException nfe) {
+//            isValid = false;
+//        }
+//        return isValid;
+//    }
+//
+//    private static boolean isFloat(String s) {
+//        boolean isValid = true;
+//        try {
+//            Float.parseFloat(s);
+//        } catch (NumberFormatException nfe) {
+//            isValid = false;
+//        }
+//        return isValid;
+//    }
+//
+//    private static boolean isInteger(String s) {
+//        boolean isValid = true;
+//        try {
+//            Integer.parseInt(s);
+//        } catch (NumberFormatException nfe) {
+//            isValid = false;
+//        }
+//        return isValid;
+//    }
+//
+//    private static boolean isBoolean(String s) {
+//        boolean isValid = true;
+//        try {
+//            Boolean.parseBoolean(s);
+//        } catch (NumberFormatException nfe) {
+//            isValid = false;
+//        }
+//        return isValid;
+//    }
+//
+//    public static boolean isDate(String inDate) {
+//        try {
+//            Date.valueOf(inDate.trim());
+//            return true;
+//        } catch (Exception exception) {
+//            return false;
+//        }
+//    }
 
     public String getUseCase() {
         return useCase;
