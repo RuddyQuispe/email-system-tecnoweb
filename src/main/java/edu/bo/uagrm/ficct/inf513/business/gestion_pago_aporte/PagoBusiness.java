@@ -4,6 +4,8 @@ import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.AporteData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.AportePagoData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.MultaPagoData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.PagoData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.SocioData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.EmpleadoData;
 import edu.bo.uagrm.ficct.inf513.utils.DateString;
 
 
@@ -34,9 +36,16 @@ public class PagoBusiness {
     public String createPago(List<String> parameters) {
         if (parameters.size() != 4) return "data Pago incomplete";
         try {
-            //TODO: call Empleado and Socio Method to search id by name
-            int ciSocio = Integer.parseInt(parameters.get(2));
-            int ciEmpleado =  Integer.parseInt(parameters.get(3));
+            SocioData socioData = new SocioData();
+            ResultSet resultSet = socioData.findBy("nombre", parameters.get(2));
+            ArrayList<ArrayList<String>> data = this.getDataList(resultSet);
+            int ciSocio = Integer.parseInt(data.get(1).get(0));
+
+            EmpleadoData empleadoData = new EmpleadoData();
+            resultSet = empleadoData.findBy("nombre", parameters.get(3));
+            data = this.getDataList(resultSet);
+            int ciEmpleado =  Integer.parseInt(data.get(1).get(0));
+
             boolean isCreatedPago = this.pagoData.create(DateString.StringToDateSQL(parameters.get(0)), parameters.get(1), ciSocio, ciEmpleado);
             return isCreatedPago ? "saved Pago successfully" : "I have an error to create Pago";
         } catch (ParseException e) {
@@ -75,9 +84,16 @@ public class PagoBusiness {
             ResultSet response = this.pagoData.findBy("nro_pago", parameters.get(0));
             if (response == null) return "Error to search nro_pago Pago";
             if (response.next()) {
-                //TODO: call Empleado and Socio Method to search id by name
-                int ciSocio = Integer.parseInt(parameters.get(3));
-                int ciEmpleado =  Integer.parseInt(parameters.get(4));
+                SocioData socioData = new SocioData();
+                ResultSet resultSet = socioData.findBy("nombre", parameters.get(3));
+                ArrayList<ArrayList<String>> data = this.getDataList(resultSet);
+                int ciSocio = Integer.parseInt(data.get(1).get(0));
+
+                EmpleadoData empleadoData = new EmpleadoData();
+                resultSet = empleadoData.findBy("nombre", parameters.get(4));
+                data = this.getDataList(resultSet);
+                int ciEmpleado =  Integer.parseInt(data.get(1).get(0));
+
                 boolean isUpdatedPago = this.pagoData.update(Integer.parseInt(parameters.get(0)), DateString.StringToDateSQL(parameters.get(1)), parameters.get(2), ciSocio, ciEmpleado);
                 return isUpdatedPago ? "updated Pago successfully" : "I have an error to update Pago";
             } else {

@@ -77,5 +77,24 @@ public class EmpleadoData extends UsuarioData{
             return false;
         }
     }
-    
+
+    /**
+     * get find by any attribute assigned a data
+     *
+     * @param attribute: attribute of table user
+     * @param data:      info of attribute
+     * @return list result
+     */
+    public ResultSet findBy(String attribute, String data) {
+        try {
+            String query = "select u.ci, u.nombre, u.telefono, u.email, u.estado, u.direccion, u.tipo_usuario " +
+                    "from usuario u " +
+                    "where u." + attribute + "='" + data + "' and u.tipo_usuario='E';";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -74,7 +74,7 @@ public class Core {
                             new ArrayList<String>(Arrays.asList("SOCIO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar socio del mercado", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "INFO"))),
                             new ArrayList<String>(Arrays.asList("INGRESO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar Ingresos", HTMLBuilder.buildButton("LISTAR", "INGRESO LISTAR", "INFO"))),
                             new ArrayList<String>(Arrays.asList("EGRESO", "REGISTRAR,MODIFICAR,LISTAR;ELIMINAR", "Gestionar Egresos", HTMLBuilder.buildButton("LISTAR", "EGRESO LISTAR", "INFO"))),
-                            //new ArrayList<String>(Arrays.asList("KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR", "INFO"))),
+                            new ArrayList<String>(Arrays.asList("KARDEX", "LISTAR", "Visualizar el kardex de un socio", HTMLBuilder.buildButton("LISTAR", "KARDEX LISTAR"+Token.TOKEN_PARAMETERS_OPEN+"stephani"+Token.TOKEN_PARAMETERS_CLOSE, "INFO"))),
                             new ArrayList<String>(Arrays.asList("SOCIO", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar socio", HTMLBuilder.buildButton("LISTAR", "SOCIO LISTAR", "INFO"))),
                             new ArrayList<String>(Arrays.asList("EMPLEADO", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar empleado", HTMLBuilder.buildButton("LISTAR", "EMPLEADO LISTAR", "INFO"))),
                             new ArrayList<String>(Arrays.asList("ACTA_REUNION", "REGISTRAR, MODIFICAR,ELIMINAR", "gestionar acta de reunion", HTMLBuilder.buildButton("LISTAR", "ACTA_REUNION LISTAR", "INFO"))),
