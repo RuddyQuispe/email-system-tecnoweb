@@ -35,18 +35,19 @@ public class ActaReunionesBusiness {
         if (parameters.size() != 3) return "datos incompletos de acta de reuniones";
         try {
             EmpleadoData empleadoData = new EmpleadoData();
+            System.out.println(parameters.toString());
             ResultSet resultSet = empleadoData.findBy("nombre", parameters.get(2));
             ArrayList<ArrayList<String>>data = this.getDataList(resultSet);
             int ciEmpleado =  Integer.parseInt(data.get(1).get(0));
-            boolean isCreatedActaReunion = 
-                    this.actaReunionData.create( 
-                            DateString.StringToDateSQL(parameters.get(0)), 
-                            parameters.get(1), 
+            boolean isCreatedActaReunion =
+                    this.actaReunionData.create(
+                            DateString.StringToDateSQL(parameters.get(0)),
+                            parameters.get(1),
                             ciEmpleado);
-            return isCreatedActaReunion ? "saved successfully" : "I have an error to create";
+            return isCreatedActaReunion ? "saved successfully" : "ERROR: I have an error to create";
         } catch (ParseException e) {
             e.printStackTrace();
-            return "I have an error to create";
+            return "ERROR: I have an error to create";
         }
     }
 
