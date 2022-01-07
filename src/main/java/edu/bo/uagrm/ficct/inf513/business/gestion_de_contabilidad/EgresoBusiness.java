@@ -1,6 +1,6 @@
-package edu.bo.uagrm.ficct.inf513.business.gestion_ingreso_egreso;
+package edu.bo.uagrm.ficct.inf513.business.gestion_de_contabilidad;
 
-import edu.bo.uagrm.ficct.inf513.data.gestion_ingreso_egreso.EgresoData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_de_contabilidad.EgresoData;
 import edu.bo.uagrm.ficct.inf513.utils.DateString;
 
 import java.sql.ResultSet;

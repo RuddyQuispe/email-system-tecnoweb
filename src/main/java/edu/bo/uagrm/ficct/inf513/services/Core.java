@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import edu.bo.uagrm.ficct.inf513.business.gestion_ingreso_egreso.EgresoBusiness;
-import edu.bo.uagrm.ficct.inf513.business.gestion_ingreso_egreso.IngresoBusiness;
-import edu.bo.uagrm.ficct.inf513.business.gestion_pago_aporte.*;
-import edu.bo.uagrm.ficct.inf513.business.gestion_reportes.ReportsBusiness;
+import edu.bo.uagrm.ficct.inf513.business.gestion_de_contabilidad.EgresoBusiness;
+import edu.bo.uagrm.ficct.inf513.business.gestion_de_contabilidad.IngresoBusiness;
+import edu.bo.uagrm.ficct.inf513.business.gestion_de_pago_de_aportes.*;
+import edu.bo.uagrm.ficct.inf513.business.gestion_de_contabilidad.ReportsBusiness;
 import edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades.*;
 import edu.bo.uagrm.ficct.inf513.utils.HTMLBuilder;
 import edu.bo.uagrm.ficct.inf513.utils.Token;

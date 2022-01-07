@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.PagoData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_de_pago_de_aportes.PagoData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.SocioData;
 import edu.bo.uagrm.ficct.inf513.utils.HTMLBuilder;
 

@@ -1,4 +1,4 @@
-package edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte;
+package edu.bo.uagrm.ficct.inf513.data.gestion_de_pago_de_aportes;
 
 import edu.bo.uagrm.ficct.inf513.data.conection_database.ConnectionDB;
 

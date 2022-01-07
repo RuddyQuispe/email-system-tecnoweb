@@ -1,14 +1,13 @@
-package edu.bo.uagrm.ficct.inf513.business.gestion_pago_aporte;
+package edu.bo.uagrm.ficct.inf513.business.gestion_de_pago_de_aportes;
 
-import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.MultaData;
-import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.MultaSocioData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_de_pago_de_aportes.MultaData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_de_pago_de_aportes.MultaSocioData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.SocioData;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

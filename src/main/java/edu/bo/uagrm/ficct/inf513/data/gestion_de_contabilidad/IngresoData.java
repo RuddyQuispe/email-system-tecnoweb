@@ -1,4 +1,4 @@
-package edu.bo.uagrm.ficct.inf513.data.gestion_ingreso_egreso;
+package edu.bo.uagrm.ficct.inf513.data.gestion_de_contabilidad;
 
 import edu.bo.uagrm.ficct.inf513.data.conection_database.ConnectionDB;
 
