@@ -154,15 +154,11 @@ public class Core {
                         ArrayList<ArrayList<String>> listInput = socioBusiness.findAll();
                         ArrayList<String> inputHeader = listInput.remove(0);
                         inputHeader.add("acciones");
-                        String[] dateArr;
-                        String dateFormat = "";
                         for (ArrayList<String> rowInput : listInput) {
-                            dateArr = rowInput.get(1).split("-");
-                            dateFormat = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
                             rowInput.add(
                                     HTMLBuilder.buildButton(
                                             "\uD83D\uDD8A️",
-                                            "SOCIO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + "; " + dateFormat + "; " + rowInput.get(7) + "; " + rowInput.get(8) + "; " + dateFormat + "; " + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "SOCIO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + "; " +rowInput.get(6)+"; "  + rowInput.get(8)  + Token.TOKEN_PARAMETERS_CLOSE,
                                             "WARNING") +
                                     HTMLBuilder.buildButton(
                                             "KARDEX",
@@ -172,7 +168,7 @@ public class Core {
                         }
                         String buttonCreate = HTMLBuilder.buildButton(
                                 "REGISTRAR SOCIO",
-                                "SOCIO REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + " 7587414; Juan Chumacero; 74587417; juan@gmail.com; 123456; B/ brigida; 02-01-2022; 53; 1; 02-01-2022;" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "SOCIO REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + " 7587414; Juan Chumacero; 74587417; juan@gmail.com; 123456; B/ brigida; 02-01-2022; 53; 1; 02-01-2022" + Token.TOKEN_PARAMETERS_CLOSE,
                                 "PRIMARY"
                         );
                         htmlResponse = HTMLBuilder.generateTable("LISTA SOCIO </br>" + buttonCreate, inputHeader, listInput);

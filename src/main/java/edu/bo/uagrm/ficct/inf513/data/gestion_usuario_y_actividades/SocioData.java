@@ -100,7 +100,9 @@ public class SocioData extends UsuarioData {
     
     public ResultSet findAll() {
         try {
-            String query = "select s.ci_socio , s.fecha_afiliacion, s.nro_puesto, from socio s;";
+            String query = "select u.ci, u.nombre, u.telefono, u.email, u.estado, u.contraseña, u.direccion, s.fecha_afiliacion, s.nro_puesto,  s.tipo_socio, s.fecha_inicio \n" +
+                    "from usuario u , socio s \n" +
+                    "where u.ci = s.ci_socio ;";
             Statement statement = this.connection.getConnection().createStatement();
             return statement.executeQuery(query);
         } catch (SQLException e) {
@@ -109,13 +111,14 @@ public class SocioData extends UsuarioData {
         }
     }
     
-    public boolean update(int ci, String nombre, String telefono, String email, String contrasenia, boolean estado, String direccion, int nroPuesto ){
+    public boolean update(int ci, String nombre, String telefono, String email, boolean estado,String contrasenia, String direccion, int nroPuesto ){
         try {
+            //select u.ci, u.nombre, u.telefono, u.email, u.estado, u.contraseña, u.direccion,  s.nro_puesto
             // string query structure 
             boolean updateUser = super.update(ci, nombre, telefono, email, contrasenia, estado, direccion, "S");
             if (!updateUser) return false;
             String query = "update socio " +
-                    "set nroPuesto=?" + "where ci=?";
+                    "set nro_puesto=?" + "where ci_socio=?";
   
             PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query); 
             preparedStatement.setInt(1, nroPuesto);

@@ -95,8 +95,8 @@ public class SocioBusiness  {
                 parameters.get(1),
                 parameters.get(2),
                 parameters.get(3),
-                parameters.get(4),
-                Boolean.valueOf(parameters.get(5)),
+                Boolean.valueOf(parameters.get(4)),
+                parameters.get(5),
                 parameters.get(6),
                 Integer.parseInt(parameters.get(7)));
         return isUpdatedSocio ?
