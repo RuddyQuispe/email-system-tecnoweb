@@ -1,6 +1,7 @@
 package edu.bo.uagrm.ficct.inf513.business.gestion_de_contabilidad;
 
 import edu.bo.uagrm.ficct.inf513.data.gestion_de_contabilidad.EgresoData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_de_usuarios_asistencia_y_actas.EmpleadoData;
 import edu.bo.uagrm.ficct.inf513.utils.DateString;
 
 import java.sql.ResultSet;
@@ -25,8 +26,10 @@ public class EgresoBusiness {
     public String createEgreso(List<String> parameters) {
         if (parameters.size() != 5) return "data Egreso incomplete";
         try {
-            //TODO get ciEmpleado by empleado's name
-            int ciEmpleado =  Integer.parseInt(parameters.get(4));
+            EmpleadoData empleadoData = new EmpleadoData();
+            ResultSet resultSet = empleadoData.findBy("nombre", parameters.get(4));
+            ArrayList<ArrayList<String>> data = this.getDataList(resultSet);
+            int ciEmpleado =  Integer.parseInt(data.get(1).get(0));
             boolean isCreatedEgreso = this.egresoData.create(parameters.get(0), Double.parseDouble(parameters.get(1)), DateString.StringToDateSQL(parameters.get(2)), parameters.get(3), ciEmpleado);
             return isCreatedEgreso ? "saved Egreso successfully" : "I have an error to create Egreso";
         } catch (ParseException e) {
@@ -65,8 +68,10 @@ public class EgresoBusiness {
             ResultSet response = this.egresoData.findBy("nro_egreso", parameters.get(0));
             if (response == null) return "Error to search nro_egreso egreso";
             if (response.next()) {
-                //TODO: call Empleado Method to search id by name
-                int ciEmpleado =  Integer.parseInt(parameters.get(5));
+                EmpleadoData empleadoData = new EmpleadoData();
+                ResultSet resultSet = empleadoData.findBy("nombre", parameters.get(5));
+                ArrayList<ArrayList<String>> data = this.getDataList(resultSet);
+                int ciEmpleado =  Integer.parseInt(data.get(1).get(0));
                 boolean isUpdatedEgreso = this.egresoData.update(Integer.parseInt(parameters.get(0)), parameters.get(1), Double.parseDouble(parameters.get(2)), DateString.StringToDateSQL(parameters.get(3)), parameters.get(4),ciEmpleado);
                 return isUpdatedEgreso ? "updated Egreso successfully" : "I have an error to update Egreso";
             } else {

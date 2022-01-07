@@ -1,6 +1,7 @@
 package edu.bo.uagrm.ficct.inf513.business.gestion_de_contabilidad;
 
 import edu.bo.uagrm.ficct.inf513.data.gestion_de_contabilidad.IngresoData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_de_usuarios_asistencia_y_actas.EmpleadoData;
 import edu.bo.uagrm.ficct.inf513.utils.DateString;
 
 import java.sql.ResultSet;
@@ -25,8 +26,10 @@ public class IngresoBusiness {
     public String createIngreso(List<String> parameters) {
         if (parameters.size() != 4) return "data Ingreso incomplete";
         try {
-            //TODO get ciEmpleado by empleado's name
-            int ciEmpleado =  Integer.parseInt(parameters.get(3));
+            EmpleadoData empleadoData = new EmpleadoData();
+            ResultSet resultSet = empleadoData.findBy("nombre", parameters.get(3));
+            ArrayList<ArrayList<String>> data = this.getDataList(resultSet);
+            int ciEmpleado =  Integer.parseInt(data.get(1).get(0));
             boolean isCreatedIngreso = this.ingresoData.create(parameters.get(0),DateString.StringToDateSQL(parameters.get(1)), Double.parseDouble(parameters.get(2)), ciEmpleado);
             return isCreatedIngreso ? "saved Ingreso successfully" : "I have an error to create Ingreso";
         } catch (ParseException e) {
@@ -65,8 +68,10 @@ public class IngresoBusiness {
             ResultSet response = this.ingresoData.findBy("nro_ingreso", parameters.get(0));
             if (response == null) return "Error to search nro_ingreso ingreso";
             if (response.next()) {
-                //TODO: call Empleado Method to search id by name
-                int ciEmpleado =  Integer.parseInt(parameters.get(4));
+                EmpleadoData empleadoData = new EmpleadoData();
+                ResultSet resultSet = empleadoData.findBy("nombre", parameters.get(4));
+                ArrayList<ArrayList<String>> data = this.getDataList(resultSet);
+                int ciEmpleado =  Integer.parseInt(data.get(1).get(0));
                 boolean isUpdatedIngreso = this.ingresoData.update(Integer.parseInt(parameters.get(0)), parameters.get(1), DateString.StringToDateSQL(parameters.get(2)), Double.parseDouble(parameters.get(3)), ciEmpleado);
                 return isUpdatedIngreso ? "updated Ingreso successfully" : "I have an error to update Ingreso";
             } else {
