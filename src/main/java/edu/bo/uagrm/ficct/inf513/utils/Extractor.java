@@ -13,6 +13,9 @@ public class Extractor {
     private static String FICCT_UAGRM = "d=ficct.uagrm.edu.bo";
 
     public static Email getEmail(String plain_text) {
+//        System.out.println("-----------------------------------------------");
+//        System.out.println(plain_text);
+//        System.out.println("-----------------------------------------------");
         // String from, String to, String subject, String message
         return new Email(getFrom(plain_text), getTo(plain_text), getSubject(plain_text), null);
     }
@@ -25,10 +28,10 @@ public class Extractor {
     }
 
     private static String getSubject(String plain_text) {
+        String search = "Subject: ";
+        int i = plain_text.indexOf(search) + search.length();
+        String end_string = "";
         try {
-            String search = "Subject: ";
-            int i = plain_text.indexOf(search) + search.length();
-            String end_string = "";
             if (plain_text.contains(GMAIL)) {
                 end_string = "To:";
             } else if (plain_text.contains(HOTMAIL) || plain_text.contains(OUTLOOK)) {
@@ -36,12 +39,17 @@ public class Extractor {
             } else if (plain_text.contains(YAHOO)) {
                 end_string = "MIME-Version:";
             } else if (plain_text.contains(FICCT_UAGRM)) {
-                end_string = "Message-ID: ";
+                end_string = "From: ";
             }
             int e = plain_text.indexOf(end_string, i);
             return plain_text.substring(i, e).replace("\n", "");
         } catch (Exception exception) {
-            System.out.println(plain_text);
+            if (plain_text.contains(FICCT_UAGRM)) {
+                i = plain_text.indexOf(search) + search.length();
+                end_string = "Message-ID: ";
+                int e = plain_text.indexOf(end_string, i);
+                return plain_text.substring(i, e).replace("\n", "");
+            }
             System.out.println("Error in getSubject: " + exception);
             return "NO SUBJECT";
         }

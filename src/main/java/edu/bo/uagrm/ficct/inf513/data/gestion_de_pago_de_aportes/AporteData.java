@@ -31,7 +31,7 @@ public class AporteData {
     public boolean create(String descripcion, Date fechaInicioPago, Date fechaLimite, Double monto, int porcentajeMora) {
         try {
             // string query structure
-            String query = "insert into aporte(descripcion, fecha_inicio_pago, fecha_limite, monto) " +
+            String query = "insert into aporte(descripcion, fecha_inicio_pago, fecha_limite, monto, porcentaje_mora) " +
                     "values (?,?,?,?,?)";
             // get object connection to add Pago information to make
             PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query);
