@@ -135,4 +135,81 @@ public class PagoData {
             return false;
         }
     }
+
+    /**
+     * return paid contributions from a partner
+     * @param ciSocio the ci of socio
+     * @return result query sql
+     */
+    public ResultSet getPaidContributionsByPartner(int ciSocio) {
+        try {
+            String query = "select p.nro_pago ,get_name_by_userci(ci_empleado) as nombre_empleado, a.descripcion, a.fecha_inicio_pago , a.fecha_limite , p.fecha_pago ,a.monto , a.porcentaje_mora ,ap.monto_mora, sum(a.monto+ap.monto_mora) as aporte_subtotal, p.monto_total \n" +
+                    "from pago p, aporte a, aporte_pago ap, socio s \n" +
+                    "where p.nro_pago = ap.nro_pago and a.id = ap.id_aporte and p.ci_socio = s.ci_socio and s.ci_socio = "+ ciSocio +
+                    "group by p.nro_pago, a.descripcion, a.fecha_inicio_pago , a.fecha_limite, a.monto, a.porcentaje_mora ,ap.monto_mora;";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * return paid fines from a partner
+     * @param ciSocio the ci of socio
+     * @return result query sql
+     */
+    public ResultSet getPaidFinesByPartner(int ciSocio) {
+        try {
+            String query = "select p.nro_pago, get_name_by_userci(ci_empleado) as nombre_empleado, m.descripcion, m.monto, p.monto_total \n" +
+                    "from pago p , multa m , multa_pago mp , socio s \n" +
+                    "where p.nro_pago = mp.nro_pago and m.id = mp.id_multa and p.ci_socio = s.ci_socio and s.ci_socio = "+ ciSocio + ";";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * return unpaid contributions from a partner
+     * @param ciSocio the ci of socio
+     * @return result query sql
+     */
+    public ResultSet getUnpaidContributionsByPartner(int ciSocio) {
+        try {
+            String query = "select * from aporte a where a.id not in (\n" +
+                                "select ap.id_aporte\n" +
+                                "from socio s , pago p , aporte_pago ap \n" +
+                                "where s.ci_socio = p.ci_socio  and p.nro_pago = ap.nro_pago and s.ci_socio =  "+ ciSocio + ");";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * return unpaid fines from a partner
+     * @param ciSocio the ci of socio
+     * @return result query sql
+     */
+    public ResultSet getUnpaidFinesByPartner(int ciSocio) {
+        try {
+            String query = "select * \n" +
+                    "from multa m \n" +
+                    "where m.id in (select ms.id_multa from multa_socio ms where ci_socio = "+ ciSocio + ") \n" +
+                                    "and m.id not in (select mp.id_multa\n" +
+                                    "from socio s, pago p, multa_pago mp\n" +
+                                    "where s.ci_socio = p.ci_socio and p.nro_pago = mp.nro_pago and s.ci_socio  = "+ ciSocio + ");";
+            Statement statement = this.connection.getConnection().createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

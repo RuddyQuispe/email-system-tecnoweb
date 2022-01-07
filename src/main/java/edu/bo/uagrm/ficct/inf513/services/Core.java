@@ -8,10 +8,7 @@ import edu.bo.uagrm.ficct.inf513.business.gestion_ingreso_egreso.EgresoBusiness;
 import edu.bo.uagrm.ficct.inf513.business.gestion_ingreso_egreso.IngresoBusiness;
 import edu.bo.uagrm.ficct.inf513.business.gestion_pago_aporte.*;
 import edu.bo.uagrm.ficct.inf513.business.gestion_reportes.ReportsBusiness;
-import edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades.SocioBusiness;
-import edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades.EmpleadoBusiness;
-import edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades.ActaReunionesBusiness;
-import edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades.AsistenciaBusiness;
+import edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades.*;
 import edu.bo.uagrm.ficct.inf513.utils.HTMLBuilder;
 import edu.bo.uagrm.ficct.inf513.utils.Token;
 import edu.bo.uagrm.ficct.inf513.utils.TokenAction;
@@ -166,7 +163,11 @@ public class Core {
                                     HTMLBuilder.buildButton(
                                             "\uD83D\uDD8A️",
                                             "SOCIO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + "; " + dateFormat + "; " + rowInput.get(7) + "; " + rowInput.get(8) + "; " + dateFormat + "; " + Token.TOKEN_PARAMETERS_CLOSE,
-                                            "WARNING")
+                                            "WARNING") +
+                                    HTMLBuilder.buildButton(
+                                            "KARDEX",
+                                            "SOCIO KARDEX " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "INFO")
                             );
                         }
                         String buttonCreate = HTMLBuilder.buildButton(
@@ -208,7 +209,33 @@ public class Core {
                 }
                 break;
             case TokenUseCase.KARDEX:
+                KardexBusiness kardexBusiness = new KardexBusiness();
+                switch (this.action){
+                    case TokenAction.LISTAR:
+                        ArrayList<ArrayList<String>> data = kardexBusiness.getPaidAportesBySocio(this.parameters);
+                        ArrayList<String> inputHeader = data.remove(0);
+                        htmlResponse = HTMLBuilder.generateTable("KARDEX SOCIO " + this.parameters.get(0).trim() +"<br/> <hr/>PAGOS REALIZADOS <hr/> APORTES PAGADOS", inputHeader, data);
+                        data = kardexBusiness.getPaidMultasBySocio(this.parameters);
+                        inputHeader = data.remove(0);
+                        htmlResponse = htmlResponse+ HTMLBuilder.generateTable("MULTAS PAGADAS", inputHeader, data);
 
+                        data = kardexBusiness.getUnpaidAportesBySocio(this.parameters);
+                        inputHeader = data.remove(0);
+                        htmlResponse = htmlResponse+ HTMLBuilder.generateTable("<hr/>MULTAS Y APORTES POR PAGAR <hr/>APORTES NO PAGADOS", inputHeader, data);
+                        data = kardexBusiness.getUnpaidMultasBySocio(this.parameters);
+                        inputHeader = data.remove(0);
+                        htmlResponse = htmlResponse+ HTMLBuilder.generateTable("MULTAS NO PAGADAS", inputHeader, data);
+                        break;
+                    default:
+                        message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "</br>";
+                        message = message + "</br>" + HTMLBuilder.buildButton(
+                                "LISTAR",
+                                "KARDEX LISTAR"+ Token.TOKEN_PARAMETERS_OPEN+ this.parameters.get(0).trim()+ Token.TOKEN_PARAMETERS_CLOSE,
+                                "INFO"
+                        );
+                        htmlResponse = message;
+                        break;
+                }
                 break;
             case TokenUseCase.ASISTENCIA:
                 AsistenciaBusiness asistenciaBusiness = new AsistenciaBusiness();
