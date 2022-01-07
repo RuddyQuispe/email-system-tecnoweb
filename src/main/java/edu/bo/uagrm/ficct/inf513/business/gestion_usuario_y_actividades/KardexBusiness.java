@@ -8,6 +8,7 @@ import java.util.List;
 
 import edu.bo.uagrm.ficct.inf513.data.gestion_pago_aporte.PagoData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.SocioData;
+import edu.bo.uagrm.ficct.inf513.utils.HTMLBuilder;
 
 public class KardexBusiness {
     private PagoData pagoData;
@@ -16,6 +17,25 @@ public class KardexBusiness {
         this.pagoData = new PagoData();
     }
 
+
+    public String getKardexOfSocio(List<String> parameters){
+        if (parameters.size() != 1) return "data Kardex incomplete";
+        String htmlResponse = "";
+        ArrayList<ArrayList<String>> data = getPaidAportesBySocio(parameters);
+        ArrayList<String> inputHeader = data.remove(0);
+        htmlResponse = HTMLBuilder.generateTable("KARDEX SOCIO " + parameters.get(0).trim() +"<br/> <hr/>PAGOS REALIZADOS <hr/> APORTES PAGADOS", inputHeader, data);
+        data = getPaidMultasBySocio(parameters);
+        inputHeader = data.remove(0);
+        htmlResponse = htmlResponse+ HTMLBuilder.generateTable("MULTAS PAGADAS", inputHeader, data);
+
+        data = getUnpaidAportesBySocio(parameters);
+        inputHeader = data.remove(0);
+        htmlResponse = htmlResponse+ HTMLBuilder.generateTable("<hr/>MULTAS Y APORTES POR PAGAR <hr/>APORTES NO PAGADOS", inputHeader, data);
+        data = getUnpaidMultasBySocio(parameters);
+        inputHeader = data.remove(0);
+        htmlResponse = htmlResponse+ HTMLBuilder.generateTable("MULTAS NO PAGADAS", inputHeader, data);
+        return htmlResponse;
+    }
     /**
      * get all data
      * @param  parameters list of parameters

@@ -212,19 +212,7 @@ public class Core {
                 KardexBusiness kardexBusiness = new KardexBusiness();
                 switch (this.action){
                     case TokenAction.LISTAR:
-                        ArrayList<ArrayList<String>> data = kardexBusiness.getPaidAportesBySocio(this.parameters);
-                        ArrayList<String> inputHeader = data.remove(0);
-                        htmlResponse = HTMLBuilder.generateTable("KARDEX SOCIO " + this.parameters.get(0).trim() +"<br/> <hr/>PAGOS REALIZADOS <hr/> APORTES PAGADOS", inputHeader, data);
-                        data = kardexBusiness.getPaidMultasBySocio(this.parameters);
-                        inputHeader = data.remove(0);
-                        htmlResponse = htmlResponse+ HTMLBuilder.generateTable("MULTAS PAGADAS", inputHeader, data);
-
-                        data = kardexBusiness.getUnpaidAportesBySocio(this.parameters);
-                        inputHeader = data.remove(0);
-                        htmlResponse = htmlResponse+ HTMLBuilder.generateTable("<hr/>MULTAS Y APORTES POR PAGAR <hr/>APORTES NO PAGADOS", inputHeader, data);
-                        data = kardexBusiness.getUnpaidMultasBySocio(this.parameters);
-                        inputHeader = data.remove(0);
-                        htmlResponse = htmlResponse+ HTMLBuilder.generateTable("MULTAS NO PAGADAS", inputHeader, data);
+                        htmlResponse = kardexBusiness.getKardexOfSocio(this.parameters);
                         break;
                     default:
                         message = "COMANDO " + this.action + " NO HAY ACCION PARA EL CASO DE USO: " + this.useCase + "</br>";
