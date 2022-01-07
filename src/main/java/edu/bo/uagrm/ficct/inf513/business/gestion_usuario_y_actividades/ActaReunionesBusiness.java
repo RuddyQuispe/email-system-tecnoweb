@@ -6,6 +6,7 @@
 package edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades;
  
 import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.ActaReunionesData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.EmpleadoData;
 import edu.bo.uagrm.ficct.inf513.utils.DateString;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -33,8 +34,10 @@ public class ActaReunionesBusiness {
     public String createActaReunion(List<String> parameters) {
         if (parameters.size() != 3) return "datos incompletos de acta de reuniones";
         try {
-            //TODO get ciEmpleado by empleado's name
-            int ciEmpleado =  Integer.parseInt(parameters.get(2));
+            EmpleadoData empleadoData = new EmpleadoData();
+            ResultSet resultSet = empleadoData.findBy("nombre", parameters.get(2));
+            ArrayList<ArrayList<String>>data = this.getDataList(resultSet);
+            int ciEmpleado =  Integer.parseInt(data.get(1).get(0));
             boolean isCreatedActaReunion = 
                     this.actaReunionData.create( 
                             DateString.StringToDateSQL(parameters.get(0)), 
@@ -91,11 +94,15 @@ public class ActaReunionesBusiness {
     public String updateActaReunion(List<String> parameters) {
         try {
             if (parameters.size() != 4) return "ERROR: Datos insuficiente para modificar actas";
+            EmpleadoData empleadoData = new EmpleadoData();
+            ResultSet resultSet = empleadoData.findBy("nombre", parameters.get(3));
+            ArrayList<ArrayList<String>>data = this.getDataList(resultSet);
+            int ciEmpleado =  Integer.parseInt(data.get(1).get(0));
             boolean isUpdatedActaReunion = this.actaReunionData.update(
                     Integer.parseInt(parameters.get(0)), 
                     DateString.StringToDateSQL(parameters.get(1).trim()), 
                     parameters.get(2), 
-                    Integer.parseInt(parameters.get(3)));
+                    ciEmpleado);
             return isUpdatedActaReunion ?
                     "modificado correctamente" : "ERROR: no se pudo modificar los datos";
         } catch (ParseException e) {

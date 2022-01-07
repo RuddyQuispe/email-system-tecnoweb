@@ -98,7 +98,7 @@ public class ActaReunionesData {
 
     public boolean remove(int nroActa) {
         try {
-            String query = "delete from acta_reunion where nroActa=?;";
+            String query = "delete from acta_reunion where nro_acta=?;";
             PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, nroActa);
             if (preparedStatement.executeUpdate() == 0) {

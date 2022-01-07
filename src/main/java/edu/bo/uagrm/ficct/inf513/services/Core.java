@@ -240,7 +240,7 @@ public class Core {
                             rowInput.add(
                                     HTMLBuilder.buildButton(
                                             "\uD83D\uDD8A️",
-                                            "ASISTENCIA MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + dateFormat + "; " + rowInput.get(2) + "; " + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "ASISTENCIA MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + dateFormat + "; " + rowInput.get(2) + Token.TOKEN_PARAMETERS_CLOSE,
                                             "WARNING") +
                                             HTMLBuilder.buildButton(
                                                     "\uD83D\uDDD1️",
@@ -251,7 +251,7 @@ public class Core {
                         }
                         String buttonCreate = HTMLBuilder.buildButton(
                                 "REGISTRAR ASISTENCIA",
-                                "ASISTENCIA REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + " 02-01-2022;  asistencia a reunion;" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "ASISTENCIA REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + " 02-01-2022;  asistencia a reunion" + Token.TOKEN_PARAMETERS_CLOSE,
                                 "PRIMARY"
                         );
                         htmlResponse = HTMLBuilder.generateTable("LISTA ASISTENCIA </br>" + buttonCreate, inputHeader, listInput);
@@ -297,7 +297,7 @@ public class Core {
                         break;
                 }
                 break;
-            case TokenUseCase.ACTA_REUNIONES:
+            case TokenUseCase.ACTA_REUNION:
                 ActaReunionesBusiness actaReunionesBusiness = new ActaReunionesBusiness();
                 switch (this.action) {
                     case TokenAction.LISTAR:

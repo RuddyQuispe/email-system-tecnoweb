@@ -14,7 +14,7 @@ public class TokenUseCase {
     // SHC
     public static final String ASISTENCIA = "ASISTENCIA";
     // SHC
-    public static final String ACTA_REUNIONES = "ACTA_REUNIONES";
+    public static final String ACTA_REUNION = "ACTA_REUNION";
     // ZCR
     public static final String INGRESO = "INGRESO";
     public static final String EGRESO = "EGRESO";
