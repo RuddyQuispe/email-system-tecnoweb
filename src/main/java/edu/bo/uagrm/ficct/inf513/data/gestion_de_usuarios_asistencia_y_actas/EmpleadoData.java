@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades;
+package edu.bo.uagrm.ficct.inf513.data.gestion_de_usuarios_asistencia_y_actas;
 import java.sql.*;
 
 /**

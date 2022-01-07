@@ -4,8 +4,8 @@ import edu.bo.uagrm.ficct.inf513.data.gestion_de_pago_de_aportes.AporteData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_de_pago_de_aportes.AportePagoData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_de_pago_de_aportes.MultaPagoData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_de_pago_de_aportes.PagoData;
-import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.SocioData;
-import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.EmpleadoData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_de_usuarios_asistencia_y_actas.SocioData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_de_usuarios_asistencia_y_actas.EmpleadoData;
 import edu.bo.uagrm.ficct.inf513.utils.DateString;
 
 

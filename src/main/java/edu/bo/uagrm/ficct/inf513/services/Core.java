@@ -8,7 +8,7 @@ import edu.bo.uagrm.ficct.inf513.business.gestion_de_contabilidad.EgresoBusiness
 import edu.bo.uagrm.ficct.inf513.business.gestion_de_contabilidad.IngresoBusiness;
 import edu.bo.uagrm.ficct.inf513.business.gestion_de_pago_de_aportes.*;
 import edu.bo.uagrm.ficct.inf513.business.gestion_de_contabilidad.ReportsBusiness;
-import edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades.*;
+import edu.bo.uagrm.ficct.inf513.business.gestion_de_usuarios_asistencia_y_actas.*;
 import edu.bo.uagrm.ficct.inf513.utils.HTMLBuilder;
 import edu.bo.uagrm.ficct.inf513.utils.Token;
 import edu.bo.uagrm.ficct.inf513.utils.TokenAction;

@@ -1,4 +1,4 @@
-package edu.bo.uagrm.ficct.inf513.business.gestion_usuario_y_actividades;
+package edu.bo.uagrm.ficct.inf513.business.gestion_de_usuarios_asistencia_y_actas;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.bo.uagrm.ficct.inf513.data.gestion_de_pago_de_aportes.PagoData;
-import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.SocioData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_de_usuarios_asistencia_y_actas.SocioData;
 import edu.bo.uagrm.ficct.inf513.utils.HTMLBuilder;
 
 public class KardexBusiness {

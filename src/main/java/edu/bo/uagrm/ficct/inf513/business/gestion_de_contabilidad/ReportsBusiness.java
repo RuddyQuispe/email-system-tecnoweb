@@ -3,7 +3,7 @@ package edu.bo.uagrm.ficct.inf513.business.gestion_de_contabilidad;
 import edu.bo.uagrm.ficct.inf513.data.gestion_de_contabilidad.EgresoData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_de_contabilidad.IngresoData;
 import edu.bo.uagrm.ficct.inf513.data.gestion_de_pago_de_aportes.*;
-import edu.bo.uagrm.ficct.inf513.data.gestion_usuario_y_actividades.SocioData;
+import edu.bo.uagrm.ficct.inf513.data.gestion_de_usuarios_asistencia_y_actas.SocioData;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
