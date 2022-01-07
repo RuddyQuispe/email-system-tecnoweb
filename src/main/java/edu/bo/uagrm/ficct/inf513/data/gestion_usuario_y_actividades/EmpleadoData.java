@@ -45,7 +45,9 @@ public class EmpleadoData extends UsuarioData{
     
     public ResultSet findAll() {
         try {
-            String query = "select e.ci_empleado , e.fecha_inicio, e.fecha_fin from empleado e;";
+            String query = "select u.ci , u.nombre, u.telefono, u.email, u.estado, u.contraseña,u.direccion, e.fecha_inicio, e.fecha_fin \n" +
+                    "from empleado e, usuario u \n" +
+                    "where e.ci_empleado = u.ci ;";
             Statement statement = this.connection.getConnection().createStatement();
             return statement.executeQuery(query);
         } catch (SQLException e) {
@@ -54,15 +56,15 @@ public class EmpleadoData extends UsuarioData{
         }
     }
     
-    public boolean update(int ci, String nombre, String telefono, String email, String contrasenia, boolean estado, String direccion, Date fechaFin){
+    public boolean update(int ci, String nombre, String telefono, String email, boolean estado,String contrasenia,  String direccion, Date fechaFin){
         try {
             // string query structure 
             boolean updateUser = super.update(ci, nombre, telefono, email, contrasenia, estado, direccion, "E");
             if (!updateUser) return false;
             String query = "update empleado " +
-                    "set fechaFin=?" + "where ci=?";
-  
-            PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query); 
+                    "set fecha_fin=?" + "where ci_empleado=?";
+
+            PreparedStatement preparedStatement = this.connection.getConnection().prepareStatement(query);
             preparedStatement.setDate(1, fechaFin);
             preparedStatement.setInt(2, ci);
             // execute query with its data

@@ -99,8 +99,8 @@ public class EmpleadoBusiness {
                     parameters.get(1),
                     parameters.get(2), 
                     parameters.get(3),
-                    parameters.get(4),
-                    Boolean.valueOf(parameters.get(5)),
+                    Boolean.valueOf(parameters.get(4)),
+                    parameters.get(5),
                     parameters.get(6),
                     DateString.StringToDateSQL(parameters.get(7).trim()));
             return isUpdatedEmpleado ?

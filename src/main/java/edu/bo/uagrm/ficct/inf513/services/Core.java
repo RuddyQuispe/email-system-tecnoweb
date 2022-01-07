@@ -98,20 +98,20 @@ public class Core {
                         ArrayList<String> inputHeader = listInput.remove(0);
                         inputHeader.add("acciones");
                         String[] dateArr;
-                        String dateFormat = "";
+                        String fechaFin = "";
                         for (ArrayList<String> rowInput : listInput) {
-                            dateArr = rowInput.get(1).split("-");
-                            dateFormat = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+                            dateArr = rowInput.get(8).split("-");
+                            fechaFin = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
                             rowInput.add(
                                     HTMLBuilder.buildButton(
                                             "\uD83D\uDD8A️",
-                                            "EMPLEADO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " + rowInput.get(5) + "; " + rowInput.get(6) + "; " + dateFormat + "; " + Token.TOKEN_PARAMETERS_CLOSE,
+                                            "EMPLEADO MODIFICAR " + Token.TOKEN_PARAMETERS_OPEN + rowInput.get(0) + "; " + rowInput.get(1) + "; " + rowInput.get(2) + "; " + rowInput.get(3) + "; " + rowInput.get(4) + "; " +rowInput.get(5)+"; " +rowInput.get(6) + "; " + fechaFin+ Token.TOKEN_PARAMETERS_CLOSE,
                                             "WARNING")
                             );
                         }
                         String buttonCreate = HTMLBuilder.buildButton(
                                 "REGISTRAR EMPLEADO",
-                                "EMPLEADO REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + " 7487414; Juan Chumacero; 74587417; juan@gmail.com; 123456; true; B/ brigida; 02-01-2022;" + Token.TOKEN_PARAMETERS_CLOSE,
+                                "EMPLEADO REGISTRAR " + Token.TOKEN_PARAMETERS_OPEN + " 7487414; Juan Chumacero; 74587417; juan@gmail.com; 123456; B/ brigida; 02-01-2022; 31-12-2022" + Token.TOKEN_PARAMETERS_CLOSE,
                                 "PRIMARY"
                         );
                         htmlResponse = HTMLBuilder.generateTable("LISTA EMPLEADO </br>" + buttonCreate, inputHeader, listInput);
